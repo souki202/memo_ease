@@ -12,7 +12,20 @@
 
     <main>
         <div id="createMemo">
-            <button type="submit" class="btn btn-primary">メモを新規作成</button>
+            <button type="submit" class="btn btn-primary" @click="submit" :disabled="isLoading">メモを新規作成</button>
+            <div class="alert alert-danger" role="alert" v-if="errorMessage" v-cloak>{{ errorMessage }}</div>
+        </div>
+    </main>
+
+    <main>
+        <div id="editMemo">
+            <form action="" method="post" @submit.prevent="submit">
+                <div class="form-group">
+                    <input type="text" class="form-control" v-model="memoAlias" placeholder="メモID" required>
+                </div>
+                <button type="submit" class="btn btn-primary">メモを編集</button>
+            </form>
+            <div class="alert alert-danger" role="alert" v-if="errorMessage" v-cloak>{{ errorMessage }}</div>
         </div>
     </main>
 

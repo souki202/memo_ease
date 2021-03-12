@@ -7,3 +7,7 @@ body {
     background-color: $primary-bg-color;
     color: $primary-text-color;
 }
+
+[v-cloak] {
+    display: none;
+}

@@ -7,6 +7,7 @@ import time
 import secrets
 import concurrent.futures
 from enum import Enum
+from argon2 import PasswordHasher
 from boto3.dynamodb.conditions import Key
 from dynamo_utility import *
 from my_common import *
@@ -55,16 +56,11 @@ def add_create_history(ip_address: str) -> bool:
 @return {bool} 作成できるならtrue
 '''
 def check_create_history(ip_address: str) -> bool:
-    now = get_now_string()
     from_time = get_calced_from_now_string(LOGIN_TIME_RANGE)
 
     try:
         result = create_histories_table.query(
-            KeyConditionExpression=Key('ip_address').eq(ip_address),
-            FilterExpression='created_at > :created_at',
-            ExpressionAttributeValues={
-                ':created_at': from_time
-            }
+            KeyConditionExpression=Key('ip_address').eq(ip_address) & Key('created_at').gt(from_time)
         )
         # レコード数が多ければログイン試行が多いので拒否
         if len(result['Items']) > MAX_CREATE_TRY_COUNT:
@@ -75,3 +71,17 @@ def check_create_history(ip_address: str) -> bool:
         print(e)
         return False
     return False
+
+'''
+メモ情報取得権限があるか調べる (編集画面用)
+'''
+def check_memo_auth(input_password, memo_password):
+    if not memo_password:
+        return True
+    # パスワードチェック
+    ph = PasswordHasher()
+    try:
+        ph.verify(memo_password, input_password)
+    except Exception as e:
+        return False
+    return True

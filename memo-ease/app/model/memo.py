@@ -29,7 +29,7 @@ def create_memo() -> str:
         memos_table.put_item(
             Item = {
                 'uuid': memo_uuid,
-                'alias_name': '',
+                'alias_name': memo_uuid,
                 'view_id': '',
                 'password': '',
                 'title': '',
@@ -64,6 +64,26 @@ def update_memo(memo_uuid: str, title: str) -> bool:
             ExpressionAttributeValues = {
                 ':title': title,
                 ':updated_at': now,
+                ':accessed_at': now,
+            },
+            ReturnValues="UPDATED_NEW"
+        )
+        return not not res
+    except Exception as e:
+        return False
+    return False
+
+def record_access(memo_uuid: str) -> bool:
+    if not get_memo(memo_uuid):
+        return False
+    now = get_now_string()
+    try:
+        res = memos_table.update_item(
+            Key = {
+                'uuid': memo_uuid,
+            },
+            UpdateExpression = 'set accessed_at=:accessed_at',
+            ExpressionAttributeValues = {
                 ':accessed_at': now,
             },
             ReturnValues="UPDATED_NEW"

@@ -7,10 +7,6 @@
         {
             "AttributeName": "alias_name",
             "AttributeType": "S"
-        },
-        {
-            "AttributeName": "accessed_at",
-            "AttributeType": "S"
         }
     ],
     "TableName": "memo_ease_memos_dev",

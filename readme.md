@@ -47,25 +47,25 @@
 requiementsの変更があればwslに入って
 
 ```shell
-cd /mnt/d/Projects/md_memo/lambda/my_layer
+cd /mnt/d/Projects/memo_ease/memo-ease/my_layer
 pip3 install -r requirements.txt -t ../my_layer_libs/python
 ```
 
-`sam package --template-file template.yaml --output-template-file template-output.yaml --s3-bucket aws-sam-nested-application-packages-memo-ease-dev`
+`sam build --config-env develop --use-container`
 
-`sam deploy --template-file template-output.yaml --stack-name memo-ease-dev --parameter-overrides Env=dev --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND`
+`sam deploy --config-env develop`
 
 ### staging
 
-`sam package --template-file template.yaml --output-template-file template-output.yaml --s3-bucket aws-sam-nested-application-packages-memo-ease-stg`
+`sam build --config-env staging --use-container`
 
-`sam deploy --template-file template-output.yaml --stack-name memo-ease-stg --parameter-overrides Env=stg --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND`
+`sam deploy --config-env staging`
 
 ### production
 
-`sam package --template-file template.yaml --output-template-file template-output.yaml --s3-bucket aws-sam-nested-application-packages-memo-ease-prod`
+`sam build --config-env production --use-container`
 
-`sam deploy --template-file template-output.yaml --stack-name memo-ease-prod --parameter-overrides Env=prod --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND`
+`sam deploy --config-env production`
 
 #### prodデプロイ時チェック
 
