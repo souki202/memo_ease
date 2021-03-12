@@ -9929,8 +9929,8 @@ h3 {
   }
 }
 body {
-  background-color: #111115;
-  color: #eee;
+  background-color: var(--primary-bg-color);
+  color: var(--primary-text-color);
 }
 
 [v-cloak] {

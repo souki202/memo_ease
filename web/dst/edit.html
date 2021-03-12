@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/edit.css">
+    <script src="/js/loadCommonParts.js"></script>
+    <title>Memo Editor</title>
+</head>
+<body>
+    <div class="sidebar-container" id="sidebarApp">
+        <input type="checkbox" name="switchSidebar" id="switchSidebar">
+        <div id="sidebar">
+            <div class="content-list">
+                <h2 class="content-header">Contents</h2>
+                <ul>
+                    <li>
+                        <div class="content-icon"><i class="fas fa-home"></i></div>
+                        <div class="content-title">Home</div>
+                        <a class="no-decolarion-link" href="/"></a>
+                    </li>
+                    <li>
+                        <div class="content-icon"><i class="fas fa-cogs"></i></div>
+                        <div class="content-title">Settings</div>
+                        <span class="no-decolarion-link" @click="openModal('settings')"></span>
+                    </li>
+                </ul>
+    
+            </div>
+
+        </div>
+
+        <div class="modals">
+            <v-modal v-model="modals.settings" @close="closeModal" :modal-id="'settings'">
+                <template v-slot:title>Hello, vue-final-modal</template>
+                <p>Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.</p>
+            </v-modal>
+        </div>
+
+        <div class="sidebar-switch-container">
+            <label for="switchSidebar" class="sidebar-switch-label">
+                <i class="fas fa-bars fa-2x sidebar-open-button"></i>
+                <i class="fas fa-times fa-2x sidebar-close-button"></i>
+            </label>
+        </div>
+    </div>
+    <header></header>
+    <main>
+        <div class="editor-container">
+            <div id="editor">
+                <div class="form-group title-container">
+                    <input type="text" class="form-control memo-title" placeholder="Title" @change="save" v-model="title">
+                    <div class="memo-title-border"></div>
+                </div>
+                <div class="editor-body">
+                    <ckeditor id="ckeditorContainer" :editor="ckeditorClass" v-model="body"></ckeditor>
+                </div>
+            </div>
+            <div class="tools-container"></div>
+        </div>
+    </main>
+    <footer></footer>
+
+    <script src="/js/edit.js"></script>
+</body>
+</html>

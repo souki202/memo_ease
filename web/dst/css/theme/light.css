@@ -1,0 +1,12 @@
+:root {
+    --primary-bg-color: #fff;
+    --primary-text-color: #222;
+
+    --sidebar-bg-color: #161b22;
+    --sidebar-text-color: #eee;
+    --sidebar-separator-color: #888;
+    --sidebar-content-icon-bg-color: #343a40;
+
+    --memo-title-bg-color: #161b22;
+    --memo-title-border: #888;
+}

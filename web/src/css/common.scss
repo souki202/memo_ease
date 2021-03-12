@@ -1,11 +1,8 @@
 @import "bootstrap";
 
-$primary-bg-color: #111115;
-$primary-text-color: #eee;
-
 body {
-    background-color: $primary-bg-color;
-    color: $primary-text-color;
+    background-color: var(--primary-bg-color);
+    color: var(--primary-text-color);
 }
 
 [v-cloak] {

@@ -13,6 +13,8 @@ const cssIn = './web/src/css/'
 module.exports = {
     entry: {
         index: jsIn + 'index.js',
+        edit: jsIn + 'edit.js',
+        loadCommonParts: jsIn + 'loadCommonParts.js',
     },
     output: {
         path: path.resolve(__dirname, jsOut + 'js'),
@@ -28,10 +30,29 @@ module.exports = {
         rules: [
             {
                 test: /\.js$/,
+                exclude: /(node_modules|bower_components)/,
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        babelrc: true,
+                        presets: [
+                            [
+                                '@babel/preset-env',
+                                {
+                                    'useBuiltIns': 'usage',
+                                    'targets': {
+                                        'browsers': [
+                                        'last 2 Chrome version',
+                                        'last 2 Firefox version',
+                                        'last 2 Edge version',
+                                        'last 2 Safari version',
+                                        'last 2 Opera version'
+                                        ]
+                                    },
+                                    corejs: 3
+                                }
+                            ]
+                        ],
+                        plugins: ['@babel/plugin-transform-runtime'],
                     }
                 }
             },
@@ -73,7 +94,18 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(css)$/,
+                test: function(filename, entry){
+                    if(/\.css$/.test(filename)){
+                        if(/\.vue\.css$/.test(filename)){
+                            return false;
+                        }
+                        if(/(node_modules|bower_components)/.test(filename)) {
+                            return false;
+                        }
+                        return true;
+                    }
+                    return false;
+                },
                 exclude: [
                     /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
                 ],
@@ -84,7 +116,33 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(sc|sa)ss$/,
+                test: /\.vue\.css$/,
+                use: [
+                  'vue-style-loader',
+                  'css-loader'
+                ]
+            },
+            {
+                test: /\.vue\.s[ac]ss/,
+                use: [
+                  'vue-style-loader',
+                  'css-loader',
+                  'sass-loader'
+                ]
+            },
+            {
+                test: function(filename, entry){
+                    if(/\.s[ac]ss$/.test(filename)){
+                        if(/\.vue\.s[ac]ss$/.test(filename)){
+                            return false;
+                        }
+                        if(/(node_modules|bower_components)/.test(filename)) {
+                            return false;
+                        }
+                        return true;
+                    }
+                    return false;
+                },
                 exclude: [
                     /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
                 ],
@@ -92,6 +150,48 @@ module.exports = {
                     MiniCssExtractPlugin.loader,
                     'css-loader',
                     'sass-loader',
+                ]
+            },
+            {
+                test: function(filename, entry){
+                    if(/\.s[ac]ss$/.test(filename)){
+                        if(/\.vue\.s[ac]ss$/.test(filename)){
+                            return false;
+                        }
+                        if(/(node_modules|bower_components)/.test(filename)) {
+                            return true;
+                        }
+                        return false;
+                    }
+                    return false;
+                },
+                exclude: [
+                    /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
+                ],
+                use: [
+                    'css-loader',
+                    'sass-loader',
+                ]
+            },
+            {
+                test: function(filename, entry){
+                    if(/\.css$/.test(filename)){
+                        if(/\.vue\.css$/.test(filename)){
+                            return false;
+                        }
+                        if(/(node_modules|bower_components)/.test(filename)) {
+                            return true;
+                        }
+                        return false;
+                    }
+                    return false;
+                },
+                exclude: [
+                    /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css$/,
+                ],
+                use: [
+                    'style-loader',
+                    'css-loader',
                 ]
             },
             {
