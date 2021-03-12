@@ -1,0 +1,38 @@
+{
+    "AttributeDefinitions": [
+        {
+            "AttributeName": "uuid",
+            "AttributeType": "S"
+        },
+        {
+            "AttributeName": "alias_name",
+            "AttributeType": "S"
+        },
+        {
+            "AttributeName": "accessed_at",
+            "AttributeType": "S"
+        }
+    ],
+    "TableName": "memo_ease_memos_dev",
+    "KeySchema": [
+        {
+            "AttributeName": "uuid",
+            "KeyType": "HASH"
+        }
+    ],
+    "GlobalSecondaryIndexes": [
+        {
+            "IndexName": "alias_name-index",
+            "KeySchema": [
+                {
+                    "AttributeName": "alias_name",
+                    "KeyType": "HASH"
+                }
+            ],
+            "Projection": {
+                "ProjectionType": "ALL"
+            }
+        }
+    ],
+    "BillingMode": "PAY_PER_REQUEST"
+}
