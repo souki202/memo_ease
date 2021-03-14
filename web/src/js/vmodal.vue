@@ -5,13 +5,13 @@
         content-class="modal-content"
         :esc-to-close="true"
     >
-        <span class="modal__title">
+        <div class="modal__title">
             <slot name="title"></slot>
-        </span>
+        </div>
         <div class="modal__content">
             <slot></slot>
         </div>
-        <button class="modal__close" @click="close">
+        <button class="modal__close btn btn-danger" @click="close">
             <i class="fas fa-times"></i>
         </button>
     </vue-final-modal>
@@ -41,18 +41,21 @@
         position: relative;
         display: flex;
         flex-direction: column;
+        max-width: 1024px;
         max-height: 90%;
         margin: 0 1rem;
         padding: 1rem;
         border: 1px solid #e2e8f0;
         border-radius: 0.25rem;
         background: #fff;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
     }
 
     .modal__title {
-        margin: 0 2rem 0 0;
+        margin: 0 2.5rem 1rem 0;
         font-size: 1.5rem;
         font-weight: 700;
+        border-bottom: 1px var(--modal-separator-color) solid;
     }
 
     .modal__content {

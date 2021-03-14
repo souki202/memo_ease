@@ -8,3 +8,9 @@ body {
 [v-cloak] {
     display: none;
 }
+
+.copy-to-clipboard {
+    background-color: #222229;
+    color: #ddd;
+    cursor: pointer;
+}

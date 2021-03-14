@@ -29,7 +29,6 @@
                 </ul>
     
             </div>
-
         </div>
 
         <div class="modals">
@@ -48,8 +47,8 @@
     </div>
     <header></header>
     <main>
-        <div class="editor-container">
-            <div id="editor">
+        <div class="editor-container" id="editor">
+            <div class="editor-inner">
                 <div class="form-group title-container">
                     <input type="text" class="form-control memo-title" placeholder="Title" @change="save" v-model="title">
                     <div class="memo-title-border"></div>
@@ -59,8 +58,36 @@
                 </div>
             </div>
             <div class="tools-container"></div>
+            
+            <!-- 新規作成時はURL等のモーダル表示 -->
+            <div class="new-create-message">
+                <v-modal v-model="showMemoUrlModal" @close="closeNewMemoUrlModal" :modal-id="'showMemoUrl'">
+                    <template v-slot:title>メモのURLを保存しましょう!</template>
+                    <div>
+                        <p>
+                            メモの名前は, トップページから編集画面に入るときに使用します. 名前はいつでも変更できます.
+                        </p>
+                        <div class="form-group">
+                            <div class="input-group memo-link">
+                                <label for="" class="modal-form-label">メモのURL</label>
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text copy-to-clipboard" @click="copyMemoUrl">
+                                        <i class="fas fa-clipboard"></i>
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control text-light bg-dark" name="memoUrl" id="memoUrl" :value="memoUrl" readonly>
+                            </div>
+                            <div class="input-group">
+                                <label for="" class="modal-form-label">メモの名前</label>
+                                <input type="text" class="form-control text-light bg-dark" :value="memoAlias" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </v-modal>    
+            </div>
         </div>
     </main>
+
     <footer></footer>
 
     <script src="/js/edit.js"></script>

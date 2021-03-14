@@ -156,11 +156,11 @@ main {
     margin-left: $sidebar-width;
 }
 
-main, .editor-container, #editor {
+main, .editor-container, .editor-inner {
     height: 100%;
 }
 
-#editor {
+.editor-inner {
     display: flex;
     flex-direction: column;
 
@@ -226,3 +226,20 @@ main, .editor-container, #editor {
     }
 }
 
+.modal-form-label {
+    width: 128px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+@media screen and (max-width:425px) {
+    html, body {
+        width: 425px;
+    }
+}
+
+@media screen and (max-width:480px) {
+    .modal-form-label {
+        width: 100%;
+    }
+}

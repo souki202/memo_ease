@@ -130,37 +130,37 @@ main {
   margin-left: 64px;
 }
 
-main, .editor-container, #editor {
+main, .editor-container, .editor-inner {
   height: 100%;
 }
 
-#editor {
+.editor-inner {
   display: flex;
   flex-direction: column;
 }
-#editor .title-container, #editor .memo-title {
+.editor-inner .title-container, .editor-inner .memo-title {
   height: 64px;
   margin-bottom: 0;
 }
-#editor .title-container {
+.editor-inner .title-container {
   position: relative;
   flex-shrink: 0;
   flex-grow: 0;
 }
-#editor .title-container.form-group {
+.editor-inner .title-container.form-group {
   margin-bottom: 0.25rem;
 }
-#editor .title-container .memo-title + .memo-title-border {
+.editor-inner .title-container .memo-title + .memo-title-border {
   position: absolute;
   bottom: 12px;
   width: 100%;
   border-bottom: 1px solid transparent;
   transition: border-bottom 200ms 0s ease;
 }
-#editor .title-container .memo-title:focus + .memo-title-border {
+.editor-inner .title-container .memo-title:focus + .memo-title-border {
   border-bottom: 1px solid var(--memo-title-border);
 }
-#editor .title-container .memo-title, #editor .title-container .memo-title[readonly], #editor .title-container .memo-title:focus {
+.editor-inner .title-container .memo-title, .editor-inner .title-container .memo-title[readonly], .editor-inner .title-container .memo-title:focus {
   background-color: var(--memo-title-bg-color);
   color: var(--base-text-color);
   font-size: 22px;
@@ -168,22 +168,39 @@ main, .editor-container, #editor {
   border: none;
   box-shadow: none;
 }
-#editor .editor-body {
+.editor-inner .editor-body {
   flex-grow: 1;
 }
-#editor .cke_show_borders {
+.editor-inner .cke_show_borders {
   overflow: scroll;
 }
-#editor .ck-editor {
+.editor-inner .ck-editor {
   min-height: 100%;
   display: flex;
   flex-direction: column;
 }
-#editor .ck-editor .ck-editor__main {
+.editor-inner .ck-editor .ck-editor__main {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
 }
-#editor .ck-editor .ck-content {
+.editor-inner .ck-editor .ck-content {
   flex-grow: 1;
+}
+
+.modal-form-label {
+  width: 128px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+@media screen and (max-width: 425px) {
+  html, body {
+    width: 425px;
+  }
+}
+@media screen and (max-width: 480px) {
+  .modal-form-label {
+    width: 100%;
+  }
 }

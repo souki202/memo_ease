@@ -14,11 +14,15 @@ import VueFinalModal from 'vue-final-modal'
 import VModal from './vmodal.vue';
 
 const app = createApp({
+    components: {
+        VModal: VModal,
+    },
     data() {
         return {
             ckeditorClass: ClassicEditor,
 
             showInputPassword: false,
+            showMemoUrlModal: false,
 
             memoUuid: '',
             memoAlias: '',
@@ -33,8 +37,22 @@ const app = createApp({
         this.memoUuid = getUrlParameter('memo_uuid');
         this.memoAlias = getUrlParameter('memo_alias');
 
+        if (!this.memoAlias) {
+            this.memoAlias = this.memoUuid;
+        }
+
+        // 新規作成か
+        if (getUrlParameter('new')) {
+            this.showMemoUrlModal = true;
+        }
+
         // 初期化
         // this.init();
+    },
+    computed: {
+        memoUrl() {
+            return 'https://' + document.domain + '/edit.html?memo_uuid=' + this.memoUuid;
+        },
     },
     methods: {
         init: async function () {
@@ -69,8 +87,20 @@ const app = createApp({
         save() {
 
         },
+        closeNewMemoUrlModal() {
+            this.showMemoUrlModal = false;
+        },
+
+        /**
+         * 編集リンクをクリップボードにコピー
+         */
+        copyMemoUrl() {
+            var copyText = document.querySelector("#memoUrl");
+            copyText.select();
+            document.execCommand("copy");
+        },
     },
-}).use(CkeditorVue).mount('#editor');
+}).use(CkeditorVue).use(VueFinalModal()).mount('#editor');
 
 const sidebar = createApp({
     components: {
