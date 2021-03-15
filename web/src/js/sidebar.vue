@@ -82,14 +82,25 @@
                 <div>
                     <p>閲覧専用の共有リンクを生成します. 閲覧時はパスワード不要です.</p>
                     <div class="form-group">
+                        <!-- メモURL -->
                         <div class="input-group memo-link">
-                            <label for="" class="modal-form-label">メモのURL</label>
+                            <label for="viewUrl" class="modal-form-label">メモのURL</label>
                             <div class="input-group-prepend">
                                 <div class="input-group-text copy-to-clipboard" @click="copyViewUrl">
                                     <i class="fas fa-clipboard"></i>
                                 </div>
                             </div>
                             <input type="text" class="form-control text-light bg-dark" name="viewUrl" id="viewUrl" :value="isPublic ? viewUrl : ''" readonly>
+                        </div>
+                        <!-- iframe埋め込みコード -->
+                        <div class="input-group memo-link">
+                            <label for="iframeCode" class="modal-form-label">埋め込みコード</label>
+                            <div class="input-group-prepend">
+                                <div class="input-group-text copy-to-clipboard" @click="copyIframeCode">
+                                    <i class="fas fa-clipboard"></i>
+                                </div>
+                            </div>
+                            <input type="text" class="form-control text-light bg-dark" name="iframeCode" id="iframeCode" :value="isPublic ? iframeCode : ''" readonly>
                         </div>
                     </div>
                     <button class="btn btn-primary" v-if="!isPublic" @click="changePublicState(true)" :disabled="isSubmiting">リンクを取得</button>
@@ -163,6 +174,13 @@ export default {
             }
             return 'https://' + document.domain + '/view.html?view_id=' + this.viewId;
         },
+        iframeCode() {
+            if (!this.viewId) {
+                return '';
+            }
+            let code = '<iframe src="' + this.viewUrl + '" width="100%" height="480px">'
+            return code
+        }
     },
     methods: {
         openModal(modalId) {
@@ -257,6 +275,15 @@ export default {
          */
         copyViewUrl() {
             var copyText = document.querySelector("#viewUrl");
+            copyText.select();
+            document.execCommand("copy");
+        },
+
+        /**
+         * 閲覧用URLを取得
+         */
+        copyIframeCode() {
+            var copyText = document.querySelector("#iframeCode");
             copyText.select();
             document.execCommand("copy");
         }

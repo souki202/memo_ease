@@ -41,6 +41,8 @@ const app = createApp({
                 this.memo.body = res.data.body;
             }).catch(err => {
                 console.log(err);
+                window.alert('メモの読み込みに失敗しました.');
+                location.href = '/';
             }).then(() => {
             });
         }

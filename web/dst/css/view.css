@@ -1,3 +1,16 @@
 .ck-editor__top {
   display: none;
 }
+
+.ck.ck-editor__main > .ck-editor__editable {
+  border: none !important;
+}
+
+.ck .ck-widget_with-selection-handle {
+  display: none !important;
+}
+
+.ck-widget.ck-widget_selected {
+  border: none !important;
+  outline: none !important;
+}
