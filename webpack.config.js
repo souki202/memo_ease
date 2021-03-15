@@ -14,6 +14,7 @@ module.exports = {
     entry: {
         index: jsIn + 'index.js',
         edit: jsIn + 'edit.js',
+        view: jsIn + 'view.js',
         loadCommonParts: jsIn + 'loadCommonParts.js',
     },
     output: {
