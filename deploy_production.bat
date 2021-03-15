@@ -1,6 +1,6 @@
 git checkout master
 git pull
-cd lambda
+cd memo-ease
 call sam build --config-env production --use-container
 call sam deploy --config-env production
 cd ..

@@ -1,6 +1,6 @@
 git checkout staging
 git pull
-cd lambda
+cd memo-ease
 call sam build --config-env staging --use-container
 call sam deploy --config-env staging
 cd ..

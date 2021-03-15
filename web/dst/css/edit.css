@@ -8,6 +8,15 @@ body {
 /**
  * サイドバー
  */
+.sidebar-container .sidebar-close-bg {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: none;
+  margin: 0;
+}
 .sidebar-container #sidebar {
   position: fixed;
   top: 0;
@@ -19,6 +28,7 @@ body {
   color: var(--sidebar-text-color);
   padding-top: 64px;
   overflow: auto;
+  overflow-x: hidden;
   z-index: 100;
   transition: width 200ms 0s ease;
 }
@@ -119,6 +129,9 @@ body {
 .sidebar-container #switchSidebar:not(:checked) + #sidebar > * {
   display: none;
 }
+.sidebar-container #switchSidebar:not(:checked) .sidebar-close-bg {
+  display: none;
+}
 .sidebar-container #switchSidebar:checked ~ .sidebar-switch-container .sidebar-open-button {
   opacity: 0;
 }
@@ -126,7 +139,7 @@ body {
   width: 256px;
 }
 
-main {
+#editor {
   margin-left: 64px;
 }
 
@@ -190,8 +203,7 @@ main, .editor-container, .editor-inner {
 
 .modal-form-label {
   width: 128px;
-  margin-top: 4px;
-  margin-bottom: 4px;
+  margin: 4px 12px 4px 0;
 }
 
 @media screen and (max-width: 425px) {
@@ -199,7 +211,7 @@ main, .editor-container, .editor-inner {
     width: 425px;
   }
 }
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 767px) {
   .modal-form-label {
     width: 100%;
   }

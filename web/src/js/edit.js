@@ -10,35 +10,45 @@ import getUrlParameter from './urlParameter';
 import ClassicEditor from './ckeditor';
 import CkeditorVue from '@ckeditor/ckeditor5-vue';
 
-import VueFinalModal from 'vue-final-modal'
+import VueFinalModal from 'vue-final-modal';
 import VModal from './vmodal.vue';
+
+import Sidebar from './sidebar.vue';
 
 const app = createApp({
     components: {
         VModal: VModal,
+        Sidebar: Sidebar,
     },
     data() {
         return {
             ckeditorClass: ClassicEditor,
 
-            showInputPassword: false,
             showMemoUrlModal: false,
+            showPasswordModal: false,
+            modalErrorMessage: '',
 
-            memoUuid: '',
-            memoAlias: '',
-            password: '',
+            memo: {
+                memoUuid: '',
+                memoAlias: '',
+                password: '',
+                email: '',
+                viewId: '',
+    
+                title: '',
+                body: '',
+            },
 
-            title: '',
-            body: '',
+            isSubmiting: false,
         }
     },
     mounted() {
         // urlからメモIDかaliasを抽出
-        this.memoUuid = getUrlParameter('memo_uuid');
-        this.memoAlias = getUrlParameter('memo_alias');
+        this.memo.memoUuid = getUrlParameter('memo_uuid');
+        this.memo.memoAlias = getUrlParameter('memo_alias');
 
-        if (!this.memoAlias) {
-            this.memoAlias = this.memoUuid;
+        if (!this.memo.memoAlias) {
+            this.memo.memoAlias = this.memo.memoUuid;
         }
 
         // 新規作成か
@@ -47,11 +57,11 @@ const app = createApp({
         }
 
         // 初期化
-        // this.init();
+        this.init();
     },
     computed: {
         memoUrl() {
-            return 'https://' + document.domain + '/edit.html?memo_uuid=' + this.memoUuid;
+            return 'https://' + document.domain + '/edit.html?memo_uuid=' + this.memo.memoUuid;
         },
     },
     methods: {
@@ -60,17 +70,55 @@ const app = createApp({
             const hasPassword = await this.checkHasPassword();
             if (hasPassword) {
                 // パスワード入力画面
+                this.showPasswordModal = true;
+            }
+            else {
+                // パス無しならここでメモ全体を取得
+                this.getMemoData();
             }
         },
-        getMemoData() {
 
+        /**
+         * メモ情報を取得
+         */
+        getMemoData() {
+            this.isSubmiting = true;
+            axios.post(getApiUrl() + '/get_memo', {
+                params: {
+                    memo_uuid: this.memo.memoUuid,
+                    memo_alias: this.memo.memoAlias,
+                    password: this.memo.password,
+                }
+            }).then(res => {
+                console.log(res.data);
+                const memo = res.data.memo;
+                this.memo.body = memo.body;
+                this.memo.title = memo.title;
+                this.memo.memoUuid = memo.memo_uuid;
+                this.memo.memoAlias = memo.alias_name;
+                this.memo.email = memo.email;
+                this.memo.viewId = memo.view_id;
+
+                // 最後にモーダルを閉じる
+                this.showPasswordModal = false;
+            }).catch(err => {
+                console.log(err);
+            }).then(() => {
+                this.isSubmiting = false;
+            });
         },
+
+        /**
+         * そのメモにパスワードが設定されているかチェック
+         * @returns {boolean} 設定されいればtrue
+         */
         checkHasPassword: async function () {
             let hasPassword = false;
+            this.isSubmiting = true;
             await axios.get(getApiUrl() + '/check_has_password_memo', {
                 params: {
-                    memo_uuid: this.memoUuid,
-                    memo_alias: this.memoAlias,
+                    memo_uuid: this.memo.memoUuid,
+                    memo_alias: this.memo.memoAlias,
                 }
             }).then(res => {
                 if (res.data) {
@@ -78,17 +126,39 @@ const app = createApp({
                 }
                 console.log(res);
             }).catch(err => {
-                console.log(err);
+                if (err.response) {
+                    if (err.response.status >= 500) {
+                        window.alert('サーバーエラーが発生しました.');
+                    }
+                    else {
+                        window.alert('パスワードが間違っています.');
+                    }
+                }
+                else {
+                    window.alert('エラーが発生しました.');
+                }
             }).then(() => {
-
+                this.isSubmiting = false;
             });
             return hasPassword;
         },
+
+        /**
+         * メモ本文の保存処理
+         */
         save() {
 
         },
+
+        /**
+         * メモ作成時のモーダルを閉じる
+         */
         closeNewMemoUrlModal() {
             this.showMemoUrlModal = false;
+        },
+
+        closePasswordModal() {
+            this.showPasswordModal = false;
         },
 
         /**
@@ -100,25 +170,4 @@ const app = createApp({
             document.execCommand("copy");
         },
     },
-}).use(CkeditorVue).use(VueFinalModal()).mount('#editor');
-
-const sidebar = createApp({
-    components: {
-        VModal: VModal,
-    },
-    data() {
-        return {
-            modals: {
-                settings: false,
-            },
-        }
-    },
-    methods: {
-        openModal(modalId) {
-            this.modals[modalId] = true;
-        },
-        closeModal(modalId) {
-            this.modals[modalId] = false;
-        }
-    },
-}).use(VueFinalModal()).mount('#sidebarApp');
+}).use(CkeditorVue).use(VueFinalModal()).mount('#app');

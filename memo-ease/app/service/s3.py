@@ -96,7 +96,7 @@ def get_memo_body(memo_uuid: str) -> str:
     key = memo_uuid + '/body.txt'
     try:
         obj = s3_client.get_object(Bucket=FILE_BUCKET_NAME, Key=key)
-        body = obj['Body'].read()
+        body = obj['Body'].read().decode('utf-8')
         return body
     except Exception as e:
         print(e)

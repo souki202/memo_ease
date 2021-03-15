@@ -200,3 +200,9 @@ Resources:
             RestApiId: !Ref RestApi
             Path: /check_exist_memo
             Method: get
+        UpdatePasswordEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref RestApi
+            Path: /update_password
+            Method: post

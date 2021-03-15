@@ -10,6 +10,15 @@ body {
  * サイドバー
  */
 .sidebar-container {
+    .sidebar-close-bg {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: none;
+        margin: 0;
+    }
     #sidebar {
         position: fixed;
         top: 0;
@@ -21,6 +30,7 @@ body {
         color: var(--sidebar-text-color);
         padding-top: 64px;
         overflow: auto;
+        overflow-x: hidden;
         z-index: 100;
     
         transition: width 200ms 0s ease;
@@ -139,8 +149,13 @@ body {
         + #sidebar > * {
             display: none;
         }
+
+        .sidebar-close-bg {
+            display: none;
+        }
     }
     
+    // サイドバーを開いているときの見た目
     #switchSidebar:checked {
         ~ .sidebar-switch-container .sidebar-open-button {
             opacity: 0;
@@ -152,7 +167,7 @@ body {
     }
 }
 
-main {
+#editor {
     margin-left: $sidebar-width;
 }
 
@@ -228,8 +243,7 @@ main, .editor-container, .editor-inner {
 
 .modal-form-label {
     width: 128px;
-    margin-top: 4px;
-    margin-bottom: 4px;
+    margin: 4px 12px 4px 0;
 }
 
 @media screen and (max-width:425px) {
@@ -238,7 +252,7 @@ main, .editor-container, .editor-inner {
     }
 }
 
-@media screen and (max-width:480px) {
+@media screen and (max-width:767px) {
     .modal-form-label {
         width: 100%;
     }

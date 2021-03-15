@@ -10,51 +10,17 @@
     <title>Memo Editor</title>
 </head>
 <body>
-    <div class="sidebar-container" id="sidebarApp">
-        <input type="checkbox" name="switchSidebar" id="switchSidebar">
-        <div id="sidebar">
-            <div class="content-list">
-                <h2 class="content-header">Contents</h2>
-                <ul>
-                    <li>
-                        <div class="content-icon"><i class="fas fa-home"></i></div>
-                        <div class="content-title">Home</div>
-                        <a class="no-decolarion-link" href="/"></a>
-                    </li>
-                    <li>
-                        <div class="content-icon"><i class="fas fa-cogs"></i></div>
-                        <div class="content-title">Settings</div>
-                        <span class="no-decolarion-link" @click="openModal('settings')"></span>
-                    </li>
-                </ul>
-    
-            </div>
-        </div>
-
-        <div class="modals">
-            <v-modal v-model="modals.settings" @close="closeModal" :modal-id="'settings'">
-                <template v-slot:title>Hello, vue-final-modal</template>
-                <p>Vue Final Modal is a renderless, stackable, detachable and lightweight modal component.</p>
-            </v-modal>
-        </div>
-
-        <div class="sidebar-switch-container">
-            <label for="switchSidebar" class="sidebar-switch-label">
-                <i class="fas fa-bars fa-2x sidebar-open-button"></i>
-                <i class="fas fa-times fa-2x sidebar-close-button"></i>
-            </label>
-        </div>
-    </div>
     <header></header>
-    <main>
+    <main id="app">
+        <sidebar v-model:memo-alias="memo.memoAlias" v-model:email="memo.email" v-model:password="memo.password"></sidebar>
         <div class="editor-container" id="editor">
             <div class="editor-inner">
                 <div class="form-group title-container">
-                    <input type="text" class="form-control memo-title" placeholder="Title" @change="save" v-model="title">
+                    <input type="text" class="form-control memo-title" placeholder="Title" @change="save" v-model="memo.title">
                     <div class="memo-title-border"></div>
                 </div>
                 <div class="editor-body">
-                    <ckeditor id="ckeditorContainer" :editor="ckeditorClass" v-model="body"></ckeditor>
+                    <ckeditor id="ckeditorContainer" :editor="ckeditorClass" v-model="memo.body"></ckeditor>
                 </div>
             </div>
             <div class="tools-container"></div>
@@ -79,9 +45,28 @@
                             </div>
                             <div class="input-group">
                                 <label for="" class="modal-form-label">メモの名前</label>
-                                <input type="text" class="form-control text-light bg-dark" :value="memoAlias" readonly>
+                                <input type="text" class="form-control text-light bg-dark" :value="memo.memoAlias" readonly>
                             </div>
                         </div>
+                    </div>
+                </v-modal>    
+            </div>
+            <div class="input-password">
+                <v-modal v-model="showPasswordModal" @close="closePasswordModal" :is-enable-manually-close="false">
+                    <template v-slot:title>パスワード入力</template>
+                    <div>
+                        <p>
+                            編集するにはパスワードを入力してください.
+                        </p>
+                        <form action="" method="post" @submit.prevent="getMemoData">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <label for="nowPassword" class="modal-form-label">パスワード</label>
+                                    <input type="password" class="form-control" id="nowPassword" v-model="memo.password">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary" :disabled="isSubmiting">送信</button>
+                        </form>
                     </div>
                 </v-modal>    
             </div>

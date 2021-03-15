@@ -7,6 +7,7 @@ import time
 import secrets
 import concurrent.futures
 from enum import Enum
+from argon2 import PasswordHasher
 from boto3.dynamodb.conditions import Key
 from dynamo_utility import *
 from my_common import *
@@ -32,6 +33,7 @@ def create_memo() -> str:
                 'alias_name': memo_uuid,
                 'view_id': '',
                 'password': '',
+                'email': '',
                 'title': '',
                 'updated_at': get_now_string(),
                 'created_at': get_now_string(),
@@ -52,7 +54,7 @@ def create_memo() -> str:
 @return {bool} 成功すればtrue
 '''
 def update_memo(memo_uuid: str, title: str) -> bool:
-    if not get_memo(memo_uuid):
+    if not memo_uuid:
         return False
     now = get_now_string()
     try:
@@ -70,6 +72,37 @@ def update_memo(memo_uuid: str, title: str) -> bool:
         )
         return not not res
     except Exception as e:
+        print(e)
+        return False
+    return False
+
+def update_password(memo_uuid: str, new_password: str, email: str) -> bool:
+    if not memo_uuid:
+        return False
+    now = get_now_string()
+
+    hash_pass = ''
+    if new_password:
+        ph = PasswordHasher()
+        hash_pass = ph.hash(new_password)
+
+    try:
+        res = memos_table.update_item(
+            Key = {
+                'uuid': memo_uuid,
+            },
+            UpdateExpression = 'set password=:password, email=:email, updated_at=:updated_at, accessed_at=:accessed_at',
+            ExpressionAttributeValues = {
+                ':password': hash_pass,
+                ':email': email,
+                ':accessed_at': now,
+                ':updated_at': now,
+            },
+            ReturnValues="UPDATED_NEW"
+        )
+        return not not res
+    except Exception as e:
+        print(e)
         return False
     return False
 

@@ -1,9 +1,10 @@
 <template>
     <vue-final-modal
-        v-bind="$attrs"
         classes="modal-container"
         content-class="modal-content"
-        :esc-to-close="true"
+        :esc-to-close="isEnableManuallyClose"
+        :click-to-close="isEnableManuallyClose"
+        v-bind="$attrs"
     >
         <div class="modal__title">
             <slot name="title"></slot>
@@ -11,7 +12,7 @@
         <div class="modal__content">
             <slot></slot>
         </div>
-        <button class="modal__close btn btn-danger" @click="close">
+        <button class="modal__close btn btn-danger" @click="close" :disabled="!isEnableManuallyClose">
             <i class="fas fa-times"></i>
         </button>
     </vue-final-modal>
@@ -21,7 +22,16 @@
     export default {
         name: 'VModal',
         inheritAttrs: false,
-        props: ['modalId'],
+        props: {
+            modalId: {
+                type: String,
+                default: '',
+            },
+            isEnableManuallyClose: {
+                type: Boolean,
+                default: true
+            }
+        },
         methods: {
             close() {
                 this.$emit('close', this.modalId);
