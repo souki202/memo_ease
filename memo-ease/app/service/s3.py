@@ -17,8 +17,9 @@ import model.file as my_file
 
 s3_resource = boto3.resource('s3')
 s3_client = boto3.client('s3', config=Config(signature_version='s3v4'))
-FILE_BUCKET_NAME = 'memo-ease-storage' + os.environ['FileStorageBucketSuffix']
-storageBucket = s3_resource.Bucket(FILE_BUCKET_NAME)
+FILE_BUCKET_NAME = 'files' + os.environ['FileStorageBucketSuffix'] + '.memo-ease.com'
+MEMO_BUCKET_NAME = 'memo-ease-storage' + os.environ['FileStorageBucketSuffix']
+memoStorageBucket = s3_resource.Bucket(MEMO_BUCKET_NAME)
 FILES_KEY = 'files'
 MEMOS_KEY = 'memos'
 
@@ -27,9 +28,9 @@ MEMOS_KEY = 'memos'
 
 @return {str, str} 作成したファイル名(key), url
 '''
-def create_put_url_and_record(memo_uuid, file_name, file_size):
-    if not memo_uuid or file_name or file_size:
-        return False
+def create_put_url_and_record(memo_uuid: str, file_name: str, file_size: int) -> (str, str):
+    if not memo_uuid or not file_name or not file_size:
+        return False, False
     ext = ''
     if file_name:
         ext = os.path.splitext(file_name)[1]
@@ -37,7 +38,7 @@ def create_put_url_and_record(memo_uuid, file_name, file_size):
     # ファイルの置き場所のキーを作成
     new_file_name = secrets.token_urlsafe(64)
     new_file_name = re.sub("[^\w\-*().]", '_', new_file_name)
-    key = memo_uuid + '/' + FILES_KEY + '/' + new_file_name + ext
+    key = 'uploads/' + memo_uuid + '/' + new_file_name + ext
 
     # mime_typeを取得
     mime_type = 'text/plain'
@@ -57,10 +58,10 @@ def create_put_url_and_record(memo_uuid, file_name, file_size):
         )
         if not my_file.add_file(new_file_name, memo_uuid, file_size, ext):
             raise 'failed to add record'
-        return new_file_name, signed_url
+        return new_file_name + ext, signed_url
     except Exception as e:
         print(e)
-        return False
+        return False, False
 
 '''
 メモの本文を保存する
@@ -74,7 +75,7 @@ def upload_memo_body(memo_uuid: str, memo_body: str) -> bool:
         return False
     key = memo_uuid + '/body.txt'
     try:
-        res = storageBucket.put_object(
+        res = memoStorageBucket.put_object(
             Body = memo_body,
             Key = key
         )
@@ -95,7 +96,7 @@ def get_memo_body(memo_uuid: str) -> str:
         return False
     key = memo_uuid + '/body.txt'
     try:
-        obj = s3_client.get_object(Bucket=FILE_BUCKET_NAME, Key=key)
+        obj = s3_client.get_object(Bucket=MEMO_BUCKET_NAME, Key=key)
         body = obj['Body'].read().decode('utf-8')
         return body
     except Exception as e:

@@ -20,7 +20,7 @@
                     <div class="memo-title-border"></div>
                 </div>
                 <div class="editor-body">
-                    <ckeditor id="ckeditorContainer" :editor="ckeditorClass" v-model="memo.body" @input="save"></ckeditor>
+                    <ckeditor id="ckeditorContainer" :editor="ckeditorClass" v-model="memo.body" @input="save" @ready="ckeditorReady"></ckeditor>
                 </div>
                 <!-- メッセージ等表示用overlay -->
                 <div class="memo-editor-overlay">

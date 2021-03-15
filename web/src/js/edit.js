@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { getApiUrl } from './url';
 import getUrlParameter from './urlParameter';
 
-import ClassicEditor from './ckeditor';
+import {ClassicEditor, MyUploaderAdaptor} from './ckeditor';
 import CkeditorVue from '@ckeditor/ckeditor5-vue';
 
 import VueFinalModal from 'vue-final-modal';
@@ -24,6 +24,7 @@ const app = createApp({
     data() {
         return {
             ckeditorClass: ClassicEditor,
+            ckeditorInstance: null,
 
             showMemoUrlModal: false,
             showPasswordModal: false,
@@ -88,6 +89,17 @@ const app = createApp({
             }
         },
 
+        ckeditorReady(event) {
+            this.ckeditorInstance = event;
+            const FileRepository = this.ckeditorInstance.plugins.get("FileRepository");
+            FileRepository.createUploadAdapter = loader => {
+                return new MyUploaderAdaptor(loader,
+                    () => this.memo.password,
+                    () => this.memo.memoUuid
+                );
+            }
+        },
+
         /**
          * メモ情報を取得
          */
@@ -104,7 +116,7 @@ const app = createApp({
                 const memo = res.data.memo;
                 this.memo.body = memo.body;
                 this.memo.title = memo.title;
-                this.memo.memoUuid = memo.memo_uuid;
+                this.memo.memoUuid = memo.uuid;
                 this.memo.memoAlias = memo.alias_name;
                 this.memo.email = memo.email;
                 this.memo.viewId = memo.view_id;

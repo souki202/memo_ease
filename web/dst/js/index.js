@@ -389,7 +389,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _css
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"getApiUrl\": () => (/* binding */ getApiUrl)\n/* harmony export */ });\nlet getApiUrl = () => {\n  return 'https://' + 'api.' + document.domain;\n};\n\n//# sourceURL=webpack://web/./web/src/js/url.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"getApiUrl\": () => (/* binding */ getApiUrl),\n/* harmony export */   \"getViewFileUrl\": () => (/* binding */ getViewFileUrl)\n/* harmony export */ });\nlet getApiUrl = () => {\n  return 'https://' + 'api.' + document.domain;\n};\nlet getViewFileUrl = () => {\n  return 'https://' + 'fileapi.' + document.domain;\n};\n\n//# sourceURL=webpack://web/./web/src/js/url.js?");
 
 /***/ }),
 

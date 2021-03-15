@@ -212,3 +212,16 @@ Resources:
             RestApiId: !Ref RestApi
             Path: /update_password
             Method: post
+  
+  FileFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: file.file_event
+      Role: !Ref RoleArn
+      Events:
+        CreateUploadUrlEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref RestApi
+            Path: /create_upload_url
+            Method: post

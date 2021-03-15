@@ -21,7 +21,87 @@ import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 
 import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';     // <--- ADDED
 
-export default class ClassicEditor extends ClassicEditorBase {}
+import axios from 'axios';
+import { getApiUrl, getViewFileUrl } from './url';
+
+const MAX_UPLOAD_SIZE = 1024 * 1024 * 8
+
+class ClassicEditor extends ClassicEditorBase {}
+
+class MyUploaderAdaptor {
+    constructor(loader, passwordGetter, uuidGetter) {
+        // CKEditor 5's FileLoader instance.
+        this.loader = loader;
+        this.passwordGetter = passwordGetter;
+        this.memoUuidGetter = uuidGetter;
+    }
+
+    upload() {
+        return this.loader.file.then(file => 
+            new Promise((resolve, reject) => {
+                this._createUrlAndUpload(resolve, reject, file);
+            })
+        );
+    }
+
+    _createUrlAndUpload(resolve, reject, file) {
+        console.log(file);
+        if (file.size > MAX_UPLOAD_SIZE) {
+            return reject('ファイルサイズの上限は8MBです.');
+        }
+        axios.post(getApiUrl() + '/create_upload_url', {
+            params: {
+                memo_uuid: this.memoUuidGetter(),
+                password: this.passwordGetter(),
+                file_name: file.name,
+                file_size: file.size,
+            }
+        }).then(res => {
+            console.log(res);
+            this._upload(resolve, reject, file, res.data.url, res.data.key)
+        }).catch(err => {
+            console.log(err);
+            if (err.response) {
+                if (err.response.status >= 500) {
+                    reject('サーバーエラーが発生しました.')
+                }
+                else {
+                    reject('アップロードに失敗しました.')
+                }
+            }
+            else {
+                reject('不明なエラーが発生しました.')
+            }
+        }).then(() => {});
+        }
+
+    _upload(resolve, reject, file, url, key) {
+        var reader = new FileReader();
+        reader.readAsArrayBuffer(file);
+        reader.onload = () => {
+            axios({
+                method: 'PUT',
+                url: url,
+                headers: {
+                    'Content-Type': file.type
+                },
+                data: reader.result
+            }).then(res => {
+                console.log(res);
+                const path = getViewFileUrl() + '/uploads/' + this.memoUuidGetter() + '/' + key
+                console.log('path: ' + path)
+                resolve({
+                    default: path
+                });
+            }).catch(err => {
+                console.log(err);
+                reject('アップロードに失敗しました.');
+            }).then(() => {
+
+            })
+        };
+    }
+}
 
 // Plugins to include in the build.
 ClassicEditor.builtinPlugins = [
@@ -57,7 +137,7 @@ ClassicEditor.defaultConfig = {
             'link',
             'bulletedList',
             'numberedList',
-            'imageUpload',
+            'ImageUpload',
             'blockQuote',
             'undo',
             'redo',
@@ -74,3 +154,5 @@ ClassicEditor.defaultConfig = {
     // This value must be kept in sync with the language defined in webpack.config.js.
     language: 'jp',
 };
+
+export {ClassicEditor, MyUploaderAdaptor}
