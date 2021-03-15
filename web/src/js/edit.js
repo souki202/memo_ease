@@ -42,6 +42,7 @@ const app = createApp({
                 password: '',
                 email: '',
                 viewId: '',
+                isPublic: '',
     
                 title: '',
                 body: '',
@@ -120,6 +121,7 @@ const app = createApp({
                 this.memo.memoAlias = memo.alias_name;
                 this.memo.email = memo.email;
                 this.memo.viewId = memo.view_id;
+                this.memo.isPublic = memo.is_public;
 
                 // 最後にモーダルを閉じる
                 this.showPasswordModal = false;

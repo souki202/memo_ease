@@ -12,7 +12,13 @@
 <body>
     <header></header>
     <main id="app">
-        <sidebar v-model:memo-alias="memo.memoAlias" v-model:email="memo.email" v-model:password="memo.password"></sidebar>
+        <sidebar
+            v-model:memo-alias="memo.memoAlias"
+            v-model:email="memo.email"
+            v-model:password="memo.password"
+            v-model:view-id="memo.viewId"
+            v-model:is-public="memo.isPublic"
+        ></sidebar>
         <div class="editor-container" id="editor">
             <div class="editor-inner">
                 <div class="form-group title-container">

@@ -21,6 +21,11 @@
                         <div class="content-title">パスワード変更</div>
                         <span class="no-decolarion-link" @click="openModal('password')"></span>
                     </li>
+                    <li>
+                        <div class="content-icon"><i class="fas fa-link"></i></div>
+                        <div class="content-title">共有リンク</div>
+                        <span class="no-decolarion-link" @click="openModal('publish')"></span>
+                    </li>
                 </ul>
     
             </div>
@@ -72,6 +77,25 @@
                     </form>
                 </div>
             </v-modal>
+            <v-modal v-model="modals.publish" @close="closeModal" :modal-id="'publish'">
+                <template v-slot:title>共有用リンク</template>
+                <div>
+                    <p>閲覧専用の共有リンクを生成します. 閲覧時はパスワード不要です.</p>
+                    <div class="form-group">
+                        <div class="input-group memo-link">
+                            <label for="" class="modal-form-label">メモのURL</label>
+                            <div class="input-group-prepend">
+                                <div class="input-group-text copy-to-clipboard" @click="copyViewUrl">
+                                    <i class="fas fa-clipboard"></i>
+                                </div>
+                            </div>
+                            <input type="text" class="form-control text-light bg-dark" name="viewUrl" id="viewUrl" :value="isPublic ? viewUrl : ''" readonly>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" v-if="!isPublic" @click="changePublicState(true)" :disabled="isSubmiting">リンクを取得</button>
+                    <button class="btn btn-danger" v-if="isPublic" @click="changePublicState(false)" :disabled="isSubmiting">共有を停止</button>
+                </div>
+            </v-modal>
         </div>
 
         <div class="sidebar-switch-container">
@@ -93,13 +117,14 @@ export default {
         VModal: VModal,
     },
     props: [
-        'memoAlias', 'password', 'email'
+        'memoAlias', 'password', 'email', 'viewId', 'isPublic'
     ],
     data() {
         return {
             modals: {
                 aliasSettings: false,
                 password: false,
+                publish: false,
             },
             newPassword: '',
             newPassword2: '',
@@ -131,7 +156,13 @@ export default {
             set(value) {
                 this.$emit('update:email', value);
             }
-        }
+        },
+        viewUrl() {
+            if (!this.viewId) {
+                return '';
+            }
+            return 'https://' + document.domain + '/view.html?view_id=' + this.viewId;
+        },
     },
     methods: {
         openModal(modalId) {
@@ -198,6 +229,37 @@ export default {
                 this.isSubmiting = false;
             });
         },
+
+        /**
+         * 閲覧用リンクを生成
+         */
+        changePublicState(state) {
+            this.isSubmiting = true;
+            axios.post(getApiUrl() + '/change_public_state', {
+                params: {
+                    memo_alias: this.memoAlias,
+                    password: this.password,
+                    state: state,
+                }
+            }).then(res => {
+                console.log(res);
+                this.$emit('update:isPublic', state);
+            }).catch(err => {
+                console.log(err);
+                window.alert('共有設定の変更に失敗しました.');
+            }).then(() => {
+                this.isSubmiting = false;
+            });
+        },
+
+        /**
+         * 閲覧用URLを取得
+         */
+        copyViewUrl() {
+            var copyText = document.querySelector("#viewUrl");
+            copyText.select();
+            document.execCommand("copy");
+        }
     },
 }
 </script>

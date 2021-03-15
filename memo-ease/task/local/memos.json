@@ -7,6 +7,10 @@
         {
             "AttributeName": "alias_name",
             "AttributeType": "S"
+        },
+        {
+            "AttributeName": "view_id",
+            "AttributeType": "S"
         }
     ],
     "TableName": "memo_ease_memos_dev",
@@ -22,6 +26,18 @@
             "KeySchema": [
                 {
                     "AttributeName": "alias_name",
+                    "KeyType": "HASH"
+                }
+            ],
+            "Projection": {
+                "ProjectionType": "ALL"
+            }
+        },
+        {
+            "IndexName": "view_id-index",
+            "KeySchema": [
+                {
+                    "AttributeName": "view_id",
                     "KeyType": "HASH"
                 }
             ],

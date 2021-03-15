@@ -23,6 +23,8 @@ memos_table = db_resource.Table(MEMOS_TABLE_NAME)
 '''
 def create_memo() -> str:
     memo_uuid = str(uuid.uuid4())
+    view_id = secrets.token_urlsafe(64)
+
     # 念の為
     if get_memo(memo_uuid):
         return False
@@ -31,7 +33,8 @@ def create_memo() -> str:
             Item = {
                 'uuid': memo_uuid,
                 'alias_name': memo_uuid,
-                'view_id': '',
+                'view_id': view_id,
+                'is_public': False,
                 'password': '',
                 'email': '',
                 'title': '',
@@ -106,6 +109,36 @@ def update_password(memo_uuid: str, new_password: str, email: str) -> bool:
         return False
     return False
 
+'''
+閲覧用URLを有効状態を変更する
+
+@param str memo_uuid
+@return {str}
+'''
+def change_public_state(memo_uuid: str, is_public: bool) -> str:
+    if not memo_uuid:
+        return False
+    now = get_now_string()
+
+    try:
+        res = memos_table.update_item(
+            Key = {
+                'uuid': memo_uuid,
+            },
+            UpdateExpression = 'set is_public=:is_public, updated_at=:updated_at, accessed_at=:accessed_at',
+            ExpressionAttributeValues = {
+                ':is_public': is_public,
+                ':accessed_at': now,
+                ':updated_at': now,
+            },
+            ReturnValues="UPDATED_NEW"
+        )
+        return not not res
+    except Exception as e:
+        print(e)
+        return False
+    return False
+
 def record_access(memo_uuid: str) -> bool:
     if not get_memo(memo_uuid):
         return False
@@ -159,6 +192,27 @@ def get_memo_by_alias(alias_name: str) -> dict:
         res = memos_table.query(
             IndexName='alias_name-index',
             KeyConditionExpression=Key('alias_name').eq(alias_name)
+        )['Items']
+        if not res:
+            return None
+        return res[0]
+    except Exception as e:
+        return False
+    return False
+
+'''
+メモのview_idからメモ情報を取得する. 本体は取らない
+
+@param str view_id
+@return dict メモの情報
+'''
+def get_memo_by_view_id(view_id: str) -> dict:
+    if not view_id:
+        return None
+    try:
+        res = memos_table.query(
+            IndexName='view_id-index',
+            KeyConditionExpression=Key('view_id').eq(view_id)
         )['Items']
         if not res:
             return None

@@ -143,32 +143,6 @@ Resources:
         - python3.8
     Metadata:
       BuildMethod: python3.8
-
-  PostTestFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: test.post_test
-      Role: !Ref RoleArn
-      Events:
-        DefaultEvent:
-          Type: Api
-          Properties:
-            RestApiId: !Ref RestApi
-            Path: /post_test
-            Method: post
-
-  GetTestFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: test.get_test
-      Role: !Ref RoleArn
-      Events:
-        DefaultEvent:
-          Type: Api
-          Properties:
-            RestApiId: !Ref RestApi
-            Path: /get_test
-            Method: get
       
   MemoFunction:
     Type: AWS::Serverless::Function
@@ -212,6 +186,18 @@ Resources:
             RestApiId: !Ref RestApi
             Path: /update_password
             Method: post
+        ChangePublicStateEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref RestApi
+            Path: /change_public_state
+            Method: post
+        GetMemoByViewIdEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref RestApi
+            Path: /get_memo_data_by_view_id
+            Method: get
   
   FileFunction:
     Type: AWS::Serverless::Function

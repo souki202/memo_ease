@@ -30,11 +30,15 @@ def memo_event(event, context):
             return save_memo_event(event, context)
         elif resource == '/update_password':
             return update_password_event(event, context)
+        elif resource == '/change_public_state':
+            return change_public_state_event(event, context)
     elif httpMethod == 'GET':
         if resource == '/check_has_password_memo':
             return check_has_password_memo_event(event, context)
-        elif resource == 'check_exist_memo':
+        elif resource == '/check_exist_memo':
             return check_exist_memo_event(event, context)
+        elif resource == '/get_memo_data_by_view_id':
+            return get_memo_data_by_view_id_event(event, context)
 
     return create_common_return_array(404, {'message': 'Not Found',})
 
@@ -89,7 +93,7 @@ def get_memo_event(event, context):
     #成功したのでメモ情報を返す
     memo_data['body'] = memo_body
     del memo_data['password']
-    return create_common_return_array(200, {"memo": memo_data})
+    return create_common_return_array(200, {'memo': memo_data})
 
 def save_memo_event(event, context):
     params = json.loads(event['body'] or '{ }')
@@ -175,18 +179,15 @@ def check_exist_memo_event(event, context):
     return create_common_return_array(200, {"is_exist": bool(memo_data)})
 
 def update_password_event(event, context):
-    params = json.loads(event['body'] or '{ }')
-    if not params or not params.get('params'):
-        return create_common_return_array(406, {'message': "Not enough input.",})
-
-    new_password = params['params'].get('newPassword')
-    email = params['params'].get('email')
-    
     # メモの情報取得
     memo_data = my_memo_service.get_memo_data_with_auth(event)
     if not memo_data:
-        return create_common_return_array(406, {'message': "Failed to get memo data.",})
+        return create_common_return_array(406, {'message': 'Failed to get memo data.',})
     memo_uuid = memo_data['uuid']
+
+    params = json.loads(event['body'] or '{ }')
+    new_password = params['params'].get('newPassword')
+    email = params['params'].get('email')
 
     # 取得できたらパスワードを更新
     if not my_memo.update_password(memo_uuid, new_password, email):
@@ -195,3 +196,55 @@ def update_password_event(event, context):
     
     return create_common_return_array(200, {})
 
+def change_public_state_event(event, context):
+    # メモの情報取得
+    memo_data = my_memo_service.get_memo_data_with_auth(event)
+    if not memo_data:
+        return create_common_return_array(406, {'message': 'Failed to get memo data.',})
+    memo_uuid = memo_data['uuid']
+
+    params = json.loads(event['body'] or '{ }')
+    state = params['params'].get('state')
+
+    if state == None:
+        return create_common_return_array(406, {'message': "Not enough input.",})
+
+    # 閲覧URL有効状態変更
+    if not my_memo.change_public_state(memo_uuid, bool(state)):
+        print('Failed to create view id. memo_uuid: ' + memo_uuid)
+        return create_common_return_array(500, {'message': 'Failed to create view id.',})
+    
+    return create_common_return_array(200, {})
+
+
+def get_memo_data_by_view_id_event(event, context):
+    if not ('queryStringParameters' in event and event['queryStringParameters']):
+        return create_common_return_array(406, {'message': "Not enough input.",})
+    
+    view_id = event['queryStringParameters'].get('view_id')
+
+    if not view_id:
+        return create_common_return_array(406, {'message': "Not enough input.",})
+
+    memo_data = my_memo.get_memo_by_view_id(view_id)
+    if not memo_data:
+        print('Not Found by view_id. view_id: ' + view_id)
+        return create_common_return_array(404, {'message': "Not Found.",})
+
+    memo_uuid = memo_data['uuid']
+
+    if not memo_data['is_public']:
+        print('This memo is not public. memo_uuid: ' + memo_uuid)
+        return create_common_return_array(404, {'message': "Not Found.",})
+
+    # 本文取得
+    memo_body = my_s3.get_memo_body(memo_uuid)
+    if memo_body == False:
+        print('Failed to get memo body. memo_uuid: ' + memo_uuid)
+        return create_common_return_array(500, {'message': "Failed to get memo data.",})
+
+    if not my_memo.record_access(memo_uuid):
+        print('Failed to record access. memo_uuid: ' + memo_uuid)
+        return create_common_return_array(500, {'message': "Failed to get memo data.",})
+
+    return create_common_return_array(200, {'body': memo_body})

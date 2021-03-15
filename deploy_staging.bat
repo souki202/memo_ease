@@ -1,5 +1,6 @@
 git checkout staging
 git pull
+npm run dev
 cd memo-ease
 call sam build --config-env staging --use-container
 call sam deploy --config-env staging
