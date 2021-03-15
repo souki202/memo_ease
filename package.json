@@ -19,6 +19,7 @@
     "@ckeditor/ckeditor5-alignment": "^25.0.0",
     "@ckeditor/ckeditor5-autoformat": "^25.0.0",
     "@ckeditor/ckeditor5-build-classic": "^25.0.0",
+    "@ckeditor/ckeditor5-clipboard": "^25.0.0",
     "@ckeditor/ckeditor5-code-block": "^25.0.0",
     "@ckeditor/ckeditor5-dev-utils": "^24.3.0",
     "@ckeditor/ckeditor5-dev-webpack-plugin": "^24.3.0",
