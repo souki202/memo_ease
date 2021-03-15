@@ -26,6 +26,8 @@ def memo_event(event, context):
         elif resource == '/get_memo':
             # パスワード送信があるのと, アクセス日更新の都合でpostする
             return get_memo_event(event, context)
+        elif resource == '/save_memo':
+            return save_memo_event(event, context)
         elif resource == '/update_password':
             return update_password_event(event, context)
     elif httpMethod == 'GET':
@@ -98,10 +100,10 @@ def save_memo_event(event, context):
     memo_body = params['params'].get('body')
 
     # タイトル長さチェック
-    if my_memo_service.check_memo_title_length(memo_title):
+    if not my_memo_service.check_memo_title_length(memo_title):
         return create_common_return_array(406, {'message': "Reached the maximum title length.",})
     # 本文長さチェック
-    if my_memo_service.check_memo_body_length(memo_body):
+    if not my_memo_service.check_memo_body_length(memo_body):
         return create_common_return_array(406, {'message': "Reached the maximum body length.",})
 
     # メモの情報取得

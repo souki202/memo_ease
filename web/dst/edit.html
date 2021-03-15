@@ -16,11 +16,15 @@
         <div class="editor-container" id="editor">
             <div class="editor-inner">
                 <div class="form-group title-container">
-                    <input type="text" class="form-control memo-title" placeholder="Title" @change="save" v-model="memo.title">
+                    <input type="text" class="form-control memo-title" placeholder="Title" @change="save" v-model="memo.title" maxlength="1000" @change="save">
                     <div class="memo-title-border"></div>
                 </div>
                 <div class="editor-body">
-                    <ckeditor id="ckeditorContainer" :editor="ckeditorClass" v-model="memo.body"></ckeditor>
+                    <ckeditor id="ckeditorContainer" :editor="ckeditorClass" v-model="memo.body" @input="save"></ckeditor>
+                </div>
+                <!-- メッセージ等表示用overlay -->
+                <div class="memo-editor-overlay">
+                    <p v-for="msg in memoMessages" class="memo-message">{{ msg.message }}</p>
                 </div>
             </div>
             <div class="tools-container"></div>

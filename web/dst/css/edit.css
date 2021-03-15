@@ -201,6 +201,16 @@ main, .editor-container, .editor-inner {
   flex-grow: 1;
 }
 
+.memo-editor-overlay {
+  position: absolute;
+  bottom: 0;
+  right: 8px;
+  color: var(--memo-editor-overlay-text-color);
+}
+.memo-editor-overlay .memo-message {
+  text-align: right;
+}
+
 .modal-form-label {
   width: 128px;
   margin: 4px 12px 4px 0;

@@ -188,6 +188,12 @@ Resources:
             RestApiId: !Ref RestApi
             Path: /get_memo
             Method: post
+        SaveMemoEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref RestApi
+            Path: /save_memo
+            Method: post
         CheckHasPasswordEvent:
           Type: Api
           Properties:

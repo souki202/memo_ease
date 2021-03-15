@@ -4,6 +4,7 @@ import 'regenerator-runtime/runtime';
 
 import { createApp, defineComponent } from 'vue/dist/vue.esm-bundler.js';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 import { getApiUrl } from './url';
 import getUrlParameter from './urlParameter';
 
@@ -28,6 +29,12 @@ const app = createApp({
             showPasswordModal: false,
             modalErrorMessage: '',
 
+            showMessageTime: 3000,
+            memoMessages: [],
+
+            autoSaveTimeout: null,
+            autoSaveDelay: 5000,
+
             memo: {
                 memoUuid: '',
                 memoAlias: '',
@@ -37,6 +44,9 @@ const app = createApp({
     
                 title: '',
                 body: '',
+
+                maxTitleLen: 1000, // py側は1024だが, 余裕を持って.
+                maxBodyLen: 1000*1000*4,
             },
 
             isSubmiting: false,
@@ -147,7 +157,39 @@ const app = createApp({
          * メモ本文の保存処理
          */
         save() {
+            if (this.autoSaveTimeout) clearTimeout(this.autoSaveTimeout);
+            this.autoSaveTimeout = setTimeout(this._save, this.autoSaveDelay);
+        },
 
+        instantSave() {
+            if (this.autoSaveTimeout) clearTimeout(this.autoSaveTimeout);
+            this._save();
+        },
+
+        _save() {
+            if (this.memo.title.length > this.memo.maxTitleLen) {
+                window.alert('タイトルは1000文字以内までです.');
+                return;
+            }
+            if (this.memo.body.length > this.memo.maxBodyLen) {
+                window.alert('本文は' + String(this.memo.maxBodyLen) + '文字までです.');
+                return;
+            }
+            axios.post(getApiUrl() + '/save_memo', {
+                params: {
+                    memo_uuid: this.memo.memoUuid,
+                    memo_alias: this.memo.memoAlias,
+                    password: this.memo.password,
+                    title: this.memo.title,
+                    body: this.memo.body,
+                }
+            }).then(res => {
+                console.log(res);
+                this.drawMessage('メモを保存しました.');
+            }).catch(err => {
+                console.log(err);
+                window.alert('メモの保存に失敗しました.');
+            }).then(() => {});
         },
 
         /**
@@ -168,6 +210,30 @@ const app = createApp({
             var copyText = document.querySelector("#memoUrl");
             copyText.select();
             document.execCommand("copy");
+        },
+
+        /**
+         * メモ画面にメッセージを表示する
+         * 
+         * @param {string} message 表示するメッセージ 
+         */
+        drawMessage(message) {
+            console.log('draw message: ' + message);
+            const uuid = uuidv4();
+            this.memoMessages.push({uuid: uuid, message: message});
+            setTimeout(()=>{this.deleteMessage(uuid)}, this.showMessageTime);
+        },
+
+        /**
+         * メッセージを削除する
+         * 
+         * @param {string} uuid 削除するメッセージのuuid 
+         */
+        deleteMessage(uuid) {
+            const delIdx = this.memoMessages.findIndex(e => e.uuid == uuid);
+            if (delIdx >= 0) {
+                this.memoMessages.splice(delIdx, 1);
+            }
         },
     },
 }).use(CkeditorVue).use(VueFinalModal()).mount('#app');
