@@ -18,7 +18,7 @@ const createMemo = createApp({
             axios.post(getApiUrl() + '/create_memo')
                 .then(res => {
                     if (res.data.memo_uuid) {
-                        location.href = "/edit.html?memo_uuid=" + res.data.memo_uuid + '&new=1';
+                        location.href = "/edit.html?memo_uuid=" + res.data.memo_uuid;
                     }
                 }).catch(err => {
                     this.errorMessage = 'ユーザごとの一定時間内に作成できる上限に達したか, 内部エラーが発生しました.';

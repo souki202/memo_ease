@@ -63,11 +63,6 @@ const app = createApp({
             this.memo.memoAlias = this.memo.memoUuid;
         }
 
-        // 新規作成か
-        if (getUrlParameter('new')) {
-            this.showMemoUrlModal = true;
-        }
-
         // 初期化
         this.init();
     },
@@ -125,6 +120,11 @@ const app = createApp({
 
                 // 最後にモーダルを閉じる
                 this.showPasswordModal = false;
+
+                // 本文が空なら初回扱い
+                if (this.memo.body == '') {
+                    this.showMemoUrlModal = true;
+                }
             }).catch(err => {
                 console.log(err);
             }).then(() => {

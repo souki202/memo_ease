@@ -2,42 +2,63 @@
     <div class="sidebar-container" id="sidebarApp">
         <input type="checkbox" name="switchSidebar" id="switchSidebar">
         <div id="sidebar">
-            <label for="switchSidebar" class="sidebar-close-bg"></label>
-            <div class="content-list">
-                <h2 class="content-header">Contents</h2>
-                <ul>
-                    <li>
-                        <div class="content-icon"><i class="fas fa-home"></i></div>
-                        <div class="content-title">Home</div>
-                        <a class="no-decolarion-link" href="/"></a>
-                    </li>
-                    <li>
-                        <div class="content-icon"><i class="fas fa-tags"></i></div>
-                        <div class="content-title">メモ名変更</div>
-                        <span class="no-decolarion-link" @click="openModal('aliasSettings')"></span>
-                    </li>
-                    <li>
-                        <div class="content-icon"><i class="fas fa-key"></i></div>
-                        <div class="content-title">パスワード変更</div>
-                        <span class="no-decolarion-link" @click="openModal('password')"></span>
-                    </li>
-                    <li>
-                        <div class="content-icon"><i class="fas fa-link"></i></div>
-                        <div class="content-title">共有リンク</div>
-                        <span class="no-decolarion-link" @click="openModal('publish')"></span>
-                    </li>
-                </ul>
-    
+            <div class="sidebar-inner">
+                <label for="switchSidebar" class="sidebar-close-bg"></label>
+                <div class="content-list">
+                    <h2 class="content-header">Contents</h2>
+                    <ul>
+                        <li>
+                            <div class="content-icon"><i class="fas fa-home"></i></div>
+                            <div class="content-title">Home</div>
+                            <a class="no-decolarion-link" href="/"></a>
+                        </li>
+                        <li>
+                            <div class="content-icon"><i class="fas fa-tags"></i></div>
+                            <div class="content-title">メモID変更</div>
+                            <span class="no-decolarion-link" @click="openModal('aliasSettings')"></span>
+                        </li>
+                        <li>
+                            <div class="content-icon"><i class="fas fa-key"></i></div>
+                            <div class="content-title">パスワード変更</div>
+                            <span class="no-decolarion-link" @click="openModal('password')"></span>
+                        </li>
+                        <li>
+                            <div class="content-icon"><i class="fas fa-link"></i></div>
+                            <div class="content-title">共有リンク</div>
+                            <span class="no-decolarion-link" @click="openModal('publish')"></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="content-list site-info-list">
+                    <div class="sidebar-separator"></div>
+                    <ul>
+                        <li>
+                            <div class="content-icon"><i class="fas fa-comment-alt"></i></div>
+                            <div class="content-title">フィードバック</div>
+                            <a class="no-decolarion-link" href="/feedback.html" target="blank"></a>
+                        </li>
+                        <li>
+                            <div class="content-icon"><i class="far fa-file-alt"></i></div>
+                            <div class="content-title">利用規約</div>
+                            <a class="no-decolarion-link" href="/terms_of_service.html" target="blank"></a>
+                        </li>
+                        <li>
+                            <div class="content-icon"><i class="fas fa-user-secret"></i></div>
+                            <div class="content-title">プライバシーポリシー</div>
+                            <a class="no-decolarion-link" href="/privacy_policy.html" target="blank"></a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
 
         <div class="modals">
             <v-modal v-model="modals.aliasSettings" @close="closeModal" :modal-id="'aliasSettings'">
-                <template v-slot:title>メモの名前設定</template>
+                <template v-slot:title>メモID設定</template>
                 <div>
                     <form action="" method="post" @submit.prevent="updateMemoAlias">
                         <div class="form-group">
-                            <label for="memoName" class="modal-form-label">メモの名前</label>
+                            <label for="memoName" class="modal-form-label">メモID</label>
                             <input type="text" class="form-control" id="memoName" v-model="memoAliasInput">
                         </div>
                         <button type="submit" class="btn btn-primary" :disabled="isSubmiting">更新</button>
