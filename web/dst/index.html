@@ -11,22 +11,35 @@
     <header></header>
 
     <main>
-        <div id="createMemo">
-            <button type="submit" class="btn btn-primary" @click="submit" :disabled="isLoading">メモを新規作成</button>
-            <div class="alert alert-danger" role="alert" v-if="errorMessage" v-cloak>{{ errorMessage }}</div>
-        </div>
-    </main>
-
-    <main>
-        <div id="editMemo">
-            <form action="" method="post" @submit.prevent="submit">
-                <div class="form-group">
-                    <input type="text" class="form-control" v-model="memoAlias" placeholder="メモID" required>
+        <section class="top-container">
+            <div class="top-container-inner">
+                <div class="top-content-inner2 top-content-sample-img-container">
+                    <img src="/imgs/sample.png" alt="">
                 </div>
-                <button type="submit" class="btn btn-primary">メモを編集</button>
-            </form>
-            <div class="alert alert-danger" role="alert" v-if="errorMessage" v-cloak>{{ errorMessage }}</div>
-        </div>
+    
+                <div class="top-content-inner2">
+                    <div class="memo-container">
+                        <div id="createMemo">
+                            <button type="submit" class="btn btn-primary craete-memo-btn" @click="submit" :disabled="isLoading">メモを新規作成</button>
+                            <div class="alert alert-danger" role="alert" v-if="errorMessage" v-cloak>{{ errorMessage }}</div>
+                            <p class="create-memo-comment">
+                                メモの作成及び編集をご利用になる場合,
+                                <a href="/terms_of_service.html" target="blank">利用規約</a>及び <a href="/privacy_policy.html" target="blank">プライバシーポリシー</a>に同意したものとみなします.
+                            </p>
+                        </div>
+                        <div id="editMemo">
+                            <form action="" method="post" @submit.prevent="submit">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" v-model="memoAlias" placeholder="メモID" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">メモを編集</button>
+                            </form>
+                            <div class="alert alert-danger" role="alert" v-if="errorMessage" v-cloak>{{ errorMessage }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer></footer>

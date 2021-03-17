@@ -180,12 +180,13 @@ body {
             opacity: 0;
         }
         
-        + #sidebar .content-header {
-            opacity: 0;
-        }
-
-        .sidebar-close-bg {
-            display: none;
+        + #sidebar{
+            .content-header {
+                opacity: 0;
+            }
+            .sidebar-close-bg {
+                display: none;
+            }
         }
     }
     

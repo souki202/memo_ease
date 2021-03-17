@@ -156,7 +156,7 @@ body {
 .sidebar-container #switchSidebar:not(:checked) + #sidebar .content-header {
   opacity: 0;
 }
-.sidebar-container #switchSidebar:not(:checked) .sidebar-close-bg {
+.sidebar-container #switchSidebar:not(:checked) + #sidebar .sidebar-close-bg {
   display: none;
 }
 .sidebar-container #switchSidebar:checked ~ .sidebar-switch-container .sidebar-open-button {

@@ -59,6 +59,11 @@ const app = createApp({
         this.memo.memoUuid = getUrlParameter('memo_uuid');
         this.memo.memoAlias = getUrlParameter('memo_alias');
 
+        if (!this.memo.memoAlias && !this.memo.memoUuid) {
+            window.alert('メモIDが設定されていません.');
+            location.href = '/';
+        }
+
         if (!this.memo.memoAlias) {
             this.memo.memoAlias = this.memo.memoUuid;
         }

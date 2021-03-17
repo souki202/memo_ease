@@ -1,4 +1,5 @@
 import '../css/common.scss'
+import '../css/index.scss'
 
 import { createApp } from 'vue/dist/vue.esm-bundler.js';
 import axios from 'axios';

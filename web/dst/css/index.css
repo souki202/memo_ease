@@ -9946,3 +9946,90 @@ body {
 #termsOfService, #privacyPolicy {
   margin: 4rem;
 }
+body {
+  margin: 0;
+  width: 100%;
+}
+
+.top-container {
+  width: 100%;
+  height: 100vh;
+  max-height: 1080px;
+  padding: 0 2rem;
+  background-position: center;
+  background-size: cover;
+  background-image: url(../imgs/top_bg.png);
+}
+.top-container .top-container-inner {
+  position: relative;
+  max-width: 1600px;
+  height: 100%;
+  margin: auto;
+}
+.top-container .top-content-inner2 {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.top-container .top-content-inner2 .memo-container {
+  max-width: 800px;
+}
+.top-container .top-content-sample-img-container {
+  position: absolute;
+  right: 2rem;
+  top: 0;
+  bottom: 0;
+  width: 640px;
+  margin: auto;
+}
+.top-container .memo-container {
+  z-index: 2;
+  padding: 2rem 1rem;
+  background-color: #ffffffcc;
+  border-radius: 14px;
+}
+.top-container .memo-container #createMemo {
+  margin-bottom: 2rem;
+}
+.top-container .memo-container #createMemo .craete-memo-btn {
+  position: relative;
+  width: 400px;
+  height: 64px;
+  font-size: 1.5em;
+  overflow: hidden;
+}
+.top-container .memo-container #createMemo .craete-memo-btn::before {
+  position: absolute;
+  content: "";
+  display: inline-block;
+  top: -180px;
+  left: 0;
+  width: 30px;
+  height: 100%;
+  background-color: #fff;
+  animation: shiny-btn1 3s ease-in-out infinite;
+}
+@keyframes shiny-btn1 {
+  0% {
+    -webkit-transform: scale(0) rotate(45deg);
+    opacity: 0;
+  }
+  80% {
+    -webkit-transform: scale(0) rotate(45deg);
+    opacity: 0.5;
+  }
+  81% {
+    -webkit-transform: scale(4) rotate(45deg);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: scale(50) rotate(45deg);
+    opacity: 0;
+  }
+}
+.top-container .memo-container #createMemo .create-memo-comment {
+  font-size: 0.75rem;
+  margin-top: 0.5rem;
+}
