@@ -87,12 +87,19 @@ const app = createApp({
 
         ckeditorReady(event) {
             this.ckeditorInstance = event;
+
+            // 画像アップロードの設定
             const FileRepository = this.ckeditorInstance.plugins.get("FileRepository");
             FileRepository.createUploadAdapter = loader => {
                 return new MyUploaderAdaptor(loader,
                     () => this.memo.password,
                     () => this.memo.memoUuid
                 );
+            }
+
+            // 出力コードの設定
+            this.ckeditorInstance.editorConfig = function (config) {
+                config.allowedContent = true;
             }
         },
 

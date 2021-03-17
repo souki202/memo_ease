@@ -9942,3 +9942,7 @@ body {
   color: #ddd;
   cursor: pointer;
 }
+
+#termsOfService, #privacyPolicy {
+  margin: 4rem;
+}

@@ -8,11 +8,6 @@
                     <h2 class="content-header">Contents</h2>
                     <ul>
                         <li>
-                            <div class="content-icon"><i class="fas fa-home"></i></div>
-                            <div class="content-title">Home</div>
-                            <a class="no-decolarion-link" href="/"></a>
-                        </li>
-                        <li>
                             <div class="content-icon"><i class="fas fa-tags"></i></div>
                             <div class="content-title">メモID変更</div>
                             <span class="no-decolarion-link" @click="openModal('aliasSettings')"></span>
@@ -32,6 +27,11 @@
                 <div class="content-list site-info-list">
                     <div class="sidebar-separator"></div>
                     <ul>
+                        <li>
+                            <div class="content-icon"><i class="fas fa-home"></i></div>
+                            <div class="content-title">トップページ</div>
+                            <a class="no-decolarion-link" href="/" target="blank"></a>
+                        </li>
                         <li>
                             <div class="content-icon"><i class="fas fa-comment-alt"></i></div>
                             <div class="content-title">フィードバック</div>

@@ -30,7 +30,7 @@ body {
   overflow: auto;
   overflow-x: hidden;
   z-index: 100;
-  transition: width 200ms 0.2s ease;
+  transition: width 200ms ease;
 }
 .sidebar-container #sidebar .sidebar-inner {
   height: 100%;
@@ -45,7 +45,7 @@ body {
   font-size: 1rem;
   font-weight: bold;
   margin: 1rem 2rem 0.5rem 1rem;
-  transition: opacity 0s ease;
+  transition: opacity 0.2s ease;
 }
 .sidebar-container #sidebar .content-list .content-icon {
   position: relative;
