@@ -170,7 +170,7 @@ body {
         }
         .sidebar-switch-label {
             display: block;
-            color: var(--sidebar-text-color);
+            color: var(--sidebar-switch-normal-color);
             margin-bottom: 0;
         }
     }
@@ -300,6 +300,34 @@ main, .editor-container, .editor-inner {
 @media screen and (max-width:425px) {
     html, body {
         width: 425px;
+    }
+
+    .sidebar-container {
+        #sidebar {
+            width: 0;
+        }
+
+        .sidebar-switch-container {
+            .sidebar-switch-label {
+                color: var(--sidebar-mobile-switch-normal-color);
+            }
+        }
+
+        #switchSidebar {
+            ~ .sidebar-switch-container .sidebar-close-button {
+                color: var(--sidebar-mobile-switch-open-color);
+            }
+        }
+    }
+
+    #editor {
+        margin-left: 0;
+
+        .editor-inner {
+            .title-container {
+                margin-left: $sidebar-width;
+            }
+        }
     }
 }
 

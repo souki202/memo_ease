@@ -9952,37 +9952,115 @@ body {
 }
 
 .top-container {
+  position: relative;
   width: 100%;
   height: 100vh;
   max-height: 1080px;
-  padding: 0 2rem;
   background-position: center;
   background-size: cover;
   background-image: url(../imgs/top_bg.png);
+  overflow-x: hidden;
+}
+.top-container .top-texts-container {
+  z-index: 2;
+}
+.top-container .top-container-absolute {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  left: 2rem;
+  right: 2rem;
+}
+@media screen and (max-width: 767px) {
+  .top-container .top-container-absolute {
+    left: 1rem;
+    right: 1rem;
+  }
 }
 .top-container .top-container-inner {
   position: relative;
   max-width: 1600px;
   height: 100%;
   margin: auto;
+  overflow: hidden;
 }
-.top-container .top-content-inner2 {
+.top-container .top-container-inner2 {
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-}
-.top-container .top-content-inner2 .memo-container {
-  max-width: 800px;
-}
-.top-container .top-content-sample-img-container {
   position: absolute;
-  right: 2rem;
+}
+.top-container .top-container-inner2 .memo-container {
+  max-width: 800px;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+}
+.top-container .top-container-inner2.title-container {
+  justify-content: flex-start;
+}
+.top-container .top-container-inner2.title-container .title {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin-top: 4rem;
+  background-color: #ffffffcc;
+  border-radius: 14px;
+}
+@media screen and (max-width: 767px) {
+  .top-container .top-container-inner2.title-container .title {
+    margin-top: 1.5rem;
+  }
+}
+.top-container .top-container-inner2.title-container .title .title-inner {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.top-container .top-container-inner2.title-container .title p {
+  margin: 0 0.5rem;
+}
+.top-container .top-container-inner2.title-container .title h1 {
+  font-size: 1.5rem;
+}
+.top-container .top-container-inner2.title-container .title h1 .header-service-name {
+  font-size: 2.5rem;
+}
+@media screen and (max-width: 930px) {
+  .top-container .top-container-sample-img-outer-container {
+    width: 100%;
+  }
+}
+.top-container .top-container-sample-img-container {
+  position: absolute;
+  right: 0;
   top: 0;
   bottom: 0;
   width: 640px;
+  max-width: 100%;
   margin: auto;
+}
+@media screen and (max-width: 930px) {
+  .top-container .top-container-sample-img-container {
+    right: -4rem;
+    top: 55%;
+  }
+}
+@media screen and (max-width: 512px) {
+  .top-container .top-container-sample-img-container {
+    right: 0;
+    left: 0;
+    margin: 0;
+    top: 30%;
+    width: 480px;
+  }
+  .top-container .top-container-sample-img-container img {
+    width: calc(100vw - 2rem);
+  }
 }
 .top-container .memo-container {
   z-index: 2;
@@ -9996,6 +10074,7 @@ body {
 .top-container .memo-container #createMemo .craete-memo-btn {
   position: relative;
   width: 400px;
+  max-width: 100%;
   height: 64px;
   font-size: 1.5em;
   overflow: hidden;

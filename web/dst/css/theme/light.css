@@ -6,6 +6,9 @@
 
     --sidebar-bg-color: #161b22;
     --sidebar-text-color: #eee;
+    --sidebar-switch-color: #eee;
+    --sidebar-mobile-switch-normal-color: #161b22;
+    --sidebar-mobile-switch-open-color: #eee;
     --sidebar-separator-color: #888;
     --sidebar-content-icon-bg-color: #343a40;
 

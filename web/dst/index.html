@@ -12,30 +12,47 @@
 
     <main>
         <section class="top-container">
-            <div class="top-container-inner">
-                <div class="top-content-inner2 top-content-sample-img-container">
-                    <img src="/imgs/sample.png" alt="">
-                </div>
-    
-                <div class="top-content-inner2">
-                    <div class="memo-container">
-                        <div id="createMemo">
-                            <button type="submit" class="btn btn-primary craete-memo-btn" @click="submit" :disabled="isLoading">メモを新規作成</button>
-                            <div class="alert alert-danger" role="alert" v-if="errorMessage" v-cloak>{{ errorMessage }}</div>
-                            <p class="create-memo-comment">
-                                メモの作成及び編集をご利用になる場合,
-                                <a href="/terms_of_service.html" target="blank">利用規約</a>及び <a href="/privacy_policy.html" target="blank">プライバシーポリシー</a>に同意したものとみなします.
-                            </p>
-                        </div>
-                        <div id="editMemo">
-                            <form action="" method="post" @submit.prevent="submit">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" v-model="memoAlias" placeholder="メモID" required>
+            <div class="top-container-absolute top-texts-container">
+                <div class="top-container-inner">
+                    <div class="top-container-inner2 title-container">
+                        <div class="title">
+                            <div class="title-inner">
+                                <h1>登録不要型のメモアプリ <span class="header-service-name">MemoEase</span></h1>
+                                <div class="description">
+                                    <p>1ボタンで自分だけのメモを作成できるWebアプリです。</p>
+                                    <p>パスワードも設定できるので、安全に使えます。</p>
                                 </div>
-                                <button type="submit" class="btn btn-primary">メモを編集</button>
-                            </form>
-                            <div class="alert alert-danger" role="alert" v-if="errorMessage" v-cloak>{{ errorMessage }}</div>
+                            </div>
                         </div>
+                    </div>
+        
+                    <div class="top-container-inner2">
+                        <div class="memo-container">
+                            <div id="createMemo">
+                                <button type="submit" class="btn btn-primary craete-memo-btn" @click="submit" :disabled="isLoading">メモを新規作成</button>
+                                <div class="alert alert-danger" role="alert" v-if="errorMessage" v-cloak>{{ errorMessage }}</div>
+                                <p class="create-memo-comment">
+                                    メモの作成及び編集をご利用になる場合,
+                                    <a href="/terms_of_service.html" target="blank">利用規約</a>及び <a href="/privacy_policy.html" target="blank">プライバシーポリシー</a>に同意したものとみなします.
+                                </p>
+                            </div>
+                            <div id="editMemo">
+                                <form action="" method="post" @submit.prevent="submit">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" v-model="memoAlias" placeholder="メモID" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">メモを編集</button>
+                                </form>
+                                <div class="alert alert-danger" role="alert" v-if="errorMessage" v-cloak>{{ errorMessage }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="top-container-absolute top-container-sample-img-outer-container">
+                <div class="top-container-inner">
+                    <div class="top-container-inner2 top-container-sample-img-container">
+                        <img src="/imgs/sample.png" alt="">
                     </div>
                 </div>
             </div>
