@@ -1,17 +1,15 @@
 import { getTheme } from './colorTheme';
+import axios from 'axios';
 
-function loadCommonParts(url, insertTarget) {
+async function loadCommonParts(url, insertTarget) {
     if (!insertTarget) return;
     let xhr = new XMLHttpRequest();
 
-    xhr.open("GET", url, true);
-    xhr.onreadystatechange = function () {
-        if(xhr.readyState === 4 && xhr.status === 200) {
-            var restxt = xhr.responseText;
-            insertTarget.innerHTML = restxt;
-        }
-    };
-    xhr.send();
+    await axios.get(url, {}).then(res => {
+        insertTarget.innerHTML = res.data;
+    }).catch(err => {
+        console.log(err);
+    }).then(() => {});
 }
 
 function addBeforeParts(url, className, idName, insertTarget) {
@@ -112,13 +110,12 @@ function applyTheme(theme) {
     }
 })();
 
-window.appendCss = appendCss;
-window.appendScript = appendScript;
-
 window.addEventListener('DOMContentLoaded', (e) => {
     appendCss('/css/index.css');
     // appendScript('/js/simplebar.min.js');
     appendFontAwsome();
 
-    loadCommonDOM();
+    // loadCommonDOM();
 });
+
+export {loadCommonParts, appendCss, appendScript};

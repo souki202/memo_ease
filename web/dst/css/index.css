@@ -9933,6 +9933,44 @@ body {
   color: var(--primary-text-color);
 }
 
+#pubHeader {
+  width: 100%;
+  height: 64px;
+}
+#pubHeader .header-inner {
+  height: 100%;
+}
+#pubHeader nav {
+  height: 100%;
+}
+#pubHeader nav ul {
+  display: flex;
+  height: 100%;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  margin-right: 1rem;
+}
+#pubHeader nav ul li {
+  max-width: 96px;
+  margin: 0 0.5rem;
+  flex-grow: 1;
+}
+#pubHeader nav ul li a {
+  text-decoration: none;
+}
+#pubHeader nav ul li a:hover, #pubHeader nav ul li a:active, #pubHeader nav ul li a:visited {
+  text-decoration: none;
+}
+#pubHeader nav ul li.nav-button-container {
+  max-width: 164px;
+}
+#pubHeader nav ul li.nav-button-container button {
+  width: 100%;
+}
+
 [v-cloak] {
   display: none;
 }
@@ -9954,7 +9992,7 @@ body {
 .top-container {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 64px);
   max-height: 1080px;
   background-position: center;
   background-size: cover;
@@ -10007,6 +10045,7 @@ body {
   left: 0;
   right: 0;
   margin-top: 4rem;
+  text-align: center;
   background-color: #ffffffcc;
   border-radius: 14px;
 }
@@ -10030,37 +10069,27 @@ body {
 .top-container .top-container-inner2.title-container .title h1 .header-service-name {
   font-size: 2.5rem;
 }
-@media screen and (max-width: 930px) {
+@media screen and (max-width: 1023px) {
   .top-container .top-container-sample-img-outer-container {
-    width: 100%;
+    display: none;
   }
 }
 .top-container .top-container-sample-img-container {
   position: absolute;
-  right: 0;
+  right: 100px;
   top: 0;
   bottom: 0;
   width: 640px;
   max-width: 100%;
   margin: auto;
 }
-@media screen and (max-width: 930px) {
-  .top-container .top-container-sample-img-container {
-    right: -4rem;
-    top: 55%;
-  }
-}
-@media screen and (max-width: 512px) {
-  .top-container .top-container-sample-img-container {
-    right: 0;
-    left: 0;
-    margin: 0;
-    top: 30%;
-    width: 480px;
-  }
-  .top-container .top-container-sample-img-container img {
-    width: calc(100vw - 2rem);
-  }
+.top-container .top-container-sample-img2-container {
+  position: absolute;
+  right: 0;
+  top: 200px;
+  bottom: 0;
+  width: 240px;
+  margin: auto;
 }
 .top-container .memo-container {
   z-index: 2;

@@ -13,9 +13,11 @@ const cssIn = './web/src/css/'
 module.exports = {
     entry: {
         index: jsIn + 'index.js',
+        pub: jsIn + 'pub.js',
         edit: jsIn + 'edit.js',
         view: jsIn + 'view.js',
         loadCommonParts: jsIn + 'loadCommonParts.js',
+        loadPubParts: jsIn + 'loadPubParts.js',
     },
     output: {
         path: path.resolve(__dirname, jsOut + 'js'),

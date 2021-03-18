@@ -147,7 +147,7 @@ body {
 }
 .sidebar-container .sidebar-switch-container .sidebar-switch-label {
   display: block;
-  color: var(--sidebar-switch-normal-color);
+  color: var(--sidebar-switch-color);
   margin-bottom: 0;
 }
 .sidebar-container #switchSidebar:not(:checked) ~ .sidebar-switch-container .sidebar-close-button {
