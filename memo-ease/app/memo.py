@@ -135,25 +135,11 @@ def save_memo_event(event, context):
 パスワードがあるメモか調べる
 '''
 def check_has_password_memo_event(event, context):
-    if not ('queryStringParameters' in event and event['queryStringParameters']):
-        return create_common_return_array(406, {'message': "Not enough input.",})
-    
-    memo_uuid = event['queryStringParameters'].get('memo_uuid')
-    memo_alias = event['queryStringParameters'].get('memo_alias')
-    
-    if not memo_uuid and not memo_alias:
-        return create_common_return_array(406, {'message': "Not enough input.",})
-    
-    # 情報を取得
-    memo_data = None
-    if memo_uuid:
-        memo_data = my_memo.get_memo(memo_uuid)
-    elif memo_alias:
-        memo_data = my_memo.get_memo_by_alias(memo_alias)
+    memo_data = my_memo_service.get_memo_data_without_auth(event)
+
     if not memo_data:
-        print('Failed to get memo data. memo_uuid: ' + memo_uuid)
-        return create_common_return_array(404, {'message': "Not Found.",})
-    
+        return create_common_return_array(500, {'message': 'Failed to get memo.',})
+
     #成功したので, パスワードがあるかだけ返す
     return create_common_return_array(200, {"has_password": bool(memo_data['password'])})
 
@@ -164,8 +150,8 @@ def check_exist_memo_event(event, context):
     if not ('queryStringParameters' in event and event['queryStringParameters']):
         return create_common_return_array(406, {'message': "Not enough input.",})
     
-    memo_uuid = event['queryStringParameters'].get('memo_uuid')
-    memo_alias = event['queryStringParameters'].get('memo_alias')
+    memo_uuid = event['queryStringParameters'].get('memo_uuid', '')
+    memo_alias = event['queryStringParameters'].get('memo_alias', '')
     
     if not memo_uuid and not memo_alias:
         return create_common_return_array(406, {'message': "Not enough input.",})

@@ -223,13 +223,12 @@ def get_memo_by_alias(alias_name: str) -> dict:
         return None
     try:
         res = memo_aliases_table.query(
-            IndexName='alias_name-index',
             KeyConditionExpression=Key('alias_name').eq(alias_name)
         )['Items']
         if not res:
             return None
         memo_res = memos_table.query(
-            KeyConditionExpression=Key('uuid').eq(res[0]['alias_name'])
+            KeyConditionExpression=Key('uuid').eq(res[0]['uuid'])
         )
         if not memo_res:
             return False
@@ -254,7 +253,7 @@ def change_memo_alias(memo_uuid: str, old_alias: str, new_alias: str):
                 'Delete': {
                     'TableName': MEMO_ALIASES_TABLE_NAME,
                     'Key': {
-                        'uuid': to_dynamo_format(old_alias)
+                        'alias_name': to_dynamo_format(old_alias)
                     },
                 }
             },
