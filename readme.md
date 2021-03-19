@@ -24,7 +24,7 @@
 
 `aws dynamodb create-table --cli-input-json "file://D:\Projects\memo_ease\memo-ease\task\local\memoAliases.json"`
 
-`aws dynamodb create-table --cli-input-json "file://D:\Projects\memo_ease\memo-ease\task\local\overviews.json"`
+`aws dynamodb create-table --cli-input-json "file://D:\Projects\memo_ease\memo-ease\task\staging\memos.json"`
 
 ### lambdaのテスト
 
