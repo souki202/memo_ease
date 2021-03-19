@@ -24,7 +24,7 @@
         <div class="editor-container" id="editor">
             <div class="editor-inner">
                 <div class="form-group title-container">
-                    <input type="text" class="form-control memo-title" placeholder="Title" @change="save" v-model="memo.title" v-model="memo.memoUuid" maxlength="1000" @change="save">
+                    <input type="text" class="form-control memo-title" placeholder="Title" @change="instantSave" v-model="memo.title" v-model="memo.memoUuid" maxlength="1000" @change="save">
                     <div class="memo-title-border"></div>
                 </div>
                 <div class="editor-body">
@@ -45,6 +45,7 @@
                         <p>
                             メモIDは, トップページから編集画面に入るときに使用します. IDは左のサイドバーからいつでも変更できます.
                         </p>
+                        <p>メモは, 最後の編集から数秒後に自動で保存されます.</p>
                         <div class="form-group">
                             <div class="input-group memo-link">
                                 <label for="" class="modal-form-label">メモのURL</label>

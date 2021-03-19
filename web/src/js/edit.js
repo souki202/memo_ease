@@ -36,7 +36,7 @@ const app = createApp({
             memoMessages: [],
 
             autoSaveTimeout: null,
-            autoSaveDelay: 5000,
+            autoSaveDelay: 3000,
 
             memo: {
                 memoUuid: '',
