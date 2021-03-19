@@ -4,6 +4,10 @@
 
     --modal-separator-color: #888;
 
+    --header-bg-color: #002854;
+    --header-text-color: #ccc;
+    --header-link-hover-color: #eee;
+
     --sidebar-bg-color: #161b22;
     --sidebar-text-color: #eee;
     --sidebar-switch-color: #eee;

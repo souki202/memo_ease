@@ -8,13 +8,15 @@ import { v4 as uuidv4 } from 'uuid';
 import { getApiUrl } from './url';
 import getUrlParameter from './urlParameter';
 
-import {ClassicEditor, MyUploaderAdaptor} from './ckeditor';
+import { ClassicEditor, MyUploaderAdaptor } from './ckeditor';
 import CkeditorVue from '@ckeditor/ckeditor5-vue';
 
 import VueFinalModal from 'vue-final-modal';
 import VModal from './vmodal.vue';
 
 import Sidebar from './sidebar.vue';
+
+import { updateHistory } from './history.js';
 
 const app = createApp({
     components: {
@@ -137,6 +139,8 @@ const app = createApp({
                 if (this.memo.body == '') {
                     this.showMemoUrlModal = true;
                 }
+
+                updateHistory(this.memo.memoUuid, this.memo.memoAlias, this.memo.title);
             }).catch(err => {
                 console.log(err);
             }).then(() => {
@@ -204,7 +208,6 @@ const app = createApp({
             axios.post(getApiUrl() + '/save_memo', {
                 params: {
                     memo_uuid: this.memo.memoUuid,
-                    memo_alias: this.memo.memoAlias,
                     password: this.memo.password,
                     title: this.memo.title,
                     body: this.memo.body,
@@ -212,6 +215,7 @@ const app = createApp({
             }).then(res => {
                 console.log(res);
                 this.drawMessage('メモを保存しました.');
+                updateHistory(this.memo.memoUuid, this.memo.memoAlias, this.memo.title);
             }).catch(err => {
                 console.log(err);
                 window.alert('メモの保存に失敗しました.');

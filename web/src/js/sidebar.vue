@@ -143,13 +143,14 @@
 import VModal from './vmodal.vue';
 import axios from 'axios';
 import { getApiUrl } from './url';
+import { updateHistory } from './history.js';
 
 export default {
     components: {
         VModal: VModal,
     },
     props: [
-        'memoAlias', 'password', 'email', 'viewId', 'isPublic'
+        'memoAlias', 'password', 'email', 'viewId', 'isPublic', 'memoUuid', 'title'
     ],
     data() {
         return {
@@ -223,11 +224,12 @@ export default {
             this.isSubmiting = true;
             axios.post(getApiUrl() + '/update_memo_alias', {
                 params: {
-                    memo_alias: this.memoAlias,
+                    memo_uuid: this.memoUuid,
                     password: this.password,
                 }
             }).then(res => {
                 console.log(res);
+                updateHistory(this.memoUuid, this.memoAlias, this.title);
             }).catch(err => {
                 console.log(err);
             }).then(() => {
@@ -252,7 +254,7 @@ export default {
             this.isSubmiting = true;
             axios.post(getApiUrl() + '/update_password', {
                 params: {
-                    memo_alias: this.memoAlias,
+                    memo_uuid: this.memoUuid,
                     password: this.password,
                     newPassword: this.newPassword,
                     email: this.email,
@@ -276,7 +278,7 @@ export default {
             this.isSubmiting = true;
             axios.post(getApiUrl() + '/change_public_state', {
                 params: {
-                    memo_alias: this.memoAlias,
+                    memo_uuid: this.memoUuid,
                     password: this.password,
                     state: state,
                 }

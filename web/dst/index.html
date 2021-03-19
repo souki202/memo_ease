@@ -15,6 +15,17 @@
         <section class="top-container">
             <div class="top-container-absolute top-texts-container">
                 <div class="top-container-inner">
+                    <div class="top-container-inner2 title-container">
+                        <div class="title">
+                            <div class="title-inner">
+                                <h1>登録不要型のメモアプリ <span class="header-service-name">MemoEase</span></h1>
+                                <div class="description">
+                                    <p>1ボタンで自分だけのメモを作成できるWebアプリです。</p>
+                                    <p>パスワードも設定でき、安全に使えます。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="top-container-inner2">
                         <div class="memo-container">
                             <div id="createMemo">
@@ -33,23 +44,24 @@
                                     <button type="submit" class="btn btn-primary">メモを編集</button>
                                 </form>
                                 <div class="alert alert-danger" role="alert" v-if="errorMessage" v-cloak>{{ errorMessage }}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="top-container-inner2 title-container">
-                        <div class="title">
-                            <div class="title-inner">
-                                <h1>登録不要型のメモアプリ <span class="header-service-name">MemoEase</span></h1>
-                                <div class="description">
-                                    <p>1ボタンで自分だけのメモを作成できるWebアプリです。</p>
-                                    <p>パスワードも設定でき、安全に使えます。</p>
+                                <div class="memo-histories">
+                                    <p>メモ閲覧履歴一覧 (ブラウザごとに保存)</p>
+                                    <div class="history-item-container" v-for="item in memoHistories">
+                                        <p>
+                                            <a :href="'/edit.html?memo_uuid=' + item.memoUuid">
+                                                <span class="history-memo-title">{{ item.title }}&nbsp;</span>
+                                                <span class="history-memo-alias">({{ item.memoAlias }})</span>
+                                                <!-- <span class="history-memo-date">{{ item.date }}</span> -->
+                                            </a>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="top-container-absolute top-container-sample-img-outer-container">
+            <!-- <div class="top-container-absolute top-container-sample-img-outer-container">
                 <div class="top-container-inner">
                     <div class="top-container-inner2 top-container-sample-img-container">
                         <img src="/imgs/sample.png" alt="">
@@ -58,7 +70,7 @@
                         <img src="/imgs/mobile_sample.png" alt="">
                     </div>
                 </div>
-            </div>
+            </div> -->
         </section>
     </main>
 

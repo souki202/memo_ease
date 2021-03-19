@@ -51,7 +51,8 @@ body {
             max-width: 800px;
             top: 0;
             bottom: 0;
-            margin: auto 0;
+            margin: auto;
+            text-align: center;
         }
 
         &.title-container {
@@ -161,5 +162,22 @@ body {
                 margin-top: 0.5rem;
             }
         }
+
+        #editMemo {
+            form {
+                margin-bottom: 2rem;
+            }
+
+            .memo-histories {
+                p {
+                    margin: 0.25rem 0;
+                    
+                    .history-memo-alias {
+                        font-size: 0.75rem;
+                    }
+                }
+            }
+        }
+
     }
 }

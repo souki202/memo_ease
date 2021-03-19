@@ -9936,6 +9936,8 @@ body {
 #pubHeader {
   width: 100%;
   height: 64px;
+  background-color: var(--header-bg-color);
+  color: var(--header-text-color);
 }
 #pubHeader .header-inner {
   height: 100%;
@@ -9960,9 +9962,13 @@ body {
 }
 #pubHeader nav ul li a {
   text-decoration: none;
+  color: var(--header-text-color);
 }
 #pubHeader nav ul li a:hover, #pubHeader nav ul li a:active, #pubHeader nav ul li a:visited {
   text-decoration: none;
+}
+#pubHeader nav ul li a:hover {
+  color: var(--header-link-hover-color);
 }
 #pubHeader nav ul li.nav-button-container {
   max-width: 164px;
@@ -10034,7 +10040,8 @@ body {
   max-width: 800px;
   top: 0;
   bottom: 0;
-  margin: auto 0;
+  margin: auto;
+  text-align: center;
 }
 .top-container .top-container-inner2.title-container {
   justify-content: flex-start;
@@ -10140,4 +10147,13 @@ body {
 .top-container .memo-container #createMemo .create-memo-comment {
   font-size: 0.75rem;
   margin-top: 0.5rem;
+}
+.top-container .memo-container #editMemo form {
+  margin-bottom: 2rem;
+}
+.top-container .memo-container #editMemo .memo-histories p {
+  margin: 0.25rem 0;
+}
+.top-container .memo-container #editMemo .memo-histories p .history-memo-alias {
+  font-size: 0.75rem;
 }

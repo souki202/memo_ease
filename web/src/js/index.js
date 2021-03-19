@@ -1,9 +1,10 @@
-import '../css/common.scss'
-import '../css/index.scss'
+import '../css/common.scss';
+import '../css/index.scss';
 
 import { createApp } from 'vue/dist/vue.esm-bundler.js';
 import axios from 'axios';
 import { getApiUrl } from './url';
+import { getHistories } from './history.js';
 
 const createMemo = createApp({
     data() {
@@ -35,7 +36,18 @@ const editMemo = createApp({
         return {
             errorMessage: '',
             memoAlias: '',
+            memoHistories: '',
         }
+    },
+    mounted() {
+        const histories = getHistories();
+        const ary = []
+        for (const key in histories) {
+            let tmpValue = histories[key]
+            tmpValue['memoUuid'] = key;
+            ary.push(tmpValue);
+        }
+        this.memoHistories = ary;
     },
     methods: {
         submit() {
