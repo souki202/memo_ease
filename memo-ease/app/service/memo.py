@@ -86,6 +86,6 @@ def get_memo_data_without_auth(event):
         memo_data = my_memo.get_memo_by_alias(memo_alias)
     if not memo_data:
         print('Failed to get memo data. memo_uuid: ' + memo_uuid + ' memo_alias: ' + memo_alias)
-        return create_common_return_array(404, {'message': "Not Found.",})
+        return None
 
     return memo_data

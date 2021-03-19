@@ -231,8 +231,10 @@ export default {
             }).then(res => {
                 console.log(res);
                 updateHistory(this.memoUuid, this.memoAlias, this.title);
+                window.alert('メモIDを更新しました');
             }).catch(err => {
                 console.log(err);
+                window.alert('メモIDの更新に失敗しました');
             }).then(() => {
                 this.isSubmiting = false;
             });

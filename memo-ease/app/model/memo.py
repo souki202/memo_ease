@@ -229,7 +229,7 @@ def get_memo_by_alias(alias_name: str) -> dict:
             return None
         memo_res = memos_table.query(
             KeyConditionExpression=Key('uuid').eq(res[0]['uuid'])
-        )
+        )['Items']
         if not memo_res:
             return False
         item = memo_res[0]
