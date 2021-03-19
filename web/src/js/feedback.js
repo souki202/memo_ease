@@ -14,7 +14,7 @@ const app = createApp({
     },
     methods: {
         submit(e) {
-            _this.isSuccess = false;
+            this.isSuccess = false;
             if (!this.body) {
                 window.alert('本文は必須です');
                 return;
