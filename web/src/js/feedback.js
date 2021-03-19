@@ -9,31 +9,40 @@ const app = createApp({
             email: '',
             body: '',
             isSubmiting: false,
+            isSuccess: false,
         }
     },
     methods: {
-        submit() {
-            if (!body) {
+        submit(e) {
+            _this.isSuccess = false;
+            if (!this.body) {
                 window.alert('本文は必須です');
                 return;
             }
 
-            this.isSubmiting = true;
+            const _this = this;
 
-            axios.post(getApiUrl() + '/feedback', {
-                params: {
-                    title: this.title,
-                    email: this.email,
-                    body: this.body,
-                }
-            }).then(res => {
-                console.log(res);
-            }).catch(err => {
-                console.log(err);
-                window.alert('お問合せの送信に失敗しました.');
-            }).then(() => {
-                this.isSubmiting = false;
+            grecaptcha.ready(function() {
+                grecaptcha.execute('6LfMH4UaAAAAADcm9EflBnA-J2TeMy_EorpcJCR8', {action: 'submit'}).then(function (token) {
+                    axios.post(getApiUrl() + '/feedback', {
+                        params: {
+                            title: _this.title,
+                            email: _this.email,
+                            body: _this.body,
+                            token: token,
+                        }
+                    }).then(res => {
+                        console.log(res);
+                        _this.isSuccess = true;
+                    }).catch(err => {
+                        console.log(err);
+                        window.alert('お問合せの送信に失敗しました.');
+                    }).then(() => {
+                        _this.isSubmiting = false;
+                    });
+                });
             });
+            return false;
         },
     },
 }).mount('#feedbackForm');

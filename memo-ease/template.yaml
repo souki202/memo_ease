@@ -211,3 +211,16 @@ Resources:
             RestApiId: !Ref RestApi
             Path: /create_upload_url
             Method: post
+
+  FeedbackFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: mail.feedback_event
+      Role: !Ref RoleArn
+      Events:
+        CreateUploadUrlEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref RestApi
+            Path: /feedback
+            Method: post

@@ -10157,3 +10157,9 @@ body {
 .top-container .memo-container #editMemo .memo-histories p .history-memo-alias {
   font-size: 0.75rem;
 }
+
+#feedbackForm {
+  max-width: 960px;
+  margin: auto;
+  margin-top: 2rem;
+}

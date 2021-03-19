@@ -6,7 +6,7 @@ codeuri = "app/"
 runtime = "python3.8"
 source_md5 = ""
 packagetype = "Zip"
-functions = ["MemoFunction", "FileFunction"]
+functions = ["MemoFunction", "FileFunction", "FeedbackFunction"]
 
 [layer_build_definitions]
 [layer_build_definitions.721cb81d-c116-4bd0-a4c4-a3958ca1f032]
