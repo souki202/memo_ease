@@ -168,6 +168,12 @@ Resources:
             RestApiId: !Ref RestApi
             Path: /save_memo
             Method: post
+        ChangeMemoAliasEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref RestApi
+            Path: /change_memo_alias
+            Method: post
         CheckHasPasswordEvent:
           Type: Api
           Properties:

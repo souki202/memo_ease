@@ -16,7 +16,9 @@ db_resource = boto3.resource("dynamodb")
 db_client = boto3.client("dynamodb", region_name='ap-northeast-1')
 
 MEMOS_TABLE_NAME = 'memo_ease_memos' + os.environ['DbSuffix']
+MEMO_ALIASES_TABLE_NAME = 'memo_ease_memo_aliases' + os.environ['DbSuffix']
 memos_table = db_resource.Table(MEMOS_TABLE_NAME)
+memo_aliases_table = db_resource.Table(MEMO_ALIASES_TABLE_NAME)
 
 '''
 @return {str} 作成したメモのuuid
@@ -29,10 +31,8 @@ def create_memo() -> str:
     if get_memo(memo_uuid):
         return False
     try:
-        memos_table.put_item(
-            Item = {
+        newItem = {
                 'uuid': memo_uuid,
-                'alias_name': memo_uuid,
                 'view_id': view_id,
                 'is_public': False,
                 'password': '',
@@ -42,7 +42,31 @@ def create_memo() -> str:
                 'created_at': get_now_string(),
                 'accessed_at': get_now_string(),
             }
+        newAliasItem = {
+            'uuid': memo_uuid,
+            'alias_name': memo_uuid,
+            'created_at': get_now_string(),
+        }
+        transacts = [
+            {
+                'Put': {
+                    'TableName': MEMOS_TABLE_NAME,
+                    'Item': dict2dynamoformat(newItem)
+                }
+            },
+            {
+                'Put': {
+                    'TableName': MEMO_ALIASES_TABLE_NAME,
+                    'Item': dict2dynamoformat(newAliasItem)
+                }
+            }
+        ]
+
+        res = db_client.transact_write_items(
+            TransactItems = transacts
         )
+        if not res:
+            return False
         return memo_uuid
     except Exception as e:
         print(e)
@@ -174,7 +198,16 @@ def get_memo(memo_uuid: str) -> dict:
         )['Items']
         if not res:
             return None
-        return res[0]
+        alias_res = memo_aliases_table.query(
+            IndexName='uuid-index',
+            KeyConditionExpression=Key('uuid').eq(memo_uuid)
+        )['Items']
+        if not alias_res:
+            return None
+        
+        item = res[0]
+        item['alias_name'] = alias_res[0]['alias_name']
+        return item
     except Exception as e:
         return False
     return False
@@ -189,14 +222,55 @@ def get_memo_by_alias(alias_name: str) -> dict:
     if not alias_name:
         return None
     try:
-        res = memos_table.query(
+        res = memo_aliases_table.query(
             IndexName='alias_name-index',
             KeyConditionExpression=Key('alias_name').eq(alias_name)
         )['Items']
         if not res:
             return None
-        return res[0]
+        memo_res = memos_table.query(
+            KeyConditionExpression=Key('uuid').eq(res[0]['alias_name'])
+        )
+        if not memo_res:
+            return False
+        item = memo_res[0]
+        item['alias_name'] = res[0]['alias_name']
+        return item
     except Exception as e:
+        return False
+    return False
+
+def change_memo_alias(memo_uuid: str, old_alias: str, new_alias: str):
+    if not old_alias or not new_alias:
+        return False
+    try:
+        newAliasItem = {
+            'uuid': memo_uuid,
+            'alias_name': new_alias,
+            'created_at': get_now_string(),
+        }
+        transacts = [
+            {
+                'Delete': {
+                    'TableName': MEMO_ALIASES_TABLE_NAME,
+                    'Key': {
+                        'uuid': to_dynamo_format(old_alias)
+                    },
+                }
+            },
+            {
+                'Put': {
+                    'TableName': MEMO_ALIASES_TABLE_NAME,
+                    'Item': dict2dynamoformat(newAliasItem)
+                }
+            }
+        ]
+        result = db_client.transact_write_items(
+            TransactItems = transacts
+        )
+        return not not result
+    except Exception as e:
+        print(e)
         return False
     return False
 

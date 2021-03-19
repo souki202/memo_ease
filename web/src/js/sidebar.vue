@@ -222,10 +222,11 @@ export default {
                 return;
             }
             this.isSubmiting = true;
-            axios.post(getApiUrl() + '/update_memo_alias', {
+            axios.post(getApiUrl() + '/change_memo_alias', {
                 params: {
                     memo_uuid: this.memoUuid,
                     password: this.password,
+                    new_memo_alias: this.memoAlias,
                 }
             }).then(res => {
                 console.log(res);

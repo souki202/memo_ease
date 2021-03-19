@@ -32,6 +32,8 @@ def memo_event(event, context):
             return update_password_event(event, context)
         elif resource == '/change_public_state':
             return change_public_state_event(event, context)
+        elif resource == '/change_memo_alias':
+            return change_memo_alias_event(event, context)
     elif httpMethod == 'GET':
         if resource == '/check_has_password_memo':
             return check_has_password_memo_event(event, context)
@@ -248,3 +250,19 @@ def get_memo_data_by_view_id_event(event, context):
         return create_common_return_array(500, {'message': "Failed to get memo data.",})
 
     return create_common_return_array(200, {'body': memo_body})
+
+def change_memo_alias_event(event, context):
+    # メモの情報取得
+    memo_data = my_memo_service.get_memo_data_with_auth(event)
+    if not memo_data:
+        return create_common_return_array(406, {'message': 'Failed to get memo data.',})
+    memo_uuid = memo_data['uuid']
+
+    params = json.loads(event['body'] or '{ }')
+    new_memo_alias = params['params'].get('new_memo_alias')
+
+    if not my_memo.change_memo_alias(memo_uuid, memo_data['alias_name'], new_memo_alias):
+        print('Failed to update alias. memo_uuid: ' + memo_uuid + ' old_alias: ' + memo_data['alias_name'] + ' new_alias: ' + new_memo_alias)
+        return create_common_return_array(500, {'message': 'Failed to update alias. ',})
+
+    return create_common_return_array(200, {})
