@@ -143,6 +143,7 @@ const app = createApp({
                 updateHistory(this.memo.memoUuid, this.memo.memoAlias, this.memo.title);
             }).catch(err => {
                 console.log(err);
+                window.alert('パスワードが間違っているか, サーバエラーが発生しました.');
             }).then(() => {
                 this.isSubmiting = false;
             });

@@ -37,12 +37,12 @@ def check_memo_body_length(body: str) -> bool:
 def get_memo_data_with_auth(event):
     params = json.loads(event['body'] or '{ }')
     if not params or not params.get('params'):
-        return None
+        return False
     
     memo_uuid = params['params'].get('memo_uuid', '')
     memo_alias = params['params'].get('memo_alias', '')
     if not memo_uuid and not memo_alias:
-        return None
+        return False
     
     password = params['params'].get('password')
 
@@ -54,7 +54,7 @@ def get_memo_data_with_auth(event):
         memo_data = my_memo.get_memo_by_alias(memo_alias)
     if not memo_data:
         print('Failed to get memo data. memo_uuid: ' + memo_uuid)
-        return None
+        return memo_data
 
     memo_uuid = memo_data['uuid']
 
@@ -70,13 +70,13 @@ def get_memo_data_with_auth(event):
 '''
 def get_memo_data_without_auth(event):
     if not ('queryStringParameters' in event and event['queryStringParameters']):
-        return None
+        return False
     
     memo_uuid = event['queryStringParameters'].get('memo_uuid', '')
     memo_alias = event['queryStringParameters'].get('memo_alias', '')
     
     if not memo_uuid and not memo_alias:
-        return None
+        return False
     
     # 情報を取得
     memo_data = None
@@ -86,6 +86,6 @@ def get_memo_data_without_auth(event):
         memo_data = my_memo.get_memo_by_alias(memo_alias)
     if not memo_data:
         print('Failed to get memo data. memo_uuid: ' + memo_uuid + ' memo_alias: ' + memo_alias)
-        return None
+        return memo_data
 
     return memo_data

@@ -231,7 +231,7 @@ def get_memo_by_alias(alias_name: str) -> dict:
             KeyConditionExpression=Key('uuid').eq(res[0]['uuid'])
         )['Items']
         if not memo_res:
-            return False
+            return None
         item = memo_res[0]
         item['alias_name'] = res[0]['alias_name']
         return item
