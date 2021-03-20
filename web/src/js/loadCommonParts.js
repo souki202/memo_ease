@@ -1,5 +1,6 @@
 import { getTheme } from './colorTheme';
 import axios from 'axios';
+import getEnv from './getEnv.js';
 
 async function loadCommonParts(url, insertTarget) {
     if (!insertTarget) return;
@@ -10,11 +11,6 @@ async function loadCommonParts(url, insertTarget) {
     }).catch(err => {
         console.log(err);
     }).then(() => {});
-}
-
-async function setPartsWithHtml(body, insertTarget) {
-    if (!insertTarget) return;
-    insertTarget.innerHTML = body;
 }
 
 function addBeforeParts(url, className, idName, insertTarget) {
@@ -104,6 +100,28 @@ function applyTheme(theme) {
 	document.getElementsByTagName('head')[0].appendChild(el);
 }
 
+function addScriptToHeader(body) {
+    var el = document.createElement('script');
+    el.innerText = body
+	document.getElementsByTagName('head')[0].appendChild(el);
+}
+
+function addGoogleTagManagerToBody() {
+    var el = document.createElement('noscript');
+    el.innerHTML = `<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M755WKT"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe>`
+	document.getElementsByTagName('body')[0].appendChild(el);
+}
+
+function addGoogleTagManager() {
+    addScriptToHeader(`
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-M755WKT');`);
+}
+
 (() => {
     // 明転防止のため, ここでテーマを読み込む
     const theme = getTheme();
@@ -113,13 +131,19 @@ function applyTheme(theme) {
     else {
         applyTheme('light');
     }
+
+    if (getEnv() == 'prod') {
+        addGoogleTagManager();
+    }
 })();
 
 window.addEventListener('DOMContentLoaded', (e) => {
     appendCss('/css/index.css');
     // appendScript('/js/simplebar.min.js');
     appendFontAwsome();
-
+    if (getEnv() == 'prod') {
+        addGoogleTagManagerToBody();
+    }
     // loadCommonDOM();
 });
 
