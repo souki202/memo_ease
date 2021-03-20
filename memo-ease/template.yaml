@@ -25,7 +25,7 @@ Mappings:
       ApiCustomDomain: 'api.memo-ease.com'
       StaticPageDomain: 'memo-ease.com'
       StaticPageBucket: 'memo-ease.com'
-      CertificateArn: ''
+      CertificateArn: 'arn:aws:acm:ap-northeast-1:913905735063:certificate/8a5d04ae-00b9-499a-b530-5a30fb2c66eb'
       ApiStageName: 'Prod'
       AllowOrigin: "'https://memo-ease.com'"
       WhiteIpAddressFrom: '0.0.0.0'
