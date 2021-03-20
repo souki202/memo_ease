@@ -1,6 +1,6 @@
 git checkout master
 git pull
-npm run build
+call npm run build
 cd memo-ease
 call sam build --config-env production --use-container
 call sam deploy --config-env production
