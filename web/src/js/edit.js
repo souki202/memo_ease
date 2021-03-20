@@ -239,7 +239,9 @@ const app = createApp({
                         window.alert('リセット用メールの送信に失敗しました. メールアドレスが設定されていない可能性があります.');
                     }
                 }
-                window.alert('サーバーエラーによりリセット用メールの送信に失敗しました.');
+                else {
+                    window.alert('サーバーエラーによりリセット用メールの送信に失敗しました.');
+                }
             }).then(() => {
                 this.isSubmiting = false;
             });
