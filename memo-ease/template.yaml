@@ -1,0 +1,244 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  sam-app
+
+  Sample SAM Template for sam-app
+
+Parameters:
+  Env:
+    Type: String
+    AllowedValues:
+      - prod
+      - stg
+      - dev
+      - local
+    Default: local
+  RoleArn:
+    Type: String
+    Default: 'arn:aws:iam::913905735063:role/MdMemoLambdaRole'
+
+Mappings:
+  EnvMap:
+    prod:
+      FileApiCustomDomain: 'fileapi.memo-ease.com'
+      ApiCustomDomain: 'api.memo-ease.com'
+      StaticPageDomain: 'memo-ease.com'
+      StaticPageBucket: 'memo-ease.com'
+      CertificateArn: 'arn:aws:acm:ap-northeast-1:913905735063:certificate/8a5d04ae-00b9-499a-b530-5a30fb2c66eb'
+      ApiStageName: 'Prod'
+      AllowOrigin: "'https://memo-ease.com'"
+      WhiteIpAddressFrom: '0.0.0.0'
+      WhiteIpAddressTo: '255.255.255.255'
+      APIName: 'Memo Ease API Production'
+      FileAPIName: 'Memo Ease File API Production'
+      DbSuffix: '_prod'
+      LambdaMemorySize: 1024
+      FileStorageBucketSuffix: '-prod'
+      Route53HostZone: 'Z08559892LNONYYLAEN9Q'
+    stg:
+      FileApiCustomDomain: 'fileapi.stg-memo-ease.tori-blog.net'
+      ApiCustomDomain: 'api.stg-memo-ease.tori-blog.net'
+      StaticPageDomain: "'stg-memo-ease.tori-blog.net'"
+      StaticPageBucket: 'stg-memo-ease.tori-blog.net'
+      CertificateArn: 'arn:aws:acm:ap-northeast-1:913905735063:certificate/373e90a6-7546-462a-a93c-b06fd9ef2013'
+      ApiStageName: 'Stg'
+      AllowOrigin: "'https://stg-memo-ease.tori-blog.net'"
+      WhiteIpAddressFrom: '14.10.121.32'
+      WhiteIpAddressTo: '14.10.121.32'
+      APIName: 'Memo Ease API staging'
+      FileAPIName: 'Memo Ease File API staging'
+      DbSuffix: '_stg'
+      LambdaMemorySize: 512
+      FileStorageBucketSuffix: '-stg'
+      Route53HostZone: 'Z2JCR6TK8NIB6U'
+    dev:
+      FileApiCustomDomain: 'fileapi.dev-memo-ease.tori-blog.net'
+      ApiCustomDomain: 'api.dev-memo-ease.tori-blog.net'
+      StaticPageDomain: "'dev-memo-ease.tori-blog.net'"
+      StaticPageBucket: 'dev-memo-ease.tori-blog.net'
+      CertificateArn: 'arn:aws:acm:ap-northeast-1:913905735063:certificate/538c60a3-1251-41ef-ac1e-a523e669b432'
+      ApiStageName: 'Dev'
+      AllowOrigin: "'https://dev-memo-ease.tori-blog.net'"
+      WhiteIpAddressFrom: '14.10.121.32'
+      WhiteIpAddressTo: '14.10.121.32'
+      APIName: 'Memo Ease API develop'
+      FileAPIName: 'Memo Ease File API develop'
+      DbSuffix: '_dev'
+      LambdaMemorySize: 512
+      FileStorageBucketSuffix: '-dev'
+      Route53HostZone: 'Z2JCR6TK8NIB6U'
+    local:
+      FileApiCustomDomain: 'localfileapi.dev-memo-ease.tori-blog.net'
+      ApiCustomDomain: 'localapi.dev-memo-ease.tori-blog.net'
+      StaticPageDomain: "'dev-memo-ease.tori-blog.net'"
+      StaticPageBucket: 'dev-memo-ease.tori-blog.net'
+      CertificateArn: 'arn:aws:acm:ap-northeast-1:913905735063:certificate/538c60a3-1251-41ef-ac1e-a523e669b432'
+      ApiStageName: 'Local'
+      AllowOrigin: "'https://dev-memo-ease.tori-blog.net'"
+      WhiteIpAddressFrom: '0.0.0.0'
+      WhiteIpAddressTo: '255.255.255.255'
+      APIName: 'Memo Ease API develop'
+      FileAPIName: 'Memo Ease File API develop'
+      DbSuffix: '_dev'
+      LambdaMemorySize: 512
+      FileStorageBucketSuffix: '-dev'
+      Route53HostZone: 'Z2JCR6TK8NIB6U'
+
+Globals:
+  Function:
+    CodeUri: app/
+    Environment:
+      Variables:
+        AllowOrigin: !FindInMap [EnvMap, !Ref Env, AllowOrigin]
+        DbSuffix: !FindInMap [EnvMap, !Ref Env, DbSuffix]
+        FileStorageBucketSuffix: !FindInMap [EnvMap, !Ref Env, FileStorageBucketSuffix]
+        EnvName: !FindInMap [EnvMap, !Ref Env, ApiStageName]
+    MemorySize: !FindInMap [EnvMap, !Ref Env, LambdaMemorySize]
+    Layers:
+      - !Ref MyLayer
+    Runtime: python3.8
+    Timeout: 5
+
+Resources:
+  RestApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      BinaryMediaTypes:
+        - "multipart/form-data"
+        - "image/*"
+        - "video/*"
+        - "audio/*"
+        - "model/*"
+        - "font/*"
+        - "application/octet-stream"
+        - "application/zip"
+        - "application/pdf"
+        - "application/ms*"
+        - "application/java*"
+        - "application/vnd.*"
+        - "application/rtf"
+        - "application/x-7z-compressed"
+      EndpointConfiguration: REGIONAL
+      Cors:
+        AllowCredentials: true
+        AllowHeaders: "'Origin, Authorization, Accept, Content-Type'"
+        AllowMethods: "'GET, PUT, POST, OPTIONS'"
+        AllowOrigin: !FindInMap [EnvMap, !Ref Env, AllowOrigin]
+      Domain:
+        DomainName: !FindInMap [EnvMap, !Ref Env, ApiCustomDomain]
+        CertificateArn: !FindInMap [EnvMap, !Ref Env, CertificateArn]
+        Route53:
+          HostedZoneId: !FindInMap [EnvMap, !Ref Env, Route53HostZone]
+        SecurityPolicy: TLS_1_2
+      Name: !FindInMap [EnvMap, !Ref Env, APIName]
+      StageName: !FindInMap [EnvMap, !Ref Env, ApiStageName]
+
+  MyLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      Description: Layer description
+      ContentUri: 'my_layer/'
+      CompatibleRuntimes:
+        - python3.8
+    Metadata:
+      BuildMethod: python3.8
+      
+  MemoFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: memo.memo_event
+      Role: !Ref RoleArn
+      Events:
+        CreateEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref RestApi
+            Path: /create_memo
+            Method: post
+        GetMemoEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref RestApi
+            Path: /get_memo
+            Method: post
+        SaveMemoEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref RestApi
+            Path: /save_memo
+            Method: post
+        ChangeMemoAliasEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref RestApi
+            Path: /change_memo_alias
+            Method: post
+        CheckHasPasswordEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref RestApi
+            Path: /check_has_password_memo
+            Method: get
+        CheckExistMemoEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref RestApi
+            Path: /check_exist_memo
+            Method: get
+        UpdatePasswordEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref RestApi
+            Path: /update_password
+            Method: post
+        GenerateResetPasswordTokenEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref RestApi
+            Path: /generate_reset_password_token
+            Method: post
+        ResetPasswordEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref RestApi
+            Path: /reset_password
+            Method: post
+        ChangePublicStateEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref RestApi
+            Path: /change_public_state
+            Method: post
+        GetMemoByViewIdEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref RestApi
+            Path: /get_memo_data_by_view_id
+            Method: get
+  
+  FileFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: file.file_event
+      Role: !Ref RoleArn
+      Events:
+        CreateUploadUrlEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref RestApi
+            Path: /create_upload_url
+            Method: post
+
+  FeedbackFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: mail.feedback_event
+      Role: !Ref RoleArn
+      Events:
+        CreateUploadUrlEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref RestApi
+            Path: /feedback
+            Method: post

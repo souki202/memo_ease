@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/index.css">
+    <script src="/js/loadPubParts.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6LfMH4UaAAAAADcm9EflBnA-J2TeMy_EorpcJCR8"></script>
+    <title>Document</title>
+</head>
+<body>
+    <header id="pubHeader"></header>
+    
+    <main>
+        <section class="top-container">
+            <div id="feedbackForm">
+                <h2>お問合せ 兼 フィードバックフォーム</h2>
+                <form action="" @submit.prevent="submit">
+                    <div class="form-group">
+                        <label for="feedbackTitle">件名</label>
+                        <input type="text" id="feedbackTitle" class="form-control" placeholder="件名" v-model="title">
+                    </div>
+                    <div class="form-group">
+                        <label for="feedbackEmail">Email</label>
+                        <input type="email" id="feedbackEmail" class="form-control" placeholder="Email" v-model="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="feedbackBody">本文(必須)</label>
+                        <textarea name="feedbackBody" id="feedbackBody" class="form-control"  cols="30" rows="10" v-model="body" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <p>※返信はご質問等に限定しております. あらかじめご了承ください.</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary g-recaptcha" :disabled="isSubmiting">送信</button>
+                    </div>
+
+                    <div class="form-group" v-if="isSuccess">
+                        <div class="alert alert-success">送信が完了しました.</div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer id="pubFooter"></footer>
+
+    <script src="/js/feedback.js"></script>
+</body>
+</html>

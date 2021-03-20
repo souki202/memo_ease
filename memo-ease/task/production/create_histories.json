@@ -1,0 +1,25 @@
+{
+    "AttributeDefinitions": [
+        {
+            "AttributeName": "ip_address",
+            "AttributeType": "S"
+        },
+        {
+            "AttributeName": "created_at",
+            "AttributeType": "S"
+        }
+    ],
+    "TableName": "memo_ease_create_histories_prod",
+    "KeySchema": [
+        {
+            "AttributeName": "ip_address",
+            "KeyType": "HASH"
+        },
+        {
+            "AttributeName": "created_at",
+            "KeyType": "RANGE"
+        }
+    ],
+
+    "BillingMode": "PAY_PER_REQUEST"
+}

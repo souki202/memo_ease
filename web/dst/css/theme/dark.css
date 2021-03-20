@@ -1,0 +1,22 @@
+:root {
+    --primary-bg-color: #111115;
+    --primary-text-color: #eee;
+
+    --modal-separator-color: #888;
+
+    --header-bg-color: #002854;
+    --header-text-color: #ccc;
+    --header-link-hover-color: #eee;
+
+    --sidebar-bg-color: #161b22;
+    --sidebar-text-color: #eee;
+    --sidebar-switch-color: #eee;
+    --sidebar-mobile-switch-normal-color: #eee;
+    --sidebar-mobile-switch-open-color: #eee;
+    --sidebar-separator-color: #888;
+    --sidebar-content-icon-bg-color: #343a40;
+
+    --memo-title-bg-color: #161b22;
+    --memo-title-border: #888;
+    --memo-editor-overlay-text-color: #aaa;
+}

@@ -1,0 +1,352 @@
+$sidebar-width: 64px;
+
+body {
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+}
+
+/**
+ * サイドバー
+ */
+.sidebar-container {
+    .sidebar-close-bg {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: none;
+        margin: 0;
+    }
+    #sidebar {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: $sidebar-width;
+        height: 100%;
+        background-color: var(--sidebar-bg-color);
+        color: var(--sidebar-text-color);
+        padding-top: 64px;
+        overflow: auto;
+        overflow-x: hidden;
+        z-index: 100;
+
+        transition: width 200ms ease;
+
+        .sidebar-inner {
+            height: 100%;
+            width: 256px;
+            display: flex;
+            flex-direction: column;
+        }
+    
+
+        .content-list {
+            margin-bottom: 0.5rem;
+
+            .content-header {
+                font-size: 1rem;
+                font-weight: bold;
+                margin: 1rem 2rem 0.5rem 1rem;
+                transition: opacity .2s ease;
+            }
+
+            .content-icon {
+                position: relative;
+                width: 48px;
+                height: 48px;
+                margin: 0 0.5rem;
+                border-radius: 4px;
+                background-color: var(--sidebar-content-icon-bg-color);
+
+                i {
+                    position: absolute;
+                
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    -webkit-transform: translate(-50%, -50%);
+                    -ms-transform: translate(-50%, -50%);
+                }
+            }
+
+            .content-title {
+                flex-grow: 1;
+                margin-left: 0.5rem;
+                font-size: 16px;
+            }
+
+            ul {
+                margin: 0;
+                padding: 0;
+
+                li {
+                    position: relative;
+                    list-style: none;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    align-items: center;
+                    height: 64px;
+
+                    &::after {
+                        position: absolute;
+                        font-family: "Font Awesome 5 Free";
+                        font-weight: 900;
+                        content: "\f105";
+                        display: inline-block;
+                        font-style: normal;
+                        font-variant: normal;
+                        text-rendering: auto;
+                        -webkit-font-smoothing: antialiased;
+                        -moz-osx-font-smoothing: grayscale;
+                        text-align: center;
+                        right: 15px;
+                        top: 19px;
+                    }
+
+                    a, span {
+                        position: absolute;
+                        display: block;
+                        top: 0;
+                        bottom: 0;
+                        right: 0;
+                        left: 0;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+
+        .site-info-list {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+
+            .content-icon {
+                width: 48px;
+                height: auto;
+            }
+
+            ul li {
+                height: 32px;
+            }
+
+            ul li::after {
+                content: none;
+                top: 3px;
+            }
+
+            .sidebar-separator {
+                margin-bottom: 0.5rem;
+            }
+        }
+    }
+
+    #switchSidebar {
+        display: none;
+    }
+
+    .sidebar-switch-container {
+        position: fixed;
+        width: 64px;
+        height: 64px;
+        padding-left: 12px;
+        z-index: 10001;
+
+        i {
+            position: absolute;
+            opacity: 1;
+            transition: opacity 200ms 0s linear;
+        
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+        }
+        .sidebar-switch-label {
+            display: block;
+            color: var(--sidebar-switch-color);
+            margin-bottom: 0;
+        }
+    }
+
+    #switchSidebar:not(:checked) {
+        ~ .sidebar-switch-container .sidebar-close-button {
+            opacity: 0;
+        }
+        
+        + #sidebar{
+            .content-header {
+                opacity: 0;
+            }
+            .sidebar-close-bg {
+                display: none;
+            }
+        }
+    }
+    
+    // サイドバーを開いているときの見た目
+    #switchSidebar:checked {
+        ~ .sidebar-switch-container .sidebar-open-button {
+            opacity: 0;
+        }
+        
+        + #sidebar .content-header {
+            opacity: 1;
+        }
+
+        + #sidebar {
+            width: 256px;
+        }
+    }
+}
+
+#editor {
+    margin-left: $sidebar-width;
+}
+
+main, .editor-container, .editor-inner {
+    height: 100%;
+}
+
+.editor-inner {
+    display: flex;
+    flex-direction: column;
+
+    .title-container, .memo-title {
+        height: 64px;
+        margin-bottom: 0;
+    }
+    
+    .title-container {
+        position: relative;
+
+        flex-shrink: 0;
+        flex-grow: 0;
+    
+        &.form-group {
+            margin-bottom: 0.25rem;
+        }
+        
+        .memo-title {
+            + .memo-title-border {
+                position: absolute;
+                bottom: 12px;
+                width: 100%;
+                border-bottom: 1px solid transparent;
+                transition: border-bottom 200ms 0s ease;
+            }
+    
+            &:focus + .memo-title-border {
+                border-bottom: 1px solid var(--memo-title-border);
+            }
+        }
+    
+        .memo-title, .memo-title[readonly], .memo-title:focus {
+            background-color: var(--memo-title-bg-color);
+            color: var(--base-text-color);
+            font-size: 22px;
+            background-color: inherit;
+            border: none;
+            box-shadow: none;
+        }
+    }
+    
+    .editor-body {
+        flex-grow: 1;
+    }
+    .cke_show_borders {
+        overflow: scroll;
+    }
+
+    .ck-editor {
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+
+        .ck-editor__main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .ck-content {
+            flex-grow: 1;
+        }
+    }
+}
+
+.memo-editor-overlay {
+    position: fixed;
+    bottom: 0;
+    right: 8px;
+    color: var(--memo-editor-overlay-text-color);
+
+    .memo-message {
+        text-align: right;
+    }
+}
+
+
+.modal-form-label {
+    width: 128px;
+    margin: 4px 12px 4px 0;
+}
+
+@media screen and (max-width:425px) {
+    html, body {
+        width: 425px;
+    }
+
+    .sidebar-container {
+        #sidebar {
+            width: 0;
+        }
+
+        .sidebar-switch-container {
+            .sidebar-switch-label {
+                color: var(--sidebar-mobile-switch-normal-color);
+            }
+        }
+
+        #switchSidebar {
+            ~ .sidebar-switch-container .sidebar-close-button {
+                color: var(--sidebar-mobile-switch-open-color);
+            }
+        }
+    }
+
+    #editor {
+        margin-left: 0;
+
+        .editor-inner {
+            .title-container {
+                margin-left: $sidebar-width;
+            }
+        }
+    }
+}
+
+#passwordForm {
+    margin-bottom: 1rem;
+}
+
+.password-reset-link {
+    cursor: pointer;
+    color: #007bff;
+    font-size: 0.75rem;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+@media screen and (max-width:767px) {
+    .modal-form-label {
+        width: 100%;
+    }
+}
