@@ -14,6 +14,7 @@ import ImageCaption from '@ckeditor/ckeditor5-image/src/imagecaption';
 import ImageStyle from '@ckeditor/ckeditor5-image/src/imagestyle';
 import ImageToolbar from '@ckeditor/ckeditor5-image/src/imagetoolbar';
 import ImageUpload from '@ckeditor/ckeditor5-image/src/imageupload';
+import ImageResize from '@ckeditor/ckeditor5-image/src/imageresize';
 import MediaEmbed from '@ckeditor/ckeditor5-media-embed/src/mediaembed';
 
 import Link from '@ckeditor/ckeditor5-link/src/link';
@@ -145,6 +146,7 @@ ClassicEditor.builtinPlugins = [
     FontColor,
     FontBackgroundColor,
     FontSize,
+    
     // 文字装飾群
     Bold,
     Italic,
@@ -164,6 +166,7 @@ ClassicEditor.builtinPlugins = [
     ImageToolbar,
     ImageUpload,
     ImageInsert,
+    ImageResize,
     MediaEmbed,
 
     // Table
