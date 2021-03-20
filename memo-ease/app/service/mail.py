@@ -9,7 +9,6 @@ client = boto3.client('ses')
 COMPANY_NAME = 'MemoEase'
 
 MY_MAIL = '290Livermorium@gmail.com'
-MEMO_EASE_FROM = 'memo-ease@tori-blog.net'
 
 reset_password_mail_body = '''
 パスワードリセット用のURLを発行しました。
@@ -59,7 +58,7 @@ def send_text_mail(from_view_name, from_mail, to_mail, subject, body):
     return False
 
 def send_feedback(to_mail, subject, body):
-    return send_text_mail('MemoEase問い合わせ', MEMO_EASE_FROM, MY_MAIL, subject, body)
+    return send_text_mail('MemoEase問い合わせ', get_support_from(), MY_MAIL, subject, body)
 
 def send_reset_password_mail(to_mail, reset_token):
     body = reset_password_mail_body + MAIL_FOOTER
@@ -68,3 +67,6 @@ def send_reset_password_mail(to_mail, reset_token):
 
 def get_noreply_from():
     return 'noreply@memo-ease.com'
+
+def get_support_from():
+    return 'support@memo-ease.com'
