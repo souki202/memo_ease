@@ -60,7 +60,7 @@
                     <form action="" method="post" @submit.prevent="updateMemoAlias">
                         <div class="form-group">
                             <label for="memoName" class="modal-form-label">メモID</label>
-                            <input type="text" class="form-control" id="memoName" v-model="memoAliasInput">
+                            <input type="text" class="form-control" id="memoName" v-model="memoAliasInput" maxlength="1000">
                         </div>
                         <button type="submit" class="btn btn-primary" :disabled="isSubmiting">更新</button>
                     </form>
@@ -80,19 +80,19 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <label for="newPassword" class="modal-form-label">新しいパスワード</label>
-                                <input type="password" class="form-control" id="newPassword" v-model="newPassword">
+                                <input type="password" class="form-control" id="newPassword" v-model="newPassword" maxlength="1000">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="input-group">
                                 <label for="newPassword2" class="modal-form-label">新しいパスワード(確認用)</label>
-                                <input type="password" class="form-control" id="newPassword2" v-model="newPassword2">
+                                <input type="password" class="form-control" id="newPassword2" v-model="newPassword2" maxlength="1000">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="input-group">
                                 <label for="resetEmail" class="modal-form-label">再設定用Email</label>
-                                <input type="email" class="form-control" id="resetEmail" v-model="email">
+                                <input type="email" class="form-control" id="resetEmail" v-model="email" maxlength="1000">
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary" :disabled="isSubmiting">更新</button>
@@ -221,6 +221,10 @@ export default {
             if (!this.memoAlias) {
                 window.alert('メモの名前を入力してください.');
                 return;
+            }
+
+            if (this.memoAlias.length > 1000) {
+                windlw.alert('メモIDの文字数は1000文字までです.')
             }
 
             this.isSubmiting = true;
