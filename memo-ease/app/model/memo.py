@@ -302,6 +302,27 @@ def change_memo_alias(memo_uuid: str, old_alias: str, new_alias: str):
     return False
 
 '''
+存在しているaliasか調べる
+
+@return {bool} 存在していればtrue
+'''
+def get_is_exist_alias(alias: str) -> bool:
+    if not alias:
+        raise 'alias is empty.'
+    
+    try:
+        res = memo_aliases_table.query(
+            KeyConditionExpression=Key('alias_name').eq(alias),
+            ConsistentRead=True
+        )['Items']
+        return not not res
+    except Exception as e:
+        print(e)
+        raise 'alias is empty.'
+        
+    raise 'alias is empty.'
+
+'''
 メモのview_idからメモ情報を取得する. 本体は取らない
 
 @param str view_id
