@@ -14,6 +14,7 @@ import model.memo as my_memo
 import model.auth as my_auth
 
 MAX_TITLE_LENGTH = 1024
+MAX_ALIAS_LENGTH = 1024
 MAX_BODY_LEN = 1024 * 1024 * 4
 
 '''
@@ -27,6 +28,9 @@ def check_memo_title_length(title: str) -> bool:
 
 def check_memo_body_length(body: str) -> bool:
     return len(body) <= MAX_BODY_LEN
+
+def check_memo_alias_length(alias: str) -> bool:
+    return len(alias) <= MAX_ALIAS_LENGTH
 
 '''
 パスワードチェック付きでメモの情報を取得 (本文以外)

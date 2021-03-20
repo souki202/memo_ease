@@ -247,6 +247,12 @@ def change_memo_alias_event(event, context):
     params = json.loads(event['body'] or '{ }')
     new_memo_alias = params['params'].get('new_memo_alias')
 
+    # 文字数チェック
+    if not my_memo_service.check_memo_alias_length(new_memo_alias):
+        print('Alias can be up to 1000 characters. memo_uuid: ' + memo_uuid + ' old_alias: ' + memo_data['alias_name'] + ' new_alias: ' + new_memo_alias)
+        return create_common_return_array(406, {'message': 'Alias can be up to 1000 characters. ',})
+
+
     if memo_data['alias_name'] == new_memo_alias:
         print('Same alias. memo_uuid: ' + memo_uuid + ' old_alias: ' + memo_data['alias_name'] + ' new_alias: ' + new_memo_alias)
         return create_common_return_array(406, {'message': 'Failed to update alias. ',})
