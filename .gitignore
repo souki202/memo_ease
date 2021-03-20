@@ -1,8 +1,0 @@
-node_modules
-memo-ease/my_layer_libs
-web/dst/css/*
-!web/dst/css/static
-!web/dst/css/theme
-
-web/dst/js/*
-!web/dst/js/static
