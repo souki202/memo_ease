@@ -137,7 +137,16 @@ const app = createApp({
                     this.showMemoUrlModal = true;
                 }
 
+                // タイトル更新
+                document.title = this.memo.title + ' MemoEase';
+
+                // 編集履歴に追加
                 updateHistory(this.memo.memoUuid, this.memo.memoAlias, this.memo.title);
+
+                // サイドバーのモーダルの新しいパスワードに規定値設定
+                if (this.memo.password) {
+                    this.$refs.sidebar.initPassword();
+                }
             }).catch(err => {
                 console.log(err);
                 window.alert('パスワードが間違っているか, サーバエラーが発生しました.');

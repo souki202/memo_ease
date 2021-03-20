@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
     <link rel="stylesheet" href="/css/edit.css">
     <script src="/js/loadCommonParts.js"></script>
     <title>Memo Editor</title>
@@ -19,6 +20,7 @@
             v-model:view-id="memo.viewId"
             v-model:is-public="memo.isPublic"
             v-model:title="memo.title"
+            ref="sidebar"
         ></sidebar>
         <div class="editor-container" id="editor">
             <div class="editor-inner">

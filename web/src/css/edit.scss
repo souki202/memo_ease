@@ -2,6 +2,7 @@ $sidebar-width: 64px;
 
 body {
     width: 100%;
+    min-width: 1px;
     height: 100vh;
     margin: 0;
 }
@@ -208,6 +209,7 @@ body {
 
 #editor {
     margin-left: $sidebar-width;
+    width: calc(100% - 64px);
 }
 
 main, .editor-container, .editor-inner {
@@ -298,9 +300,9 @@ main, .editor-container, .editor-inner {
 }
 
 @media screen and (max-width:425px) {
-    html, body {
-        width: 425px;
-    }
+    // html, body {
+    //     width: 425px;
+    // }
 
     .sidebar-container {
         #sidebar {
@@ -322,6 +324,7 @@ main, .editor-container, .editor-inner {
 
     #editor {
         margin-left: 0;
+        width: 100%;
 
         .editor-inner {
             .title-container {

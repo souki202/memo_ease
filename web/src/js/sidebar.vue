@@ -265,6 +265,8 @@ export default {
             }).then(res => {
                 console.log(res);
                 this.passwordInput = this.newPassword;
+                this.newPassword = this.newPassword;
+                this.newPassword2 = this.newPassword;
                 window.alert('パスワード設定を更新しました.');
             }).catch(err => {
                 console.log(err);
@@ -312,6 +314,11 @@ export default {
             var copyText = document.querySelector("#iframeCode");
             copyText.select();
             document.execCommand("copy");
+        },
+
+        initPassword() {
+            this.newPassword = this.password;
+            this.newPassword2 = this.password;
         }
     },
 }
