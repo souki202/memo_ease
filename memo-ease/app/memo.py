@@ -235,7 +235,7 @@ def get_memo_data_by_view_id_event(event, context):
         print('Failed to record access. memo_uuid: ' + memo_uuid)
         return create_common_return_array(500, {'message': "Failed to get memo data.",})
 
-    return create_common_return_array(200, {'body': memo_body})
+    return create_common_return_array(200, {'body': memo_body, 'title': memo_data['title']})
 
 def change_memo_alias_event(event, context):
     # メモの情報取得

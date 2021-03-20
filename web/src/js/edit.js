@@ -137,6 +137,9 @@ const app = createApp({
                     this.showMemoUrlModal = true;
                 }
 
+                // タイトル更新
+                document.title = this.memo.title + ' MemoEase';
+
                 updateHistory(this.memo.memoUuid, this.memo.memoAlias, this.memo.title);
             }).catch(err => {
                 console.log(err);

@@ -18,6 +18,7 @@ const app = createApp({
 
             memo: {
                 body: '',
+                title: '',
                 viewId: '',
             }
         }
@@ -39,6 +40,8 @@ const app = createApp({
             }).then(res => {
                 // console.log(res.data);
                 this.memo.body = res.data.body;
+                this.memo.title = res.data.title;
+                document.title = this.memo.title + ' MemoEase';
             }).catch(err => {
                 console.log(err);
                 window.alert('メモの読み込みに失敗しました.');
