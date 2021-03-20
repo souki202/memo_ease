@@ -2,15 +2,15 @@
 
 ## リソース
 
-API Gateway
-Lambda
-DynamoDB
-S3
-Route53
-CloudFront
-CloudFormation
-SES
-Certificate Manager
+* API Gateway
+* Lambda
+* DynamoDB
+* S3
+* Route53
+* CloudFront
+* CloudFormation
+* SES
+* Certificate Manager
 
 APIの構成はmemo-ease内の`template.yml`参照
 
@@ -19,8 +19,6 @@ APIの構成はmemo-ease内の`template.yml`参照
 ## ファイルアップロード
 
 CKEditorでMyUploaderAdaptorクラスを実装. ckeditor.js参照
-
-URLは各環境ごとに変わる
 
 1. https://api.memo-ease.com/create_upload_url にファイル情報を送信
    * dev api.dev-memo-ease.tori-blog.net

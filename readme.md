@@ -49,7 +49,7 @@ requirements.txtから全然よしなにしてくれないので, 普通にdeplo
 
 本当はActionsとCodeBuildでなんとかしたかったけどディレクトリ構造が悪かったりで手抜き
 
-各環境の`deploy_{env}.bat`を本プロジェクトのルートをカレントディレクトリにしてWindows上で実行
+各環境の`deploy_{env}.bat`を本プロジェクトのルートをカレントディレクトリにしてWindows上で実行するだけ.
 
 productionのみ, deploy後に自動的にstagingブランチに戻る
 
