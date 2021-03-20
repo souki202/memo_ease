@@ -247,6 +247,15 @@ def change_memo_alias_event(event, context):
     params = json.loads(event['body'] or '{ }')
     new_memo_alias = params['params'].get('new_memo_alias')
 
+    if memo_data['alias_name'] == new_memo_alias:
+        print('Same alias. memo_uuid: ' + memo_uuid + ' old_alias: ' + memo_data['alias_name'] + ' new_alias: ' + new_memo_alias)
+        return create_common_return_array(406, {'message': 'Failed to update alias. ',})
+
+    # 既にあるエイリアスか調べる
+    if my_memo.get_is_exist_alias(new_memo_alias):
+        print('Duplicate alias. memo_uuid: ' + memo_uuid + ' old_alias: ' + memo_data['alias_name'] + ' new_alias: ' + new_memo_alias)
+        return create_common_return_array(406, {'message': 'Failed to update alias. ',})
+
     if not my_memo.change_memo_alias(memo_uuid, memo_data['alias_name'], new_memo_alias):
         print('Failed to update alias. memo_uuid: ' + memo_uuid + ' old_alias: ' + memo_data['alias_name'] + ' new_alias: ' + new_memo_alias)
         return create_common_return_array(500, {'message': 'Failed to update alias. ',})

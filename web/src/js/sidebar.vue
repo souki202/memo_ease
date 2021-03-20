@@ -56,6 +56,7 @@
             <v-modal v-model="modals.aliasSettings" @close="closeModal" :modal-id="'aliasSettings'">
                 <template v-slot:title>メモID設定</template>
                 <div>
+                    <p>注意: パスワードが設定されていない場合, IDがわかれば誰でも編集できます.</p>
                     <form action="" method="post" @submit.prevent="updateMemoAlias">
                         <div class="form-group">
                             <label for="memoName" class="modal-form-label">メモID</label>
@@ -221,6 +222,7 @@ export default {
                 window.alert('メモの名前を入力してください.');
                 return;
             }
+
             this.isSubmiting = true;
             axios.post(getApiUrl() + '/change_memo_alias', {
                 params: {
@@ -234,7 +236,17 @@ export default {
                 window.alert('メモIDを更新しました');
             }).catch(err => {
                 console.log(err);
-                window.alert('メモIDの更新に失敗しました');
+                if (err.response) {
+                    if (err.response.status < 500) {
+                        window.alert('そのメモIDは既に登録されています.');
+                    }
+                    else {
+                        window.alert('サーバーエラーが発生しました.');
+                    }
+                }
+                else {
+                    window.alert('エラーが発生しました');
+                }
             }).then(() => {
                 this.isSubmiting = false;
             });
