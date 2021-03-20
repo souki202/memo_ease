@@ -12,6 +12,11 @@ async function loadCommonParts(url, insertTarget) {
     }).then(() => {});
 }
 
+async function setPartsWithHtml(body, insertTarget) {
+    if (!insertTarget) return;
+    insertTarget.innerHTML = body;
+}
+
 function addBeforeParts(url, className, idName, insertTarget) {
     if (!insertTarget) return;
     let xhr = new XMLHttpRequest();
