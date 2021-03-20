@@ -24,7 +24,7 @@ Mappings:
       FileApiCustomDomain: 'fileapi.memo-ease.com'
       ApiCustomDomain: 'api.memo-ease.com'
       StaticPageDomain: 'memo-ease.com'
-      StaticPageBucket: 'memo-ease-staticpage-prod'
+      StaticPageBucket: 'memo-ease.com'
       CertificateArn: ''
       ApiStageName: 'Prod'
       AllowOrigin: "'https://memo-ease.com'"
@@ -56,7 +56,7 @@ Mappings:
       FileApiCustomDomain: 'fileapi.dev-memo-ease.tori-blog.net'
       ApiCustomDomain: 'api.dev-memo-ease.tori-blog.net'
       StaticPageDomain: "'dev-memo-ease.tori-blog.net'"
-      StaticPageBucket: 'memo-ease-staticpage-dev'
+      StaticPageBucket: 'dev-memo-ease.tori-blog.net'
       CertificateArn: 'arn:aws:acm:ap-northeast-1:913905735063:certificate/538c60a3-1251-41ef-ac1e-a523e669b432'
       ApiStageName: 'Dev'
       AllowOrigin: "'https://dev-memo-ease.tori-blog.net'"
@@ -72,7 +72,7 @@ Mappings:
       FileApiCustomDomain: 'localfileapi.dev-memo-ease.tori-blog.net'
       ApiCustomDomain: 'localapi.dev-memo-ease.tori-blog.net'
       StaticPageDomain: "'dev-memo-ease.tori-blog.net'"
-      StaticPageBucket: 'memo-ease-staticpage-dev'
+      StaticPageBucket: 'dev-memo-ease.tori-blog.net'
       CertificateArn: 'arn:aws:acm:ap-northeast-1:913905735063:certificate/538c60a3-1251-41ef-ac1e-a523e669b432'
       ApiStageName: 'Local'
       AllowOrigin: "'https://dev-memo-ease.tori-blog.net'"
