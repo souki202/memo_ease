@@ -41,6 +41,9 @@ def get_now_string():
 def get_calced_from_now_string(diff_sec: int):
     return datetime.datetime.fromtimestamp(int(time.time()) - diff_sec).strftime('%Y-%m-%d %H:%M:%S')
 
+def get_unix_time(diff_sec: int) -> int:
+    return int(time.time()) + diff_sec
+
 def parse_multipart_form(headers, body):
     fp = io.BytesIO(base64.b64decode(body))
     environ = {'REQUEST_METHOD': 'POST'}

@@ -54,6 +54,7 @@ const app = createApp({
             },
 
             isSubmiting: false,
+            isSuccessGenerateResetPassword: false,
         }
     },
     mounted() {
@@ -64,10 +65,6 @@ const app = createApp({
         if (!this.memo.memoAlias && !this.memo.memoUuid) {
             window.alert('メモIDが設定されていません.');
             location.href = '/';
-        }
-
-        if (!this.memo.memoAlias) {
-            this.memo.memoAlias = this.memo.memoUuid;
         }
 
         // 初期化
@@ -221,6 +218,31 @@ const app = createApp({
                 console.log(err);
                 window.alert('メモの保存に失敗しました.');
             }).then(() => {});
+        },
+
+        passwordReset() {
+            if (this.isSubmiting) {
+                return;
+            }
+            this.isSuccessGenerateResetPassword = false;
+            this.isSubmiting = true;
+            axios.post(getApiUrl() + '/generate_reset_password_token', {
+                params: {
+                    memo_uuid: this.memo.memoUuid,
+                    memo_alias: this.memo.memoAlias
+                }
+            }).then(res => {
+                this.isSuccessGenerateResetPassword = true;
+            }).catch(err => {
+                if (err.response) {
+                    if (err.response.status == 406) {
+                        window.alert('リセット用メールの送信に失敗しました. メールアドレスが設定されていない可能性があります.');
+                    }
+                }
+                window.alert('サーバーエラーによりリセット用メールの送信に失敗しました.');
+            }).then(() => {
+                this.isSubmiting = false;
+            });
         },
 
         /**

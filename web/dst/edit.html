@@ -71,7 +71,8 @@
                         <p>
                             編集するにはパスワードを入力してください.
                         </p>
-                        <form action="" method="post" @submit.prevent="getMemoData">
+                        <!-- パスワード入力フォーム -->
+                        <form action="" method="post" @submit.prevent="getMemoData" id="passwordForm">
                             <div class="form-group">
                                 <div class="input-group">
                                     <label for="nowPassword" class="modal-form-label">パスワード</label>
@@ -80,6 +81,14 @@
                             </div>
                             <button type="submit" class="btn btn-primary" :disabled="isSubmiting">送信</button>
                         </form>
+                        <!-- パスワードリセット用リンク -->
+                        <div class="reset-password">
+                            <p><span class="password-reset-link" @click="passwordReset">パスワードを忘れた場合, ここをクリックでリセットできます.</span></p>
+                                
+                            <div class="form-group" v-if="isSuccessGenerateResetPassword">
+                                <div class="alert alert-success">リセット用メールの送信が完了しました.</div>
+                            </div>
+                        </div>
                     </div>
                 </v-modal>    
             </div>

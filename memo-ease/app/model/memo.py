@@ -15,10 +15,14 @@ from my_common import *
 db_resource = boto3.resource("dynamodb")
 db_client = boto3.client("dynamodb", region_name='ap-northeast-1')
 
+EXPIRATION_RESET_PASS = 60 * 5 # 5分
+
 MEMOS_TABLE_NAME = 'memo_ease_memos' + os.environ['DbSuffix']
 MEMO_ALIASES_TABLE_NAME = 'memo_ease_memo_aliases' + os.environ['DbSuffix']
+PASS_RESET_TABLE_NAME = 'memo_ease_password_reset_tokens' + os.environ['DbSuffix']
 memos_table = db_resource.Table(MEMOS_TABLE_NAME)
 memo_aliases_table = db_resource.Table(MEMO_ALIASES_TABLE_NAME)
+pass_reset_table = db_resource.Table(PASS_RESET_TABLE_NAME)
 
 '''
 @return {str} 作成したメモのuuid
@@ -122,6 +126,30 @@ def update_password(memo_uuid: str, new_password: str, email: str) -> bool:
             ExpressionAttributeValues = {
                 ':password': hash_pass,
                 ':email': email,
+                ':accessed_at': now,
+                ':updated_at': now,
+            },
+            ReturnValues="UPDATED_NEW"
+        )
+        return not not res
+    except Exception as e:
+        print(e)
+        return False
+    return False
+
+def delete_password(memo_uuid: str) -> bool:
+    if not memo_uuid:
+        return False
+    now = get_now_string()
+
+    try:
+        res = memos_table.update_item(
+            Key = {
+                'uuid': memo_uuid,
+            },
+            UpdateExpression = 'set password=:password, updated_at=:updated_at, accessed_at=:accessed_at',
+            ExpressionAttributeValues = {
+                ':password': '',
                 ':accessed_at': now,
                 ':updated_at': now,
             },
@@ -291,5 +319,64 @@ def get_memo_by_view_id(view_id: str) -> dict:
             return None
         return res[0]
     except Exception as e:
+        return False
+    return False
+
+'''
+パスワードリセット用のtokenを発行して登録
+
+@param str memo_uuid
+@return {str} token文字列. 失敗すればFalse
+'''
+def add_password_reset_token(memo_uuid: str) -> str:
+    if not memo_uuid:
+        return False
+    
+    try:
+        token = secrets.token_urlsafe(64)
+
+        res = pass_reset_table.put_item(
+            Item = {
+                'token': token,
+                'uuid': memo_uuid,
+                'created_at': get_now_string(),
+                'expiration_time': get_unix_time(EXPIRATION_RESET_PASS)
+            }
+        )
+
+        return token
+    except Exception as e:
+        print(e)
+        return False
+    return False
+
+def get_password_reset_info(token: str) -> dict:
+    if not token:
+        return False
+    
+    try:
+        res = pass_reset_table.query(
+            KeyConditionExpression=Key('token').eq(token)
+        )['Items']
+        if not res:
+            return None
+        return res[0]
+    except Exception as e:
+        print(e)
+        return False
+    return False
+
+def delete_password_reset_info(token: str) -> bool:
+    if not token:
+        return False
+    try:
+        res = pass_reset_table.delete_item(
+            Key={
+                'token': token
+            }
+        )
+        return not not res
+    except Exception as e:
+        print(e)
         return False
     return False

@@ -53,7 +53,7 @@ def get_memo_data_with_auth(event):
     elif memo_alias:
         memo_data = my_memo.get_memo_by_alias(memo_alias)
     if not memo_data:
-        print('Failed to get memo data. memo_uuid: ' + memo_uuid)
+        print('Failed to get memo data. memo_uuid: ' + str(memo_uuid) + ' memo_alias: ' + str(memo_alias))
         return memo_data
 
     memo_uuid = memo_data['uuid']
@@ -85,7 +85,48 @@ def get_memo_data_without_auth(event):
     elif memo_alias:
         memo_data = my_memo.get_memo_by_alias(memo_alias)
     if not memo_data:
-        print('Failed to get memo data. memo_uuid: ' + memo_uuid + ' memo_alias: ' + memo_alias)
+        print('Failed to get memo data. memo_uuid: ' + str(memo_uuid) + ' memo_alias: ' + str(memo_alias))
         return memo_data
 
     return memo_data
+
+def get_memo_data_without_auth_post(event):
+    params = json.loads(event['body'] or '{ }')
+    if not params or not params.get('params'):
+        return False
+    
+    memo_uuid = params['params'].get('memo_uuid', '')
+    memo_alias = params['params'].get('memo_alias', '')
+    if not memo_uuid and not memo_alias:
+        return False
+
+    # 一旦情報を取得
+    memo_data = None
+    if memo_uuid:
+        memo_data = my_memo.get_memo(memo_uuid)
+    elif memo_alias:
+        memo_data = my_memo.get_memo_by_alias(memo_alias)
+    if not memo_data:
+        print('Failed to get memo data. memo_uuid: ' + str(memo_uuid) + ' memo_alias: ' + str(memo_alias))
+        return memo_data
+
+    return memo_data
+
+def reset_password(token: str) -> str:
+    if not token:
+        return False
+    
+    reset_info = my_memo.get_password_reset_info(token)
+    if not reset_info:
+        print('Failed to get reset password info. token: ' + token)
+        return False
+    
+    if not my_memo.delete_password_reset_info(token):
+        print('Failed to delete reset password info. token:' + token)
+        return False
+    
+    if not my_memo.delete_password(reset_info['uuid']):
+        print('Failed to delete password. memo_uuid: ' + reset_info['uuid'])
+        return False
+    
+    return reset_info['uuid']

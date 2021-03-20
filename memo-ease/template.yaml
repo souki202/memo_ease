@@ -192,6 +192,18 @@ Resources:
             RestApiId: !Ref RestApi
             Path: /update_password
             Method: post
+        GenerateResetPasswordTokenEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref RestApi
+            Path: /generate_reset_password_token
+            Method: post
+        ResetPasswordEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref RestApi
+            Path: /reset_password
+            Method: post
         ChangePublicStateEvent:
           Type: Api
           Properties:
