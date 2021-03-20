@@ -15,6 +15,7 @@ module.exports = {
         index: jsIn + 'index.js',
         pub: jsIn + 'pub.js',
         feedback: jsIn + 'feedback.js',
+        passwordReset: jsIn + 'passwordReset.js',
         edit: jsIn + 'edit.js',
         view: jsIn + 'view.js',
         loadCommonParts: jsIn + 'loadCommonParts.js',

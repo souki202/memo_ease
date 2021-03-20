@@ -331,6 +331,20 @@ main, .editor-container, .editor-inner {
     }
 }
 
+#passwordForm {
+    margin-bottom: 1rem;
+}
+
+.password-reset-link {
+    cursor: pointer;
+    color: #007bff;
+    font-size: 0.75rem;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
 @media screen and (max-width:767px) {
     .modal-form-label {
         width: 100%;

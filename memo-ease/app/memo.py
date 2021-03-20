@@ -12,6 +12,7 @@ import service.memo as my_memo_service
 import model.file as my_file
 import model.auth as my_auth
 import service.s3 as my_s3
+import service.mail as my_mail
 
 def memo_event(event, context):
     if os.environ['EnvName'] != 'Prod':
@@ -32,6 +33,12 @@ def memo_event(event, context):
             return update_password_event(event, context)
         elif resource == '/change_public_state':
             return change_public_state_event(event, context)
+        elif resource == '/change_memo_alias':
+            return change_memo_alias_event(event, context)
+        elif resource == '/generate_reset_password_token':
+            return generate_reset_password_token_event(event, context)
+        elif resource == '/reset_password':
+            return reset_password_event(event, context)
     elif httpMethod == 'GET':
         if resource == '/check_has_password_memo':
             return check_has_password_memo_event(event, context)
@@ -133,25 +140,14 @@ def save_memo_event(event, context):
 パスワードがあるメモか調べる
 '''
 def check_has_password_memo_event(event, context):
-    if not ('queryStringParameters' in event and event['queryStringParameters']):
-        return create_common_return_array(406, {'message': "Not enough input.",})
-    
-    memo_uuid = event['queryStringParameters'].get('memo_uuid')
-    memo_alias = event['queryStringParameters'].get('memo_alias')
-    
-    if not memo_uuid and not memo_alias:
-        return create_common_return_array(406, {'message': "Not enough input.",})
-    
-    # 情報を取得
-    memo_data = None
-    if memo_uuid:
-        memo_data = my_memo.get_memo(memo_uuid)
-    elif memo_alias:
-        memo_data = my_memo.get_memo_by_alias(memo_alias)
+    memo_data = my_memo_service.get_memo_data_without_auth(event)
+
+    if memo_data == None:
+        return create_common_return_array(404, {'message': 'Not Found.',})
+
     if not memo_data:
-        print('Failed to get memo data. memo_uuid: ' + memo_uuid)
-        return create_common_return_array(404, {'message': "Not Found.",})
-    
+        return create_common_return_array(500, {'message': 'Failed to get memo.',})
+
     #成功したので, パスワードがあるかだけ返す
     return create_common_return_array(200, {"has_password": bool(memo_data['password'])})
 
@@ -159,24 +155,16 @@ def check_has_password_memo_event(event, context):
 存在するメモか調べる
 '''
 def check_exist_memo_event(event, context):
-    if not ('queryStringParameters' in event and event['queryStringParameters']):
-        return create_common_return_array(406, {'message': "Not enough input.",})
+    memo_data = my_memo_service.get_memo_data_without_auth(event)
+
+    if memo_data == None:
+        return create_common_return_array(404, {'message': 'Not Found.',})
+
+    if not memo_data:
+        return create_common_return_array(500, {'message': 'Failed to get memo.',})
     
-    memo_uuid = event['queryStringParameters'].get('memo_uuid')
-    memo_alias = event['queryStringParameters'].get('memo_alias')
-    
-    if not memo_uuid and not memo_alias:
-        return create_common_return_array(406, {'message': "Not enough input.",})
-    
-    # 情報を取得
-    memo_data = None
-    if memo_uuid:
-        memo_data = my_memo.get_memo(memo_uuid)
-    elif memo_alias:
-        memo_data = my_memo.get_memo_by_alias(memo_alias)
-    
-    #成功したので, パスワードがあるかだけ返す
-    return create_common_return_array(200, {"is_exist": bool(memo_data)})
+    #成功
+    return create_common_return_array(200, {"is_exist": True})
 
 def update_password_event(event, context):
     # メモの情報取得
@@ -248,3 +236,63 @@ def get_memo_data_by_view_id_event(event, context):
         return create_common_return_array(500, {'message': "Failed to get memo data.",})
 
     return create_common_return_array(200, {'body': memo_body})
+
+def change_memo_alias_event(event, context):
+    # メモの情報取得
+    memo_data = my_memo_service.get_memo_data_with_auth(event)
+    if not memo_data:
+        return create_common_return_array(406, {'message': 'Failed to get memo data.',})
+    memo_uuid = memo_data['uuid']
+
+    params = json.loads(event['body'] or '{ }')
+    new_memo_alias = params['params'].get('new_memo_alias')
+
+    if not my_memo.change_memo_alias(memo_uuid, memo_data['alias_name'], new_memo_alias):
+        print('Failed to update alias. memo_uuid: ' + memo_uuid + ' old_alias: ' + memo_data['alias_name'] + ' new_alias: ' + new_memo_alias)
+        return create_common_return_array(500, {'message': 'Failed to update alias. ',})
+
+    return create_common_return_array(200, {})
+
+def generate_reset_password_token_event(event, context):
+    memo_data = my_memo_service.get_memo_data_without_auth_post(event)
+    if not memo_data:
+        return create_common_return_array(500, {'message': 'Failed to get memo data.',})
+    memo_uuid = memo_data['uuid']
+
+    # リセットに必要な情報がなければ終了
+    if not memo_data['email']:
+        print('Email is not set. memo_uuid: ' + memo_uuid)
+        return create_common_return_array(406, {'message': 'email is not set.',})
+
+    if not memo_data['password']:
+        print('Password is not set. memo_uuid: ' + memo_uuid)
+        return create_common_return_array(406, {'message': 'Password is not set.',})
+
+    # tokenを発行して登録
+    token = my_memo.add_password_reset_token(memo_uuid)
+    if not token:
+        print('Failed to create password reset token. memo_uuid: ' + memo_uuid)
+        return create_common_return_array(500, {'message': 'Failed to create token.',})
+    
+    # メール送信
+    if not my_mail.send_reset_password_mail(memo_data['email'], token):
+        print('Failed to send password reset mail. memo_uuid: ' + memo_uuid + ' email: ' + memo_data['email'])
+        return create_common_return_array(500, {'message': 'Failed to create token.',})
+
+    return create_common_return_array(200, {})
+
+def reset_password_event(event, context):
+    params = json.loads(event['body'] or '{ }')
+    if not params:
+        return create_common_return_array(406, {'message': 'Not enough input.',})
+
+    token = params['params'].get('token')
+
+    if not token:
+        return create_common_return_array(406, {'message': 'token is not set.',})
+
+    memo_uuid = my_memo_service.reset_password(token)
+    if not memo_uuid:
+        return create_common_return_array(500, {'message': 'Failed to reset password.',})
+
+    return create_common_return_array(200, {'uuid': memo_uuid})

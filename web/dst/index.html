@@ -33,7 +33,7 @@
                                 <div class="alert alert-danger" role="alert" v-if="errorMessage" v-cloak>{{ errorMessage }}</div>
                                 <p class="create-memo-comment">
                                     メモの作成及び編集をご利用になる場合,
-                                    <a href="/terms_of_service.html" target="blank">利用規約</a>及び <a href="/privacy_policy.html" target="blank">プライバシーポリシー</a>に同意したものとみなします.
+                                    <a href="/terms_of_service.html" target="blank">利用規約</a> 及び <a href="/privacy_policy.html" target="blank">プライバシーポリシー</a>に同意したものとみなします.
                                 </p>
                             </div>
                             <div id="editMemo">
@@ -45,7 +45,7 @@
                                 </form>
                                 <div class="alert alert-danger" role="alert" v-if="errorMessage" v-cloak>{{ errorMessage }}</div>
                                 <div class="memo-histories">
-                                    <p>メモ閲覧履歴一覧 (ブラウザごとに保存)</p>
+                                    <p>履歴 (ブラウザごとに保存)</p>
                                     <div class="history-item-container" v-for="item in memoHistories">
                                         <p>
                                             <a :href="'/edit.html?memo_uuid=' + item.memoUuid">

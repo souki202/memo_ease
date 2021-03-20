@@ -11,7 +11,26 @@ COMPANY_NAME = 'MemoEase'
 MY_MAIL = '290Livermorium@gmail.com'
 MEMO_EASE_FROM = 'memo-ease@tori-blog.net'
 
-def send_mail(from_view_name, from_mail, to_mail, subject, body):
+reset_password_mail_body = '''
+パスワードリセット用のURLを発行しました。
+下記URLクリックでパスワードがリセットされます。
+
+[[[reset_password_url]]]
+
+本メールに心当たりのない方は、お手数ではございますが、このままこのメールを削除してください。
+
+'''
+
+MAIL_FOOTER = '''
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+発行元 MemoEase
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+'''
+
+def create_reset_password_url(reset_token):
+    return get_page_url() + '/reset_password.html?token=' + reset_token
+
+def send_text_mail(from_view_name, from_mail, to_mail, subject, body):
     try:
         result = client.send_email(
             Source='%s <%s>'%(Header(from_view_name.encode('iso-2022-jp'),'iso-2022-jp').encode(), from_mail),
@@ -40,4 +59,12 @@ def send_mail(from_view_name, from_mail, to_mail, subject, body):
     return False
 
 def send_feedback(to_mail, subject, body):
-    return send_mail('MemoEase問い合わせ', MEMO_EASE_FROM, MY_MAIL, subject, body)
+    return send_text_mail('MemoEase問い合わせ', MEMO_EASE_FROM, MY_MAIL, subject, body)
+
+def send_reset_password_mail(to_mail, reset_token):
+    body = reset_password_mail_body + MAIL_FOOTER
+    body = body.replace('[[[reset_password_url]]]', create_reset_password_url(reset_token))
+    return send_text_mail('noreply', get_noreply_from(), to_mail, 'MemoEase パスワードリセット', body)
+
+def get_noreply_from():
+    return 'noreply@memo-ease.com'

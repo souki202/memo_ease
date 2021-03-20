@@ -5,10 +5,6 @@
             "AttributeType": "S"
         },
         {
-            "AttributeName": "alias_name",
-            "AttributeType": "S"
-        },
-        {
             "AttributeName": "view_id",
             "AttributeType": "S"
         }
@@ -21,18 +17,6 @@
         }
     ],
     "GlobalSecondaryIndexes": [
-        {
-            "IndexName": "alias_name-index",
-            "KeySchema": [
-                {
-                    "AttributeName": "alias_name",
-                    "KeyType": "HASH"
-                }
-            ],
-            "Projection": {
-                "ProjectionType": "ALL"
-            }
-        },
         {
             "IndexName": "view_id-index",
             "KeySchema": [

@@ -51,6 +51,7 @@ const editMemo = createApp({
     },
     methods: {
         submit() {
+            this.errorMessage = '';
             axios.get(getApiUrl() + '/check_exist_memo', {
                 params: {memo_alias: this.memoAlias}
             })
