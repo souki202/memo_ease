@@ -4,11 +4,11 @@
 
 ## 各種URL
 
-<https://dev-memo-ease.tori-blog.net/>
+dev: <https://dev-memo-ease.tori-blog.net/>, <https://api.dev-memo-ease.tori-blog.net/>, <https://fileapi.dev-memo-ease.tori-blog.net/>
 
-<https://stg-memo-ease.tori-blog.net/>
+stg: <https://stg-memo-ease.tori-blog.net/>, <https://api.stg-memo-ease.tori-blog.net/>, <https://fileapi.stg-memo-ease.tori-blog.net/>
 
-<https://memo-ease.com/>
+prod: <https://memo-ease.com/>, <https://api.memo-ease.com/>, <https://fileapi.memo-ease.com/>
 
 ## ローカル環境
 
@@ -30,11 +30,16 @@
 
 ### lambdaのテスト
 
+requirements.txtから全然よしなにしてくれないので, 普通にdeployして叩く
+
+アドレスは`https://api.dev-memo-ease.tori-blog.net`
+アップしたファイルは`https://fileapi.dev-memo-ease.tori-blog.net` で.
+
+↓ 残骸
+
 `sam local invoke "DeleteMemoFunction" -e events/post.json --config-env develop -n env/env.json`
 
-`sam local invoke "GetFileFunction" -e events/post.json --config-env develop -n env/env.json -t file_api_template.yaml --config-file file_api_samconfig.toml -b .aws-sam-file-api/build`
-
-### apiの開始
+### apiの開始(残骸)
 
 `sam build --config-env staging`
 
@@ -44,32 +49,11 @@
 
 本当はActionsとCodeBuildでなんとかしたかったけどディレクトリ構造が悪かったりで手抜き
 
-### dev
+各環境の`deploy_{env}.bat`を本プロジェクトのルートをカレントディレクトリにしてWindows上で実行するだけ.
 
-requiementsの変更があればwslに入って
+productionのみ, deploy後に自動的にstagingブランチに戻る
 
-```shell
-cd /mnt/d/Projects/memo_ease/memo-ease/my_layer
-pip3 install -r requirements.txt -t ../my_layer_libs/python
-```
-
-`sam build --config-env develop --use-container`
-
-`sam deploy --config-env develop`
-
-### staging
-
-`sam build --config-env staging --use-container`
-
-`sam deploy --config-env staging`
-
-### production
-
-`sam build --config-env production --use-container`
-
-`sam deploy --config-env production`
-
-#### prodデプロイ時チェック
+### prodデプロイ時チェック
 
 DynamoDBへの追加
 
