@@ -19,17 +19,17 @@
 <body>
     <header id="pubHeader"></header>
 
-    <main>
+    <main id="app">
         <section class="top-container">
             <div class="top-container-absolute top-texts-container">
                 <div class="top-container-inner">
                     <div class="top-container-inner2 title-container">
                         <div class="title">
                             <div class="title-inner">
-                                <h1>登録不要型のメモアプリ <span class="header-service-name">MemoEase</span></h1>
+                                <h1>{{$t('index.header')}} <span class="header-service-name">MemoEase</span></h1>
                                 <div class="description">
-                                    <p>1ボタンで自分だけのメモを作成できるWebアプリです。</p>
-                                    <p>パスワードも設定でき、安全に使えます。</p>
+                                    <p>{{$t('index.description.one')}}</p>
+                                    <p>{{$t('index.description.two')}}</p>
                                 </div>
                             </div>
                         </div>
@@ -37,23 +37,22 @@
                     <div class="top-container-inner2">
                         <div class="memo-container">
                             <div id="createMemo">
-                                <button type="submit" class="btn btn-primary craete-memo-btn" @click="submit" :disabled="isLoading">メモを新規作成</button>
-                                <div class="alert alert-danger" role="alert" v-if="errorMessage" v-cloak>{{ errorMessage }}</div>
+                                <button type="submit" class="btn btn-primary craete-memo-btn" @click="submit" :disabled="isLoading">{{$t('index.newMemo')}}</button>
                                 <p class="create-memo-comment">
-                                    メモの作成及び編集をご利用になる場合,
-                                    <a href="/terms_of_service.html">利用規約</a> 及び <a href="/privacy_policy.html">プライバシーポリシー</a>に同意したものとみなします.
+                                    {{$t('index.policy[0]')}}
+                                    <a href="/terms_of_service.html">{{$t('index.policy[1]')}}</a>{{$t('index.policy[2]')}}<a href="/privacy_policy.html">{{$t('index.policy[3]')}}</a>{{$t('index.policy[4]')}}
                                 </p>
                             </div>
                             <div id="editMemo">
-                                <form action="" method="post" @submit.prevent="submit">
+                                <form action="" method="post" @submit.prevent="edit">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" v-model="memoAlias" placeholder="メモID" required>
+                                        <input type="text" class="form-control" v-model="memoAlias" :placeholder="$t('index.memoId')" required>
                                     </div>
-                                    <button type="submit" class="btn btn-primary">メモを編集</button>
+                                    <button type="submit" class="btn btn-primary">{{$t('index.editMemo')}}</button>
                                 </form>
                                 <div class="alert alert-danger" role="alert" v-if="errorMessage" v-cloak>{{ errorMessage }}</div>
                                 <div class="memo-histories">
-                                    <p>履歴 (ブラウザごとに保存)</p>
+                                    <p>{{$t('index.newMemo')}}</p>
                                     <div class="history-item-container" v-for="item in memoHistories">
                                         <p>
                                             <a :href="'/edit.html?memo_uuid=' + item.memoUuid">

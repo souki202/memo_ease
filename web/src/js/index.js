@@ -5,39 +5,23 @@ import { createApp } from 'vue/dist/vue.esm-bundler.js';
 import axios from 'axios';
 import { getApiUrl } from './url';
 import { getHistories } from './history.js';
+import { createI18n } from 'vue-i18n'
+
+import messages from './texts/index';
+
+const i18n = createI18n({
+    locale: 'en',
+    messages,
+})
 
 const createMemo = createApp({
     data() {
         return {
             isLoading: false,
-            errorMessage: ''
-        };
-    },
-    methods: {
-        submit() {
-            this.errorMessage = '';
-            this.isLoading = true;
-            axios.post(getApiUrl() + '/create_memo')
-                .then(res => {
-                    if (res.data.memo_uuid) {
-                        location.href = "/edit.html?memo_uuid=" + res.data.memo_uuid;
-                    }
-                }).catch(err => {
-                    this.errorMessage = 'ユーザごとの一定時間内に作成できる上限に達したか, 内部エラーが発生しました.';
-                }).then(() => {
-                    this.isLoading = false;
-                });
-        },
-    }
-}).mount('#createMemo');
-
-const editMemo = createApp({
-    data() {
-        return {
             errorMessage: '',
             memoAlias: '',
             memoHistories: '',
-        }
+        };
     },
     mounted() {
         const histories = getHistories();
@@ -52,6 +36,21 @@ const editMemo = createApp({
     methods: {
         submit() {
             this.errorMessage = '';
+            this.isLoading = true;
+            axios.post(getApiUrl() + '/create_memo')
+                .then(res => {
+                    if (res.data.memo_uuid) {
+                        location.href = "/edit.html?memo_uuid=" + res.data.memo_uuid;
+                    }
+                }).catch(err => {
+                    this.errorMessage = this.$t('messages.createError');
+                }).then(() => {
+                    this.isLoading = false;
+                });
+        },
+
+        edit() {
+            this.errorMessage = '';
             axios.get(getApiUrl() + '/check_exist_memo', {
                 params: {memo_alias: this.memoAlias}
             })
@@ -60,16 +59,16 @@ const editMemo = createApp({
             }).catch(err => {
                 if (err.response) {
                     if (err.response.status == 404) {
-                        this.errorMessage = 'メモが見つかりませんでした.';
+                        this.errorMessage = this.$t('messages.notFoundMemo');
                     }
                     else {
-                        this.errorMessage = 'メモの検索に失敗しました.';
+                        this.errorMessage = this.$t('messages.failedToFindMemo');
                     }
                 }
                 else {
-                    this.errorMessage = 'メモの検索に失敗しました.';
+                    this.errorMessage = this.$t('messages.failedToFindMemo');
                 }
             });
         }
     }
-}).mount('#editMemo');
+}).use(i18n).mount('#app');
