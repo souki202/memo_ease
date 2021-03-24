@@ -41,7 +41,7 @@
                                     <button type="submit" class="btn btn-primary craete-memo-btn" @click="submit" :disabled="isLoading">{{$t('index.newMemo')}}</button>
                                     <p class="create-memo-comment">
                                         {{$t('index.policy[0]')}}
-                                        <a href="/terms_of_service.html">{{$t('index.policy[1]')}}</a>{{$t('index.policy[2]')}}<a href="/privacy_policy.html">{{$t('index.policy[3]')}}</a>{{$t('index.policy[4]')}}
+                                        <a :href="$t('url.tos')">{{$t('index.policy[1]')}}</a>{{$t('index.policy[2]')}}<a :href="$t('url.privacy')">{{$t('index.policy[3]')}}</a>{{$t('index.policy[4]')}}
                                     </p>
                                 </div>
                                 <div id="editMemo">

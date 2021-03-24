@@ -5,6 +5,10 @@ export default {
             notFoundMemo: 'Couldn\'t find the memo.',
             failedToFindMemo: 'Failed to retrieve memo.',
         },
+        url: {
+            tos: '/terms_of_service_en.html',
+            privacy: '/privacy_policy_en.html'
+        },
         index: {
             title: 'MemoEase - No registration required',
             header: 'Memo app without registration.',
@@ -53,6 +57,10 @@ export default {
             createError: 'ユーザごとの一定時間内に作成できる上限に達したか, 内部エラーが発生しました.',
             notFoundMemo: 'メモが見つかりませんでした',
             failedToFindMemo: 'メモの検索に失敗しました',
+        },
+        url: {
+            tos: '/terms_of_service.html',
+            privacy: '/privacy_policy.html'
         },
         index: {
             title: '登録不要なWebメモアプリ Memo Ease',
