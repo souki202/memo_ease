@@ -35,13 +35,6 @@ function addBeforeParts(url, className, idName, insertTarget) {
 }
 
 function loadCommonDOM() {
-    const header = document.getElementById('header')
-    loadCommonParts('/header.html', header)
-    const footer = document.getElementById('footer')
-    loadCommonParts('/footer.html', footer)
-
-    // headerの手前にsidebarを入れる
-    // addBeforeParts('/commonParts/sidebar.html', 'sidebar-container', null, header);
 }
 
 function appendScript(url, isModule = false) {

@@ -2,7 +2,20 @@ import { createApp } from 'vue/dist/vue.esm-bundler.js';
 import axios from 'axios';
 import { getApiUrl } from './url';
 
+import { locale } from './components/getLocale';
+
+import { createI18n } from 'vue-i18n'
+import messages from './texts/messages';
+
+import MyHeader from './components/header.vue';
+
+const i18n = createI18n({
+    locale,
+    messages,
+});
+
 const app = createApp({
+    components: {MyHeader},
     data() {
         return {
             title: '',
@@ -12,11 +25,13 @@ const app = createApp({
             isSuccess: false,
         }
     },
+    mounted() {
+        document.title = this.$t('feedback.title');
+    },
     methods: {
         submit(e) {
             this.isSuccess = false;
             if (!this.body) {
-                window.alert('本文は必須です');
                 return;
             }
 
@@ -36,7 +51,7 @@ const app = createApp({
                         _this.isSuccess = true;
                     }).catch(err => {
                         console.log(err);
-                        window.alert('お問合せの送信に失敗しました.');
+                        window.alert(this.$t('feedback.failed'));
                     }).then(() => {
                         _this.isSubmiting = false;
                     });
@@ -45,4 +60,4 @@ const app = createApp({
             return false;
         },
     },
-}).mount('#feedbackForm');
+}).use(i18n).mount('#app');
