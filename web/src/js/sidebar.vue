@@ -143,7 +143,7 @@
 <script>
 import VModal from './vmodal.vue';
 import axios from 'axios';
-import { getApiUrl } from './url';
+import { getApiUrl, rootPageUrl } from './url';
 import { updateHistory } from './history.js';
 
 export default {
@@ -195,7 +195,7 @@ export default {
             if (!this.viewId) {
                 return '';
             }
-            return 'https://' + document.domain + '/view.html?view_id=' + this.viewId;
+            return rootPageUrl + '/view.html?view_id=' + this.viewId;
         },
         iframeCode() {
             if (!this.viewId) {
