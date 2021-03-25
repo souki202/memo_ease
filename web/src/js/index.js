@@ -49,6 +49,10 @@ const createMemo = createApp({
         document.querySelector('meta[property="og:locale"]').content = this.$t('index.ogp.locale');
         // ついでに
         document.querySelector('meta[name="description"]').content = this.$t('index.ogp.description');
+
+        // hreflang調整
+        document.querySelector('link[rel="alternate"][hreflang=en]').href = 'https://' + document.domain + '/en-US/';
+        document.querySelector('link[rel="alternate"][hreflang=ja]').href = 'https://' + document.domain + '/';
     },
     methods: {
         submit() {

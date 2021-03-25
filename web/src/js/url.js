@@ -17,4 +17,6 @@ const rootPageUrl = (() => {
     return 'https://' + document.domain
 })();
 
-export { rootPageUrl }
+const domain = document.domain;
+
+export { rootPageUrl, domain }

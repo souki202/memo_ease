@@ -13,9 +13,29 @@
 </template>
 
 <script>
+import { getApiUrl, rootPageUrl } from '../url';
+
 export default {
     data() {
-        return {}
+        return {
+            isLoading: false,
+        };
+    },
+    methods: {
+        submit() {
+            this.isLoading = true;
+            axios.post(getApiUrl() + '/create_memo')
+                .then(res => {
+                    if (res.data.memo_uuid) {
+                        location.href = rootPageUrl + '/edit.html?memo_uuid=' + res.data.memo_uuid;
+                    }
+                }).catch(err => {
+                    window.alert(this.$t('messages.createError'));
+                    console.log(err);
+                }).then(() => {
+                    this.isLoading = false;
+                });
+        },
     }
 }
 </script>
