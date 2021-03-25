@@ -56,7 +56,7 @@
                                         <p>{{$t('index.history')}}</p>
                                         <div class="history-item-container" v-for="item in memoHistories">
                                             <p>
-                                                <a :href="'/edit.html?memo_uuid=' + item.memoUuid">
+                                                <a :href="'./edit.html?memo_uuid=' + item.memoUuid">
                                                     <span class="history-memo-title">{{ item.title }}&nbsp;</span>
                                                     <span class="history-memo-alias">({{ item.memoAlias }})</span>
                                                     <!-- <span class="history-memo-date">{{ item.date }}</span> -->

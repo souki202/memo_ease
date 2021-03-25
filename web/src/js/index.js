@@ -29,6 +29,7 @@ const createMemo = createApp({
         };
     },
     mounted() {
+        // 履歴を更新日時順に整理
         const histories = getHistories();
         const ary = []
         for (const key in histories) {

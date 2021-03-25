@@ -6,8 +6,8 @@ export default {
             failedToFindMemo: 'Failed to retrieve memo.',
         },
         url: {
-            tos: '/terms_of_service_en.html',
-            privacy: '/privacy_policy_en.html'
+            tos: '/en-US/terms_of_service.html',
+            privacy: '/en-US/privacy_policy.html'
         },
         index: {
             title: 'MemoEase - No registration required',

@@ -12,8 +12,9 @@ export let getViewFileUrl = () => {
 
 const rootPageUrl = (() => {
     if (locale == 'en') {
-        return 'https://' + document.domain + '/en';
+        return 'https://' + document.domain + '/en-US';
     }
+    return 'https://' + document.domain
 })();
 
 export { rootPageUrl }
