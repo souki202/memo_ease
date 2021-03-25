@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { getApiUrl, rootPageUrl } from '../url';
 
 export default {
