@@ -74,6 +74,13 @@ export default {
             notFound: 'Memo not found.',
             getError: 'An unknown error has occurred.',
 
+            form: {
+                titleMaximum: 'The title should be no more than 1000 characters.',
+                bodyMaximum: 'The body should be no more than 4MB.',
+                success: 'Saved.',
+                failed: 'Failed to save memo.',
+            },
+
             sidebar: {
                 memoId: {
                     title: 'Memo ID',
@@ -101,6 +108,7 @@ export default {
                     maximum: 'The password and email can be up to 1000 characters long.',
                     success: 'Password and Email settings updated.',
                     failed: 'Failed to update password and email settings.',
+                    failedToSendReset: 'Failed to send reset email. Your email address may not be set.',
                 },
                 share: {
                     title: 'Shared link',
@@ -158,7 +166,7 @@ export default {
             }
         },
         header: {
-            hone: 'ホーム',
+            home: 'ホーム',
             contact: 'お問合せ',
             create: 'メモを新規作成',
         },
@@ -190,10 +198,18 @@ export default {
                 forgot: 'パスワードを忘れた場合, ここをクリックでリセットできます.',
                 reset: 'リセット用メールを送信しました.',
                 wrongPassword: 'パスワードが違うか, メモが見つかりませんでした.',
+                failedToSendReset: 'リセット用メールの送信に失敗しました. メールアドレスが設定されていない可能性があります.',
             },
             getServerError: 'サーバーエラーが発生しました',
             notFound: 'メモが見つかりませんでした.',
             getError: '不明なエラーが発生しました.',
+
+            form: {
+                titleMaximum: 'タイトルは1000文字以内です.',
+                bodyMaximum: '本文は4MB以内です.',
+                success: 'メモを保存しました',
+                failed: 'メモの保存に失敗しました',
+            },
     
             sidebar: {
                 memoId: {

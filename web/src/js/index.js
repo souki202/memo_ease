@@ -3,7 +3,7 @@ import '../css/index.scss';
 
 import { createApp } from 'vue/dist/vue.esm-bundler.js';
 import axios from 'axios';
-import { getApiUrl } from './url';
+import { getApiUrl, rootPageUrl } from './url';
 import { getHistories } from './history.js';
 import { createI18n } from 'vue-i18n'
 
@@ -56,7 +56,7 @@ const createMemo = createApp({
             axios.post(getApiUrl() + '/create_memo')
                 .then(res => {
                     if (res.data.memo_uuid) {
-                        location.href = "/edit.html?memo_uuid=" + res.data.memo_uuid;
+                        location.href = rootPageUrl + `/edit.html?memo_uuid=` + res.data.memo_uuid;
                     }
                 }).catch(err => {
                     this.errorMessage = this.$t('messages.createError');
@@ -71,7 +71,7 @@ const createMemo = createApp({
                 params: {memo_alias: this.memoAlias}
             })
             .then(res => {
-                location.href = '/edit.html?memo_alias=' + encodeURIComponent(this.memoAlias);
+                location.href = rootPageUrl + '/edit.html?memo_alias=' + encodeURIComponent(this.memoAlias);
             }).catch(err => {
                 if (err.response) {
                     if (err.response.status == 404) {

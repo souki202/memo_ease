@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <link rel="stylesheet" href="/css/edit.css">
+    <script src="/js/loadCommonParts.js"></script>
+    <title>Memo Editor</title>
+</head>
+<body>
+    <main id="app">
+        <sidebar
+            v-model:memo-alias="memo.memoAlias"
+            v-model:memo-uuid="memo.memoUuid"
+            v-model:email="memo.email"
+            v-model:password="memo.password"
+            v-model:view-id="memo.viewId"
+            v-model:is-public="memo.isPublic"
+            v-model:title="memo.title"
+            ref="sidebar"
+        ></sidebar>
+        <div class="editor-container" id="editor">
+            <div class="editor-inner">
+                <div class="form-group title-container">
+                    <input type="text" class="form-control memo-title" placeholder="Title" @change="instantSave" v-model="memo.title" v-model="memo.memoUuid" maxlength="1000" @change="save">
+                    <div class="memo-title-border"></div>
+                </div>
+                <div class="editor-body">
+                    <ckeditor id="ckeditorContainer" :editor="ckeditorClass" v-model="memo.body" @input="save" @ready="ckeditorReady"></ckeditor>
+                </div>
+                <!-- メッセージ等表示用overlay -->
+                <div class="memo-editor-overlay">
+                    <p v-for="msg in memoMessages" class="memo-message">{{ msg.message }}</p>
+                </div>
+            </div>
+            <div class="tools-container"></div>
+            
+            <!-- 新規作成時はURL等のモーダル表示 -->
+            <div class="new-create-message">
+                <v-modal v-model="showMemoUrlModal" @close="closeNewMemoUrlModal" :modal-id="'showMemoUrl'">
+                    <template v-slot:title>{{$t('edit.saveUrl.title')}}</template>
+                    <div>
+                        <p>
+                            {{$t('edit.saveUrl.desc1')}}
+                        </p>
+                        <p>{{$t('edit.saveUrl.desc2')}}</p>
+                        <div class="form-group">
+                            <div class="input-group memo-link">
+                                <label for="" class="modal-form-label">{{$t('edit.saveUrl.memoUrl')}}</label>
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text copy-to-clipboard" @click="copyMemoUrl">
+                                        <i class="fas fa-clipboard"></i>
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control text-light bg-dark" name="memoUrl" id="memoUrl" :value="memoUrl" readonly>
+                            </div>
+                            <div class="input-group">
+                                <label for="" class="modal-form-label">{{$t('edit.saveUrl.memoId')}}</label>
+                                <input type="text" class="form-control text-light bg-dark" :value="memo.memoAlias" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </v-modal>
+            </div>
+            <div class="input-password">
+                <v-modal v-model="showPasswordModal" @close="closePasswordModal" :is-enable-manually-close="false">
+                    <template v-slot:title>{{$t('edit.password.title')}}</template>
+                    <div>
+                        <p>
+                            {{$t('edit.password.desc')}}
+                        </p>
+                        <!-- パスワード入力フォーム -->
+                        <form action="" method="post" @submit.prevent="getMemoData" id="passwordForm">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <label for="nowPassword" class="modal-form-label">{{$t('edit.password.label')}}</label>
+                                    <input type="password" class="form-control" id="nowPassword" v-model="memo.password">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary" :disabled="isSubmiting">{{$t('edit.password.submit')}}</button>
+                        </form>
+                        <!-- パスワードリセット用リンク -->
+                        <div class="reset-password">
+                            <p><span class="password-reset-link" @click="passwordReset">{{$t('edit.password.forgot')}}</span></p>
+                                
+                            <div class="form-group" v-if="isSuccessGenerateResetPassword">
+                                <div class="alert alert-success">{{$t('edit.password.reset')}}.</div>
+                            </div>
+                        </div>
+                    </div>
+                </v-modal>    
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/edit.js"></script>
+</body>
+</html>

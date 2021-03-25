@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="登録不要で利用できるWebサービスのメモアプリ MemoEase. 1ボタンで自分だけのメモを作成でき, 画像のアップロードやパスワードの設定もできます. 履歴機能もあるので, 利用したメモにかんたんにアクセスできます. みんなに見てほしいメモは自由に公開も可能!">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="登録不要なWebメモアプリ Memo Ease" />
+    <meta property="og:site_name" content="登録不要なWebメモアプリ Memo Ease" />
+    <meta property="og:description" content="登録不要で利用できるWebサービスのメモアプリ MemoEase. 1ボタンで自分だけのメモを作成でき, 画像のアップロードやパスワードの設定もできます. 履歴機能もあるので, 利用したメモにかんたんにアクセスできます. みんなに見てほしいメモは自由に公開も可能!" />
+    <meta property="og:image" content="https://memo-ease.com/imgs/sample.png" />
+    <meta property="og:locale" content="ja_JP" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="memo-ease.com" />
+    <link rel="preload" as="image" href="/imgs/top_bg.png" />
+    <script src="/js/loadPubParts.js"></script>
+    <title>登録不要なWebメモアプリ Memo Ease</title>
+</head>
+<body>
+    <div id="app">
+        <my-header></my-header>
+
+        <main id="app">
+            <section class="top-container">
+                <div class="top-container-absolute top-texts-container">
+                    <div class="top-container-inner">
+                        <div class="top-container-inner2 title-container">
+                            <div class="title">
+                                <div class="title-inner">
+                                    <h1>{{$t('index.header')}} <span class="header-service-name">MemoEase</span></h1>
+                                    <div class="description">
+                                        <p>{{$t('index.description.one')}}</p>
+                                        <p>{{$t('index.description.two')}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="top-container-inner2">
+                            <div class="memo-container">
+                                <div id="createMemo">
+                                    <button type="submit" class="btn btn-primary craete-memo-btn" @click="submit" :disabled="isLoading">{{$t('index.newMemo')}}</button>
+                                    <p class="create-memo-comment">
+                                        {{$t('index.policy[0]')}}
+                                        <a :href="$t('url.tos')">{{$t('index.policy[1]')}}</a>{{$t('index.policy[2]')}}<a :href="$t('url.privacy')">{{$t('index.policy[3]')}}</a>{{$t('index.policy[4]')}}
+                                    </p>
+                                </div>
+                                <div id="editMemo">
+                                    <form action="" method="post" @submit.prevent="edit">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" v-model="memoAlias" :placeholder="$t('index.memoId')" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">{{$t('index.editMemo')}}</button>
+                                    </form>
+                                    <div class="alert alert-danger" role="alert" v-if="errorMessage" v-cloak>{{ errorMessage }}</div>
+                                    <div class="memo-histories">
+                                        <p>{{$t('index.history')}}</p>
+                                        <div class="history-item-container" v-for="item in memoHistories">
+                                            <p>
+                                                <a :href="'/edit.html?memo_uuid=' + item.memoUuid">
+                                                    <span class="history-memo-title">{{ item.title }}&nbsp;</span>
+                                                    <span class="history-memo-alias">({{ item.memoAlias }})</span>
+                                                    <!-- <span class="history-memo-date">{{ item.date }}</span> -->
+                                                </a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    
+        <footer id="pubFooter"></footer>
+    </div>
+
+
+    <script src="/js/index.js"></script>
+</body>
+</html>

@@ -30,12 +30,12 @@
                         <li>
                             <div class="content-icon"><i class="fas fa-home"></i></div>
                             <div class="content-title">{{$t('edit.sidebar.links.home')}}</div>
-                            <a class="no-decolarion-link" href="/" target="blank"></a>
+                            <a class="no-decolarion-link" href="./" target="blank"></a>
                         </li>
                         <li>
                             <div class="content-icon"><i class="fas fa-comment-alt"></i></div>
                             <div class="content-title">{{$t('edit.sidebar.links.feedback')}}</div>
-                            <a class="no-decolarion-link" href="/feedback.html" target="blank"></a>
+                            <a class="no-decolarion-link" href="./feedback.html" target="blank"></a>
                         </li>
                         <li>
                             <div class="content-icon"><i class="far fa-file-alt"></i></div>
@@ -95,7 +95,7 @@
                                 <input type="email" class="form-control" id="resetEmail" v-model="email" maxlength="1000">
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary" :disabled="isSubmiting">{{$t('edit.sidebar.password.Update')}}</button>
+                        <button type="submit" class="btn btn-primary" :disabled="isSubmiting">{{$t('edit.sidebar.password.update')}}</button>
                     </form>
                 </div>
             </v-modal>

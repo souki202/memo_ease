@@ -5,7 +5,7 @@ import 'regenerator-runtime/runtime';
 import { createApp, defineComponent } from 'vue/dist/vue.esm-bundler.js';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-import { getApiUrl } from './url';
+import { getApiUrl, rootPageUrl } from './url';
 import getUrlParameter from './urlParameter';
 
 import { createI18n } from 'vue-i18n'
@@ -82,7 +82,7 @@ const app = createApp({
     },
     computed: {
         memoUrl() {
-            return 'https://' + document.domain + '/edit.html?memo_uuid=' + this.memo.memoUuid;
+            return rootPageUrl + '/edit.html?memo_uuid=' + this.memo.memoUuid;
         },
     },
     methods: {
@@ -224,11 +224,11 @@ const app = createApp({
 
         _save() {
             if (this.memo.title.length > this.memo.maxTitleLen) {
-                window.alert('タイトルは1000文字以内までです.');
+                window.alert(this.$t('edit.form.titleMaximum'));
                 return;
             }
             if (this.memo.body.length > this.memo.maxBodyLen) {
-                window.alert('本文は' + String(this.memo.maxBodyLen) + '文字までです.');
+                window.alert(this.$t('edit.form.bodyMaximum'));
                 return;
             }
             axios.post(getApiUrl() + '/save_memo', {
@@ -240,11 +240,11 @@ const app = createApp({
                 }
             }).then(res => {
                 console.log(res);
-                this.drawMessage('メモを保存しました.');
+                this.drawMessage(this.$t('edit.form.success'));
                 updateHistory(this.memo.memoUuid, this.memo.memoAlias, this.memo.title);
             }).catch(err => {
                 console.log(err);
-                window.alert('メモの保存に失敗しました.');
+                window.alert(this.$t('edit.form.failed'));
             }).then(() => {});
         },
 
@@ -263,12 +263,15 @@ const app = createApp({
                 this.isSuccessGenerateResetPassword = true;
             }).catch(err => {
                 if (err.response) {
-                    if (err.response.status == 406) {
-                        window.alert('リセット用メールの送信に失敗しました. メールアドレスが設定されていない可能性があります.');
+                    if (err.response.status <= 500) {
+                        window.alert(this.$t('edit.password.failedToSendReset'));
+                    }
+                    else {
+                        window.alert(this.$t('edit.getServerError'));
                     }
                 }
                 else {
-                    window.alert('サーバーエラーによりリセット用メールの送信に失敗しました.');
+                    window.alert(this.$t('edit.getError'));
                 }
             }).then(() => {
                 this.isSubmiting = false;

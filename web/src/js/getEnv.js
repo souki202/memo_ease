@@ -1,17 +1,19 @@
-export default function () {
-    const domain = document.domain
-    switch (domain) {
+import { locale } from './components/getLocale';
+
+const nowEnv = (() => {
+    switch (document.domain) {
         case 'localhost':
         case '127.0.0.1':
         case 'dev-memo-ease.tori-blog.net':
-            return'dev';
-        break;
+            return 'dev';
         case 'stg-memo-ease.tori-blog.net':
             return 'stg'
         case 'memo-ease.com':
             return 'prod';
         default:
             return 'prod';
-        break;
     }
-}
+})();
+
+// TODO: まだメソッドで呼ばれているのでその修正
+export default (() => nowEnv);

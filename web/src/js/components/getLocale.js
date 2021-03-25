@@ -1,8 +1,8 @@
 const locale = (() => {
-    if (document.domain.indexOf('en.') === 0) {
+    if (location.href.indexOf('/en/') >= 0) {
         return 'en';
     }
-    return 'en';
+    return 'ja';
 })();
 
 export {locale};
