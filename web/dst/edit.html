@@ -10,7 +10,6 @@
     <title>Memo Editor</title>
 </head>
 <body>
-    <header></header>
     <main id="app">
         <sidebar
             v-model:memo-alias="memo.memoAlias"
@@ -41,15 +40,15 @@
             <!-- 新規作成時はURL等のモーダル表示 -->
             <div class="new-create-message">
                 <v-modal v-model="showMemoUrlModal" @close="closeNewMemoUrlModal" :modal-id="'showMemoUrl'">
-                    <template v-slot:title>メモのURLを保存しましょう!</template>
+                    <template v-slot:title>{{$t('edit.saveUrl.title')}}</template>
                     <div>
                         <p>
-                            メモIDは, トップページから編集画面に入るときに使用します. IDは左のサイドバーからいつでも変更できます.
+                            {{$t('edit.saveUrl.desc1')}}
                         </p>
-                        <p>メモは, 最後の編集から数秒後に自動で保存されます.</p>
+                        <p>{{$t('edit.saveUrl.desc2')}}</p>
                         <div class="form-group">
                             <div class="input-group memo-link">
-                                <label for="" class="modal-form-label">メモのURL</label>
+                                <label for="" class="modal-form-label">{{$t('edit.saveUrl.memoUrl')}}</label>
                                 <div class="input-group-prepend">
                                     <div class="input-group-text copy-to-clipboard" @click="copyMemoUrl">
                                         <i class="fas fa-clipboard"></i>
@@ -58,36 +57,36 @@
                                 <input type="text" class="form-control text-light bg-dark" name="memoUrl" id="memoUrl" :value="memoUrl" readonly>
                             </div>
                             <div class="input-group">
-                                <label for="" class="modal-form-label">メモID</label>
+                                <label for="" class="modal-form-label">{{$t('edit.saveUrl.memoId')}}</label>
                                 <input type="text" class="form-control text-light bg-dark" :value="memo.memoAlias" readonly>
                             </div>
                         </div>
                     </div>
-                </v-modal>    
+                </v-modal>
             </div>
             <div class="input-password">
                 <v-modal v-model="showPasswordModal" @close="closePasswordModal" :is-enable-manually-close="false">
-                    <template v-slot:title>パスワード入力</template>
+                    <template v-slot:title>{{$t('edit.password.title')}}</template>
                     <div>
                         <p>
-                            編集するにはパスワードを入力してください.
+                            {{$t('edit.password.desc')}}
                         </p>
                         <!-- パスワード入力フォーム -->
                         <form action="" method="post" @submit.prevent="getMemoData" id="passwordForm">
                             <div class="form-group">
                                 <div class="input-group">
-                                    <label for="nowPassword" class="modal-form-label">パスワード</label>
+                                    <label for="nowPassword" class="modal-form-label">{{$t('edit.password.label')}}</label>
                                     <input type="password" class="form-control" id="nowPassword" v-model="memo.password">
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary" :disabled="isSubmiting">送信</button>
+                            <button type="submit" class="btn btn-primary" :disabled="isSubmiting">{{$t('edit.password.submit')}}</button>
                         </form>
                         <!-- パスワードリセット用リンク -->
                         <div class="reset-password">
-                            <p><span class="password-reset-link" @click="passwordReset">パスワードを忘れた場合, ここをクリックでリセットできます.</span></p>
+                            <p><span class="password-reset-link" @click="passwordReset">{{$t('edit.password.forgot')}}</span></p>
                                 
                             <div class="form-group" v-if="isSuccessGenerateResetPassword">
-                                <div class="alert alert-success">リセット用メールの送信が完了しました.</div>
+                                <div class="alert alert-success">{{$t('edit.password.reset')}}.</div>
                             </div>
                         </div>
                     </div>
@@ -95,8 +94,6 @@
             </div>
         </div>
     </main>
-
-    <footer></footer>
 
     <script src="/js/edit.js"></script>
 </body>

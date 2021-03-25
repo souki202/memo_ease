@@ -8,6 +8,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { getApiUrl } from './url';
 import getUrlParameter from './urlParameter';
 
+import { createI18n } from 'vue-i18n'
+
+import messages from './texts/messages';
+import { locale } from './components/getLocale';
+
 import { ClassicEditor, MyUploaderAdaptor } from './ckeditor';
 import CkeditorVue from '@ckeditor/ckeditor5-vue';
 
@@ -17,6 +22,11 @@ import VModal from './vmodal.vue';
 import Sidebar from './sidebar.vue';
 
 import { updateHistory } from './history.js';
+
+const i18n = createI18n({
+    locale,
+    messages,
+});
 
 const app = createApp({
     components: {
@@ -63,7 +73,7 @@ const app = createApp({
         this.memo.memoAlias = getUrlParameter('memo_alias');
 
         if (!this.memo.memoAlias && !this.memo.memoUuid) {
-            window.alert('メモIDが設定されていません.');
+            window.alert(this.$t('edit.notSet'));
             location.href = '/';
         }
 
@@ -77,7 +87,6 @@ const app = createApp({
     },
     methods: {
         init: async function () {
-            console.log("hgoehgoehgoe");
             const hasPassword = await this.checkHasPassword();
             if (hasPassword) {
                 // パスワード入力画面
@@ -149,7 +158,17 @@ const app = createApp({
                 }
             }).catch(err => {
                 console.log(err);
-                window.alert('パスワードが間違っているか, サーバエラーが発生しました.');
+                if (err.response) {
+                    if (err.response.status < 500) {
+                        window.alert(this.$t('edit.password.wrongPassword'));
+                    }
+                    else {
+                        window.alert(this.$t('edit.notFound'));
+                    }
+                }
+                else {
+                    window.alert(this.$t('edit.getError'));
+                }
             }).then(() => {
                 this.isSubmiting = false;
             });
@@ -175,14 +194,14 @@ const app = createApp({
             }).catch(err => {
                 if (err.response) {
                     if (err.response.status >= 500) {
-                        window.alert('サーバーエラーが発生しました.');
+                        window.alert(this.$t('edit.getServerError'));
                     }
                     else {
-                        window.alert('パスワードが間違っています.');
+                        window.alert(this.$t('edit.password.wrongPassword'));
                     }
                 }
                 else {
-                    window.alert('エラーが発生しました.');
+                    window.alert(this.$t('edit.getError'));
                 }
             }).then(() => {
                 this.isSubmiting = false;
@@ -300,4 +319,4 @@ const app = createApp({
             }
         },
     },
-}).use(CkeditorVue).use(VueFinalModal()).mount('#app');
+}).use(i18n).use(CkeditorVue).use(VueFinalModal()).mount('#app');

@@ -8,7 +8,6 @@ import { getHistories } from './history.js';
 import { createI18n } from 'vue-i18n'
 
 import messages from './texts/messages';
-
 import { locale } from './components/getLocale';
 
 // parts

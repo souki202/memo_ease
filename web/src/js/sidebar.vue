@@ -9,17 +9,17 @@
                     <ul>
                         <li>
                             <div class="content-icon"><i class="fas fa-tags"></i></div>
-                            <div class="content-title">メモID変更</div>
+                            <div class="content-title">{{$t('edit.sidebar.memoId.title')}}</div>
                             <span class="no-decolarion-link" @click="openModal('aliasSettings')"></span>
                         </li>
                         <li>
                             <div class="content-icon"><i class="fas fa-key"></i></div>
-                            <div class="content-title">パスワード変更</div>
+                            <div class="content-title">{{$t('edit.sidebar.password.title')}}</div>
                             <span class="no-decolarion-link" @click="openModal('password')"></span>
                         </li>
                         <li>
                             <div class="content-icon"><i class="fas fa-link"></i></div>
-                            <div class="content-title">共有リンク</div>
+                            <div class="content-title">{{$t('edit.sidebar.share.title')}}</div>
                             <span class="no-decolarion-link" @click="openModal('publish')"></span>
                         </li>
                     </ul>
@@ -29,23 +29,23 @@
                     <ul>
                         <li>
                             <div class="content-icon"><i class="fas fa-home"></i></div>
-                            <div class="content-title">トップページ</div>
+                            <div class="content-title">{{$t('edit.sidebar.links.home')}}</div>
                             <a class="no-decolarion-link" href="/" target="blank"></a>
                         </li>
                         <li>
                             <div class="content-icon"><i class="fas fa-comment-alt"></i></div>
-                            <div class="content-title">フィードバック</div>
+                            <div class="content-title">{{$t('edit.sidebar.links.feedback')}}</div>
                             <a class="no-decolarion-link" href="/feedback.html" target="blank"></a>
                         </li>
                         <li>
                             <div class="content-icon"><i class="far fa-file-alt"></i></div>
-                            <div class="content-title">利用規約</div>
-                            <a class="no-decolarion-link" href="/terms_of_service.html" target="blank"></a>
+                            <div class="content-title">{{$t('edit.sidebar.links.tos')}}</div>
+                            <a class="no-decolarion-link" :href="$t('url.tos')" target="blank"></a>
                         </li>
                         <li>
                             <div class="content-icon"><i class="fas fa-user-secret"></i></div>
-                            <div class="content-title">プライバシーポリシー</div>
-                            <a class="no-decolarion-link" href="/privacy_policy.html" target="blank"></a>
+                            <div class="content-title">{{$t('edit.sidebar.links.privacy')}}</div>
+                            <a class="no-decolarion-link" :href="$t('url.privacy')" target="blank"></a>
                         </li>
                     </ul>
                 </div>
@@ -54,59 +54,59 @@
 
         <div class="modals">
             <v-modal v-model="modals.aliasSettings" @close="closeModal" :modal-id="'aliasSettings'">
-                <template v-slot:title>メモID設定</template>
+                <template v-slot:title>{{$t('edit.sidebar.memoId.header')}}</template>
                 <div>
-                    <p>注意: パスワードが設定されていない場合, IDがわかれば誰でも編集できます.</p>
+                    <p>{{$t('edit.sidebar.memoId.warning')}}</p>
                     <form action="" method="post" @submit.prevent="updateMemoAlias">
                         <div class="form-group">
-                            <label for="memoName" class="modal-form-label">メモID</label>
+                            <label for="memoName" class="modal-form-label">{{$t('edit.sidebar.memoId.label')}}</label>
                             <input type="text" class="form-control" id="memoName" v-model="memoAliasInput" maxlength="1000">
                         </div>
-                        <button type="submit" class="btn btn-primary" :disabled="isSubmiting">更新</button>
+                        <button type="submit" class="btn btn-primary" :disabled="isSubmiting">{{$t('edit.sidebar.memoId.update')}}</button>
                     </form>
                 </div>
             </v-modal>
             <v-modal v-model="modals.password" @close="closeModal" :modal-id="'password'">
-                <template v-slot:title>パスワード設定</template>
+                <template v-slot:title>{{$t('edit.sidebar.password.header')}}</template>
                 <div>
-                    <p>新しいパスワードを空欄にして更新すると, パスワード無しにできます.</p>
+                    <p>{{$t('edit.sidebar.password.note')}}</p>
                     <form action="" method="post" @submit.prevent="updatePassword">
                         <div class="form-group">
                             <div class="input-group">
-                                <label for="nowPassword2" class="modal-form-label">現在のパスワード</label>
+                                <label for="nowPassword2" class="modal-form-label">{{$t('edit.sidebar.password.current')}}</label>
                                 <input type="password" class="form-control" id="nowPassword2" v-model="passwordInput" readonly>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="input-group">
-                                <label for="newPassword" class="modal-form-label">新しいパスワード</label>
+                                <label for="newPassword" class="modal-form-label">{{$t('edit.sidebar.password.new1')}}</label>
                                 <input type="password" class="form-control" id="newPassword" v-model="newPassword" maxlength="1000">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="input-group">
-                                <label for="newPassword2" class="modal-form-label">新しいパスワード(確認用)</label>
+                                <label for="newPassword2" class="modal-form-label">{{$t('edit.sidebar.password.new2')}}</label>
                                 <input type="password" class="form-control" id="newPassword2" v-model="newPassword2" maxlength="1000">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="input-group">
-                                <label for="resetEmail" class="modal-form-label">再設定用Email</label>
+                                <label for="resetEmail" class="modal-form-label">{{$t('edit.sidebar.password.resetEmail')}}</label>
                                 <input type="email" class="form-control" id="resetEmail" v-model="email" maxlength="1000">
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary" :disabled="isSubmiting">更新</button>
+                        <button type="submit" class="btn btn-primary" :disabled="isSubmiting">{{$t('edit.sidebar.password.Update')}}</button>
                     </form>
                 </div>
             </v-modal>
             <v-modal v-model="modals.publish" @close="closeModal" :modal-id="'publish'">
-                <template v-slot:title>共有用リンク</template>
+                <template v-slot:title>{{$t('edit.sidebar.share.header')}}</template>
                 <div>
-                    <p>閲覧専用の共有リンクを生成します. 閲覧時はパスワード不要です.</p>
+                    <p>{{$t('edit.sidebar.share.note')}}</p>
                     <div class="form-group">
                         <!-- メモURL -->
                         <div class="input-group memo-link">
-                            <label for="viewUrl" class="modal-form-label">メモのURL</label>
+                            <label for="viewUrl" class="modal-form-label">{{$t('edit.sidebar.share.url')}}</label>
                             <div class="input-group-prepend">
                                 <div class="input-group-text copy-to-clipboard" @click="copyViewUrl">
                                     <i class="fas fa-clipboard"></i>
@@ -116,7 +116,7 @@
                         </div>
                         <!-- iframe埋め込みコード -->
                         <div class="input-group memo-link">
-                            <label for="iframeCode" class="modal-form-label">埋め込みコード</label>
+                            <label for="iframeCode" class="modal-form-label">{{$t('edit.sidebar.share.embed')}}</label>
                             <div class="input-group-prepend">
                                 <div class="input-group-text copy-to-clipboard" @click="copyIframeCode">
                                     <i class="fas fa-clipboard"></i>
@@ -125,8 +125,8 @@
                             <input type="text" class="form-control text-light bg-dark" name="iframeCode" id="iframeCode" :value="isPublic ? iframeCode : ''" readonly>
                         </div>
                     </div>
-                    <button class="btn btn-primary" v-if="!isPublic" @click="changePublicState(true)" :disabled="isSubmiting">リンクを取得</button>
-                    <button class="btn btn-danger" v-if="isPublic" @click="changePublicState(false)" :disabled="isSubmiting">共有を停止</button>
+                    <button class="btn btn-primary" v-if="!isPublic" @click="changePublicState(true)" :disabled="isSubmiting">{{$t('edit.sidebar.share.getLink')}}</button>
+                    <button class="btn btn-danger" v-if="isPublic" @click="changePublicState(false)" :disabled="isSubmiting">{{$t('edit.sidebar.share.stop')}}</button>
                 </div>
             </v-modal>
         </div>
@@ -219,12 +219,12 @@ export default {
          */
         updateMemoAlias() {// 入力チェック
             if (!this.memoAlias) {
-                window.alert('メモの名前を入力してください.');
+                window.alert(this.$t('edit.sidebar.memoId.notInput'));
                 return;
             }
 
             if (this.memoAlias.length > 1000) {
-                windlw.alert('メモIDの文字数は1000文字までです.')
+                windlw.alert(this.$t('edit.sidebar.memoId.maximum'))
             }
 
             this.isSubmiting = true;
@@ -237,19 +237,19 @@ export default {
             }).then(res => {
                 console.log(res);
                 updateHistory(this.memoUuid, this.memoAlias, this.title);
-                window.alert('メモIDを更新しました');
+                window.alert(this.$t('edit.sidebar.memoId.success'));
             }).catch(err => {
                 console.log(err);
                 if (err.response) {
                     if (err.response.status < 500) {
-                        window.alert('そのメモIDは既に登録されています.');
+                        window.alert(this.$t('edit.sidebar.memoId.duplicate'));
                     }
                     else {
-                        window.alert('サーバーエラーが発生しました.');
+                        window.alert(this.$t('edit.getServerError'));
                     }
                 }
                 else {
-                    window.alert('エラーが発生しました');
+                    window.alert(this.$t('edit.getError'));
                 }
             }).then(() => {
                 this.isSubmiting = false;
@@ -262,8 +262,11 @@ export default {
         updatePassword() {
             // 入力チェック
             if (this.newPassword != this.newPassword2) {
-                window.alert('パスワードの入力が一致しません.');
+                window.alert(this.$t('edit.sidebar.password.wrong'));
                 return;
+            }
+            if (this.email.length > 1000 || this.newPassword > 1000) {
+                windlw.alert(this.$t('edit.sidebar.password.maximum'))
             }
             // Emailだけ変えている場合もありうるので今はチェックしない
             // if (this.password == this.newPassword) {
@@ -283,10 +286,10 @@ export default {
                 this.passwordInput = this.newPassword;
                 this.newPassword = this.newPassword;
                 this.newPassword2 = this.newPassword;
-                window.alert('パスワード設定を更新しました.');
+                window.alert(this.$t('edit.sidebar.password.success'));
             }).catch(err => {
                 console.log(err);
-                window.alert('パスワード設定の更新に失敗しました.');
+                window.alert(this.$t('edit.sidebar.password.failed'));
             }).then(() => {
                 this.isSubmiting = false;
             });
@@ -308,7 +311,7 @@ export default {
                 this.$emit('update:isPublic', state);
             }).catch(err => {
                 console.log(err);
-                window.alert('共有設定の変更に失敗しました.');
+                window.alert(this.$t('edit.sidebar.share.failed'));
             }).then(() => {
                 this.isSubmiting = false;
             });

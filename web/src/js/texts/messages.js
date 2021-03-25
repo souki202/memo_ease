@@ -50,7 +50,76 @@ export default {
             complete: 'Sending completed.',
             failed: 'Failed to send your inquiry.',
             submit: 'Submit',
-        }
+        },
+        edit: {
+            notSet: '',
+
+            saveUrl: {
+                title: 'Bookmark your note!',
+                desc1: 'The memo ID is used when you enter the edit screen from the top page. You can change the ID at any time from the left sidebar.',
+                desc2: 'Notes will be automatically saved a few seconds after the last edit.',
+                memoUrl: 'Memo URL',
+                memoId: 'Memo ID',
+            },
+            password: {
+                title: 'Password required.',
+                desc: 'Enter your password to edit.',
+                label: 'Password',
+                submit: 'Submit',
+                forgot: 'Forgot your password?',
+                reset: 'The reset email has been sent.',
+                wrongPassword: 'Either the password is wrong or the memo was not found.',
+            },
+            getServerError: 'A server error has occurred.',
+            notFound: 'Memo not found.',
+            getError: 'An unknown error has occurred.',
+
+            sidebar: {
+                memoId: {
+                    title: 'Memo ID',
+                    header: 'Memo ID setting',
+                    warning: 'Note: If no password is set, anyone with an ID can edit the file.',
+                    label: 'Memo ID',
+                    update: 'Update',
+
+                    notInput: 'Enter your memo ID',
+                    maximum: 'Memo IDs can be up to 1000 characters long.',
+                    success: 'Memo ID updated.',
+                    duplicate: 'That memo ID has already been registered.',
+                },
+                password: {
+                    title: 'Password',
+                    header: 'Password setting',
+                    note: 'If you leave the new password blank, you can change it to no password.',
+                    current: 'Current',
+                    new1: 'New password',
+                    new2: 'New password(Confirm)',
+                    resetEmail: 'Reset Email',
+                    update: 'Update',
+
+                    wrong: 'Password input does not match',
+                    maximum: 'The password and email can be up to 1000 characters long.',
+                    success: 'Password and Email settings updated.',
+                    failed: 'Failed to update password and email settings.',
+                },
+                share: {
+                    title: 'Shared link',
+                    header: 'Shared link',
+                    note: 'Generates a read-only shared link. No password is required to view it.',
+                    url: 'Shared Url',
+                    embed: 'Embedded code',
+                    getLink: 'Get link!',
+                    stop: 'Stop sharing',
+                    failed: 'Failed to change sharing settings.',
+                },
+                links: {
+                    home: 'Top',
+                    feedback: 'Feedback',
+                    tos: 'Terms of Service',
+                    privacy: 'Privacy Policy',
+                }
+            },
+        },
     },
     ja: {
         messages: {
@@ -103,6 +172,74 @@ export default {
             complete: '送信が完了しました',
             failed: 'お問合せの送信に失敗しました.',
             submit: '送信',
-        }
-    }
+        },
+        edit: {
+            notSet: 'メモIDが設定されていません',
+            saveUrl: {
+                title: 'メモをブックマークに登録しましょう!',
+                desc1: 'メモIDは, トップページから編集画面に入るときに使用します. IDは左のサイドバーからいつでも変更できます.',
+                desc2: 'メモは, 最後の編集から数秒後に自動で保存されます.',
+                memoUrl: 'メモのURL',
+                memoId: 'メモID',
+            },
+            password: {
+                title: 'パスワード入力',
+                desc: 'このメモを編集するには, パスワードでの認証が必要です.',
+                label: 'パスワード',
+                submit: '送信',
+                forgot: 'パスワードを忘れた場合, ここをクリックでリセットできます.',
+                reset: 'リセット用メールを送信しました.',
+                wrongPassword: 'パスワードが違うか, メモが見つかりませんでした.',
+            },
+            getServerError: 'サーバーエラーが発生しました',
+            notFound: 'メモが見つかりませんでした.',
+            getError: '不明なエラーが発生しました.',
+    
+            sidebar: {
+                memoId: {
+                    title: 'メモID設定',
+                    header: 'メモID設定',
+                    warning: '注意: パスワードが設定されていない場合, IDがわかれば誰でも編集できます.',
+                    label: 'メモID',
+                    update: '更新',
+
+                    notInput: 'メモIDを入力してください',
+                    maximum: 'メモIDの文字数は1000文字までです',
+                    success: 'メモIDを更新しました',
+                    duplicate: 'そのメモIDは既に登録されています',
+                },
+                password: {
+                    title: 'パスワード設定',
+                    header: 'パスワード設定',
+                    note: '新しいパスワードを空欄にして更新すると, パスワード無しにできます.',
+                    current: '現在のパスワード',
+                    new1: '新しいパスワード',
+                    new2: '新しいパスワード(確認用)',
+                    resetEmail: '再設定用Email',
+                    update: '更新',
+
+                    wrong: 'パスワードの入力が一致しません',
+                    maximum: 'パスワードとEmailの文字数は1000文字までです',
+                    success: 'パスワードとEmail設定を更新しました',
+                    failed: 'パスワードとEmail設定の更新に失敗しました',
+                },
+                share: {
+                    title: '共有リンク',
+                    header: '共有リンク',
+                    note: '閲覧専用の共有リンクを生成します. 閲覧時はパスワード不要です.',
+                    url: 'メモのURL',
+                    embed: '埋め込みコード',
+                    getLink: 'リンクを取得',
+                    stop: '共有を停止',
+                    failed: '共有設定の変更に失敗しました',
+                },
+                links: {
+                    home: 'トップページ',
+                    feedback: 'フィードバック',
+                    tos: '利用規約',
+                    privacy: 'プライバシーポリシー',
+                }
+            },
+        },
+    },
 }
