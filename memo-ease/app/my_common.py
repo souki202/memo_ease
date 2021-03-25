@@ -25,6 +25,21 @@ def get_page_url():
     elif os.environ['EnvName'] == 'Local':
         return 'https://dev-memo-ease.tori-blog.net'
 
+def get_page_url_with_locale(locale):
+    url = ''
+    if os.environ['EnvName'] == 'Prod':
+        url = 'https://memo-ease.com'
+    elif os.environ['EnvName'] == 'Stg':
+        url = 'https://stg-memo-ease.tori-blog.net'
+    elif os.environ['EnvName'] == 'Dev':
+        url = 'https://dev-memo-ease.tori-blog.net'
+    elif os.environ['EnvName'] == 'Local':
+        url = 'https://dev-memo-ease.tori-blog.net'
+    
+    if locale == 'en':
+        url += '/en-US'
+    return url
+
 def get_domain():
     if os.environ['EnvName'] == 'Prod':
         return 'memo-ease.com'

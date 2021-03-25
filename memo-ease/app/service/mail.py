@@ -20,14 +20,23 @@ reset_password_mail_body = '''
 
 '''
 
+reset_password_mail_body_en = '''
+URL for password reset has been issued.
+Click on the URL below to reset your password.
+
+[[[reset_password_url]]]
+
+If you do not recognize this email, please delete this email as is.
+'''
+
 MAIL_FOOTER = '''
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-発行元 MemoEase
+Publisher: MemoEase
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 '''
 
-def create_reset_password_url(reset_token):
-    return get_page_url() + '/reset_password.html?token=' + reset_token
+def create_reset_password_url(reset_token, locale):
+    return get_page_url_with_locale(locale) + '/reset_password.html?token=' + reset_token
 
 def send_text_mail(from_view_name, from_mail, to_mail, subject, body):
     try:
@@ -60,10 +69,17 @@ def send_text_mail(from_view_name, from_mail, to_mail, subject, body):
 def send_feedback(to_mail, subject, body):
     return send_text_mail('MemoEase問い合わせ', get_support_from(), MY_MAIL, subject, body)
 
-def send_reset_password_mail(to_mail, reset_token):
-    body = reset_password_mail_body + MAIL_FOOTER
-    body = body.replace('[[[reset_password_url]]]', create_reset_password_url(reset_token))
-    return send_text_mail('noreply', get_noreply_from(), to_mail, 'MemoEase パスワードリセット', body)
+def send_reset_password_mail(to_mail, reset_token, locale):
+    reset_body = reset_password_mail_body
+    subject = 'MemoEase パスワードリセット'
+
+    if locale == 'en':
+        reset_body = reset_password_mail_body_en
+        subject = 'Password reset - MemoEase'
+
+    body = reset_body + MAIL_FOOTER
+    body = body.replace('[[[reset_password_url]]]', create_reset_password_url(reset_token, locale))
+    return send_text_mail('noreply', get_noreply_from(), to_mail, subject, body)
 
 def get_noreply_from():
     return 'noreply@memo-ease.com'

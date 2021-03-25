@@ -257,7 +257,8 @@ const app = createApp({
             axios.post(getApiUrl() + '/generate_reset_password_token', {
                 params: {
                     memo_uuid: this.memo.memoUuid,
-                    memo_alias: this.memo.memoAlias
+                    memo_alias: this.memo.memoAlias,
+                    locale: locale
                 }
             }).then(res => {
                 this.isSuccessGenerateResetPassword = true;

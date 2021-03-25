@@ -267,11 +267,21 @@ def change_memo_alias_event(event, context):
 
     return create_common_return_array(200, {})
 
+'''
+パスワードリセットのトークン発行とメール送信
+'''
 def generate_reset_password_token_event(event, context):
     memo_data = my_memo_service.get_memo_data_without_auth_post(event)
     if not memo_data:
         return create_common_return_array(500, {'message': 'Failed to get memo data.',})
     memo_uuid = memo_data['uuid']
+
+    params = json.loads(event['body'] or '{ }')
+
+    locale = params['params'].get('locale')
+
+    if not locale:
+        locale = 'ja'
 
     # リセットに必要な情報がなければ終了
     if not memo_data['email']:
@@ -289,7 +299,7 @@ def generate_reset_password_token_event(event, context):
         return create_common_return_array(500, {'message': 'Failed to create token.',})
     
     # メール送信
-    if not my_mail.send_reset_password_mail(memo_data['email'], token):
+    if not my_mail.send_reset_password_mail(memo_data['email'], token, locale):
         print('Failed to send password reset mail. memo_uuid: ' + memo_uuid + ' email: ' + memo_data['email'])
         return create_common_return_array(500, {'message': 'Failed to create token.',})
 

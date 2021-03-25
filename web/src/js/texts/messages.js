@@ -69,6 +69,7 @@ export default {
                 forgot: 'Forgot your password?',
                 reset: 'The reset email has been sent.',
                 wrongPassword: 'Either the password is wrong or the memo was not found.',
+                failedToSendReset: 'Failed to send reset email. Your email address may not be set.',
             },
             getServerError: 'A server error has occurred.',
             notFound: 'Memo not found.',
@@ -108,7 +109,6 @@ export default {
                     maximum: 'The password and email can be up to 1000 characters long.',
                     success: 'Password and Email settings updated.',
                     failed: 'Failed to update password and email settings.',
-                    failedToSendReset: 'Failed to send reset email. Your email address may not be set.',
                 },
                 share: {
                     title: 'Shared link',
@@ -128,6 +128,11 @@ export default {
                 }
             },
         },
+        resetPassword: {
+            userError: 'Failed to reset the password. The URL may have expired.',
+            serverError: 'Server error has occurred.',
+            unknownError: 'Unknown error has occurred.',
+        }
     },
     ja: {
         messages: {
@@ -256,6 +261,11 @@ export default {
                     privacy: 'プライバシーポリシー',
                 }
             },
+        },
+        resetPassword: {
+            userError: 'パスワードのリセットに失敗しました. URLの有効期限が切れている可能性があります.',
+            serverError: 'サーバーエラが発生しました',
+            unknownError: '不明なエラーが発生しました',
         },
     },
 }
