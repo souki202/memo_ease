@@ -180,6 +180,21 @@ body {
                 }
             }
         }
+
+        .locale {
+            margin-top: 2rem;
+            ul {
+                display: flex;
+                flex-direction: row;
+                margin: 0;
+                padding: 0;
+                justify-content: center;
+                li {
+                    list-style: none;
+                    width: 96px;
+                }
+            }
+        }
     }
 }
 

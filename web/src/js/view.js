@@ -2,7 +2,7 @@ import '../css/view.scss'
 
 import { createApp, defineComponent } from 'vue/dist/vue.esm-bundler.js';
 import axios from 'axios';
-import { getApiUrl } from './url';
+import { getApiUrl, rootPageUrl } from './url';
 
 import {ClassicEditor, MyUploaderAdaptor} from './ckeditor';
 import CkeditorVue from '@ckeditor/ckeditor5-vue';

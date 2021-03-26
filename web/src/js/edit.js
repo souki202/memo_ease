@@ -5,8 +5,13 @@ import 'regenerator-runtime/runtime';
 import { createApp, defineComponent } from 'vue/dist/vue.esm-bundler.js';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-import { getApiUrl } from './url';
+import { getApiUrl, rootPageUrl } from './url';
 import getUrlParameter from './urlParameter';
+
+import { createI18n } from 'vue-i18n'
+
+import messages from './texts/messages';
+import { locale } from './components/getLocale';
 
 import { ClassicEditor, MyUploaderAdaptor } from './ckeditor';
 import CkeditorVue from '@ckeditor/ckeditor5-vue';
@@ -17,6 +22,11 @@ import VModal from './vmodal.vue';
 import Sidebar from './sidebar.vue';
 
 import { updateHistory } from './history.js';
+
+const i18n = createI18n({
+    locale,
+    messages,
+});
 
 const app = createApp({
     components: {
@@ -63,7 +73,7 @@ const app = createApp({
         this.memo.memoAlias = getUrlParameter('memo_alias');
 
         if (!this.memo.memoAlias && !this.memo.memoUuid) {
-            window.alert('メモIDが設定されていません.');
+            window.alert(this.$t('edit.notSet'));
             location.href = '/';
         }
 
@@ -72,12 +82,11 @@ const app = createApp({
     },
     computed: {
         memoUrl() {
-            return 'https://' + document.domain + '/edit.html?memo_uuid=' + this.memo.memoUuid;
+            return rootPageUrl + '/edit.html?memo_uuid=' + this.memo.memoUuid;
         },
     },
     methods: {
         init: async function () {
-            console.log("hgoehgoehgoe");
             const hasPassword = await this.checkHasPassword();
             if (hasPassword) {
                 // パスワード入力画面
@@ -149,7 +158,17 @@ const app = createApp({
                 }
             }).catch(err => {
                 console.log(err);
-                window.alert('パスワードが間違っているか, サーバエラーが発生しました.');
+                if (err.response) {
+                    if (err.response.status < 500) {
+                        window.alert(this.$t('edit.password.wrongPassword'));
+                    }
+                    else {
+                        window.alert(this.$t('edit.notFound'));
+                    }
+                }
+                else {
+                    window.alert(this.$t('edit.getError'));
+                }
             }).then(() => {
                 this.isSubmiting = false;
             });
@@ -175,14 +194,14 @@ const app = createApp({
             }).catch(err => {
                 if (err.response) {
                     if (err.response.status >= 500) {
-                        window.alert('サーバーエラーが発生しました.');
+                        window.alert(this.$t('edit.getServerError'));
                     }
                     else {
-                        window.alert('パスワードが間違っています.');
+                        window.alert(this.$t('edit.password.wrongPassword'));
                     }
                 }
                 else {
-                    window.alert('エラーが発生しました.');
+                    window.alert(this.$t('edit.getError'));
                 }
             }).then(() => {
                 this.isSubmiting = false;
@@ -205,11 +224,11 @@ const app = createApp({
 
         _save() {
             if (this.memo.title.length > this.memo.maxTitleLen) {
-                window.alert('タイトルは1000文字以内までです.');
+                window.alert(this.$t('edit.form.titleMaximum'));
                 return;
             }
             if (this.memo.body.length > this.memo.maxBodyLen) {
-                window.alert('本文は' + String(this.memo.maxBodyLen) + '文字までです.');
+                window.alert(this.$t('edit.form.bodyMaximum'));
                 return;
             }
             axios.post(getApiUrl() + '/save_memo', {
@@ -221,11 +240,11 @@ const app = createApp({
                 }
             }).then(res => {
                 console.log(res);
-                this.drawMessage('メモを保存しました.');
+                this.drawMessage(this.$t('edit.form.success'));
                 updateHistory(this.memo.memoUuid, this.memo.memoAlias, this.memo.title);
             }).catch(err => {
                 console.log(err);
-                window.alert('メモの保存に失敗しました.');
+                window.alert(this.$t('edit.form.failed'));
             }).then(() => {});
         },
 
@@ -238,18 +257,22 @@ const app = createApp({
             axios.post(getApiUrl() + '/generate_reset_password_token', {
                 params: {
                     memo_uuid: this.memo.memoUuid,
-                    memo_alias: this.memo.memoAlias
+                    memo_alias: this.memo.memoAlias,
+                    locale: locale
                 }
             }).then(res => {
                 this.isSuccessGenerateResetPassword = true;
             }).catch(err => {
                 if (err.response) {
-                    if (err.response.status == 406) {
-                        window.alert('リセット用メールの送信に失敗しました. メールアドレスが設定されていない可能性があります.');
+                    if (err.response.status <= 500) {
+                        window.alert(this.$t('edit.password.failedToSendReset'));
+                    }
+                    else {
+                        window.alert(this.$t('edit.getServerError'));
                     }
                 }
                 else {
-                    window.alert('サーバーエラーによりリセット用メールの送信に失敗しました.');
+                    window.alert(this.$t('edit.getError'));
                 }
             }).then(() => {
                 this.isSubmiting = false;
@@ -300,4 +323,4 @@ const app = createApp({
             }
         },
     },
-}).use(CkeditorVue).use(VueFinalModal()).mount('#app');
+}).use(i18n).use(CkeditorVue).use(VueFinalModal()).mount('#app');

@@ -13,7 +13,6 @@ const cssIn = './web/src/css/'
 module.exports = {
     entry: {
         index: jsIn + 'index.js',
-        pub: jsIn + 'pub.js',
         feedback: jsIn + 'feedback.js',
         passwordReset: jsIn + 'passwordReset.js',
         edit: jsIn + 'edit.js',
