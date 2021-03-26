@@ -55,9 +55,9 @@ export default {
             notSet: '',
 
             saveUrl: {
-                title: 'Bookmark your note!',
+                title: 'Bookmark your memo!',
                 desc1: 'The memo ID is used when you enter the edit screen from the top page. You can change the ID at any time from the left sidebar.',
-                desc2: 'Notes will be automatically saved a few seconds after the last edit.',
+                desc2: 'Memos will be automatically saved a few seconds after the last edit.',
                 memoUrl: 'Memo URL',
                 memoId: 'Memo ID',
             },
