@@ -13,7 +13,7 @@ import getUrlParameter from './urlParameter';
 import Ads from './components/ads.vue';
 
 const app = createApp({
-    components {
+    components: {
         Ads,
     },
     data() {
