@@ -10,8 +10,12 @@ import CkeditorVue from '@ckeditor/ckeditor5-vue';
 import VueFinalModal from 'vue-final-modal';
 import VModal from './vmodal.vue';
 import getUrlParameter from './urlParameter';
+import Ads from './components/ads.vue';
 
 const app = createApp({
+    components {
+        Ads,
+    },
     data() {
         return {
             ckeditorClass: ClassicEditor,
