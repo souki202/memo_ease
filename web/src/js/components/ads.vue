@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="ads-container">
         <ins class="adsbygoogle"
         style="display:block"
         data-ad-client="ca-pub-6131667937099619"
@@ -8,6 +8,12 @@
         data-full-width-responsive="true"></ins>
     </div>
 </template>
+
+<style>
+.ads-container {
+    max-height: 128px;
+}
+</style>
 
 <script>
 export default {
