@@ -20,6 +20,7 @@ import VueFinalModal from 'vue-final-modal';
 import VModal from './vmodal.vue';
 
 import Sidebar from './sidebar.vue';
+import Ads from './components/ads.vue';
 
 import { updateHistory } from './history.js';
 
@@ -30,8 +31,9 @@ const i18n = createI18n({
 
 const app = createApp({
     components: {
-        VModal: VModal,
-        Sidebar: Sidebar,
+        VModal,
+        Sidebar,
+        Ads,
     },
     data() {
         return {

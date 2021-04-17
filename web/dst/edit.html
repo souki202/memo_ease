@@ -11,6 +11,7 @@
     <title>Memo Editor</title>
 </head>
 <body>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <main id="app">
         <sidebar
             v-model:memo-alias="memo.memoAlias"
@@ -37,7 +38,7 @@
                 </div>
             </div>
             <div class="tools-container"></div>
-            
+            <ads></ads>
             <!-- 新規作成時はURL等のモーダル表示 -->
             <div class="new-create-message">
                 <v-modal v-model="showMemoUrlModal" @close="closeNewMemoUrlModal" :modal-id="'showMemoUrl'">
