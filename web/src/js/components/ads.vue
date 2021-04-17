@@ -10,9 +10,6 @@
 </template>
 
 <style>
-.ads-container {
-    max-height: 128px;
-}
 </style>
 
 <script>
